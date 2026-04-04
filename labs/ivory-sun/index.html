@@ -29,12 +29,16 @@ h1,h2,h3{font-family:'Playfair Display',serif}
 .stat-label{font-size:.8rem;color:var(--muted);margin-top:4px}
 .h-scroll{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:20px 0;-webkit-overflow-scrolling:touch}
 .h-scroll::-webkit-scrollbar{display:none}
-.col-card{min-width:260px;scroll-snap-align:start;background:#fff;border-radius:16px;padding:32px 24px;box-shadow:0 8px 30px rgba(200,168,78,.1)}
+.col-card{min-width:280px;scroll-snap-align:start;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(200,168,78,.1)}
+.col-card img{width:100%;height:200px;object-fit:cover;display:block}
+.col-card-body{padding:20px 18px}
 .col-card h3{font-size:1.3rem;margin-bottom:8px;color:var(--gold)}.col-card p{color:var(--muted);font-size:.85rem;line-height:1.5}
 .prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
-.prod-card{background:#fff;border-radius:14px;padding:20px 14px;text-align:center;box-shadow:0 4px 16px rgba(200,168,78,.08)}
+.prod-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 16px rgba(200,168,78,.08)}
+.prod-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.prod-card-body{padding:14px;text-align:center}
 .prod-card .price{color:var(--gold);font-weight:600;margin-top:8px;font-size:1.05rem}
-.prod-card h4{font-size:.9rem;margin-top:6px}
+.prod-card h4{font-size:.9rem;margin-top:4px}
 .assurance-list{display:flex;flex-direction:column;gap:14px;margin-top:24px}
 .assurance-item{background:#fff;border-radius:12px;padding:20px;border-left:3px solid var(--gold);box-shadow:0 2px 12px rgba(0,0,0,.04)}
 .assurance-item h4{margin-bottom:4px;font-size:1rem}.assurance-item p{color:var(--muted);font-size:.85rem}
@@ -79,19 +83,19 @@ footer{text-align:center;padding:40px 20px;font-size:.75rem;color:var(--muted);s
 <section>
   <h2 class="fade-up" style="font-size:clamp(1.4rem,5vw,2rem);margin-bottom:8px">Колекції</h2>
   <div class="h-scroll fade-up">
-    <div class="col-card"><h3>Aurelio</h3><p>Вишукана елегантність італійського стилю з преміальними матеріалами.</p></div>
-    <div class="col-card"><h3>Luna</h3><p>М'які форми та затишний комфорт для сучасного простору.</p></div>
-    <div class="col-card"><h3>Marlow</h3><p>Мінімалізм та функціональність у кожній деталі.</p></div>
+    <div class="col-card"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&q=80" alt="Aurelio" loading="lazy"><div class="col-card-body"><h3>Aurelio</h3><p>Вишукана елегантність італійського стилю з преміальними матеріалами.</p></div></div>
+    <div class="col-card"><img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=500&q=80" alt="Luna" loading="lazy"><div class="col-card-body"><h3>Luna</h3><p>М'які форми та затишний комфорт для сучасного простору.</p></div></div>
+    <div class="col-card"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&q=80" alt="Marlow" loading="lazy"><div class="col-card-body"><h3>Marlow</h3><p>Мінімалізм та функціональність у кожній деталі.</p></div></div>
   </div>
 </section>
 
 <section>
   <h2 class="fade-up" style="font-size:clamp(1.4rem,5vw,2rem);margin-bottom:8px">Бестселери</h2>
   <div class="prod-grid fade-up">
-    <div class="prod-card"><h4>Диван Aurelio L</h4><div class="price">₴89 000</div></div>
-    <div class="prod-card"><h4>Крісло Luna</h4><div class="price">₴34 500</div></div>
-    <div class="prod-card"><h4>Консоль Marlow</h4><div class="price">₴27 800</div></div>
-    <div class="prod-card"><h4>Стіл Aurelio D</h4><div class="price">₴56 200</div></div>
+    <div class="prod-card"><img src="https://images.unsplash.com/photo-1550581190-9c1c48d21d6c?w=400&q=80" alt="Диван" loading="lazy"><div class="prod-card-body"><h4>Диван Aurelio L</h4><div class="price">₴89 000</div></div></div>
+    <div class="prod-card"><img src="https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=400&q=80" alt="Крісло" loading="lazy"><div class="prod-card-body"><h4>Крісло Luna</h4><div class="price">₴34 500</div></div></div>
+    <div class="prod-card"><img src="https://images.unsplash.com/photo-1532372576444-dda954194ad0?w=400&q=80" alt="Консоль" loading="lazy"><div class="prod-card-body"><h4>Консоль Marlow</h4><div class="price">₴27 800</div></div></div>
+    <div class="prod-card"><img src="https://images.unsplash.com/photo-1611967164521-abae8fba4668?w=400&q=80" alt="Стіл" loading="lazy"><div class="prod-card-body"><h4>Стіл Aurelio D</h4><div class="price">₴56 200</div></div></div>
   </div>
 </section>
 
