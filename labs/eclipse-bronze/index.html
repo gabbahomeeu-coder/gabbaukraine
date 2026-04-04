@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="uk" style="scroll-snap-type:y mandatory;overflow-y:scroll">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gabba Ukraine — Eclipse Bronze</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0D0D0D;--bg2:#1A1612;--accent:#CD7F32;--text:#F0EBE3;--muted:#9A8E80}
+html{scroll-snap-type:y mandatory;overflow-y:scroll;scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+section{min-height:100vh;scroll-snap-align:start;padding:60px 20px;display:flex;flex-direction:column;justify-content:center;position:relative}
+h1,h2,h3{font-family:'Bodoni Moda',serif}
+.loader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity .6s,visibility .6s}.loader.hide{opacity:0;visibility:hidden}
+.loader-dot{width:10px;height:10px;background:var(--accent);border-radius:50%;margin:0 6px;animation:pulse .6s alternate infinite}.loader-dot:nth-child(2){animation-delay:.2s}.loader-dot:nth-child(3){animation-delay:.4s}
+@keyframes pulse{to{opacity:.2;transform:scale(.6)}}
+/* Eclipse glow */
+.eclipse-glow{position:absolute;top:50%;left:50%;width:300px;height:300px;background:radial-gradient(circle,rgba(205,127,50,.2) 0%,transparent 70%);border-radius:50%;transform:translate(-50%,-60%);animation:glowPulse 4s ease-in-out infinite alternate}
+@keyframes glowPulse{0%{transform:translate(-50%,-60%) scale(1);opacity:.6}100%{transform:translate(-50%,-60%) scale(1.4);opacity:1}}
+.hero{position:relative;z-index:1}
+.hero h1{font-size:clamp(2rem,8vw,3.5rem);line-height:1.15;margin-bottom:16px}
+.hero h1 .word{display:inline-block;opacity:0;transform:translateY(30px);animation:wordUp .6s forwards}
+@keyframes wordUp{to{opacity:1;transform:translateY(0)}}
+.hero p{color:var(--muted);font-size:1rem;max-width:340px;line-height:1.6}
+.trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.trust-card{background:var(--bg2);border-radius:12px;padding:20px 16px;text-align:center;font-size:.85rem;border:1px solid rgba(205,127,50,.15)}
+.trust-card strong{display:block;color:var(--accent);font-size:1.1rem;margin-bottom:4px}
+.stats-row{display:flex;justify-content:space-around;text-align:center;margin-top:24px}
+.stat-num{font-family:'Bodoni Moda',serif;font-size:clamp(2rem,7vw,3rem);color:var(--accent)}
+.stat-label{font-size:.8rem;color:var(--muted);margin-top:4px}
+.h-scroll{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:20px 0;-webkit-overflow-scrolling:touch}
+.h-scroll::-webkit-scrollbar{display:none}
+.col-card{min-width:260px;scroll-snap-align:start;background:var(--bg2);border-radius:16px;padding:32px 24px;border:1px solid rgba(205,127,50,.12)}
+.col-card h3{font-size:1.3rem;margin-bottom:8px;color:var(--accent)}.col-card p{color:var(--muted);font-size:.85rem;line-height:1.5}
+.prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+.prod-card{background:var(--bg2);border-radius:14px;padding:20px 14px;text-align:center;border:1px solid rgba(205,127,50,.08)}
+.prod-card .price{color:var(--accent);font-weight:600;margin-top:8px;font-size:1.05rem}
+.prod-card h4{font-size:.9rem;margin-top:6px}
+.assurance-list{display:flex;flex-direction:column;gap:14px;margin-top:24px}
+.assurance-item{background:var(--bg2);border-radius:12px;padding:20px;border-left:3px solid var(--accent)}
+.assurance-item h4{margin-bottom:4px;font-size:1rem}.assurance-item p{color:var(--muted);font-size:.85rem}
+.cta-section{text-align:center}.cta-section h2{font-size:clamp(1.6rem,6vw,2.5rem);margin-bottom:12px}
+.cta-section p{color:var(--muted);margin-bottom:24px}
+.cta-btn{display:inline-block;background:var(--accent);color:var(--bg);padding:16px 40px;border-radius:50px;font-weight:600;font-size:1rem;text-decoration:none;min-height:44px}
+footer{text-align:center;padding:40px 20px;font-size:.75rem;color:var(--muted);scroll-snap-align:start}
+.sticky-cta{position:fixed;bottom:0;left:0;right:0;display:flex;gap:8px;padding:12px 16px;padding-bottom:calc(12px + env(safe-area-inset-bottom));background:rgba(13,13,13,.95);backdrop-filter:blur(10px);z-index:100;border-top:1px solid rgba(205,127,50,.2)}
+.sticky-cta a{flex:1;text-align:center;padding:14px;border-radius:12px;font-weight:600;font-size:.9rem;text-decoration:none;min-height:44px;display:flex;align-items:center;justify-content:center}
+.sticky-cta .s-primary{background:var(--accent);color:var(--bg)}.sticky-cta .s-secondary{border:1px solid var(--accent);color:var(--accent)}
+.fade-up{opacity:0;transform:translateY(30px);transition:opacity .7s,transform .7s}.fade-up.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+<div class="loader" id="loader"><div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div></div>
+
+<section class="hero">
+  <div class="eclipse-glow"></div>
+  <h1 id="heroTitle">Розкішні меблі для вашого дому</h1>
+  <p class="fade-up">Gabba Ukraine — європейська якість, сучасний дизайн та безкомпромісний комфорт для кожного інтер'єру.</p>
+</section>
+
+<section>
+  <h2 class="fade-up" style="font-size:clamp(1.4rem,5vw,2rem);margin-bottom:8px">Чому обирають нас</h2>
+  <div class="trust-grid fade-up">
+    <div class="trust-card"><strong>Безкоштовна</strong>доставка</div>
+    <div class="trust-card"><strong>Європейська</strong>якість</div>
+    <div class="trust-card"><strong>2 роки</strong>гарантії</div>
+    <div class="trust-card"><strong>В наявності</strong>на складі</div>
+  </div>
+</section>
+
+<section>
+  <h2 class="fade-up" style="font-size:clamp(1.4rem,5vw,2rem);text-align:center;margin-bottom:8px">Наші досягнення</h2>
+  <div class="stats-row fade-up">
+    <div><div class="stat-num" data-target="6">0</div><div class="stat-label">років досвіду</div></div>
+    <div><div class="stat-num" data-target="8">0</div><div class="stat-label">колекцій</div></div>
+    <div><div class="stat-num" data-target="1200">0</div><div class="stat-label">клієнтів</div></div>
+  </div>
+</section>
+
+<section>
+  <h2 class="fade-up" style="font-size:clamp(1.4rem,5vw,2rem);margin-bottom:8px">Колекції</h2>
+  <div class="h-scroll fade-up">
+    <div class="col-card"><h3>Aurelio</h3><p>Вишукана елегантність італійського стилю з преміальними матеріалами.</p></div>
+    <div class="col-card"><h3>Luna</h3><p>М'які форми та затишний комфорт для сучасного простору.</p></div>
+    <div class="col-card"><h3>Marlow</h3><p>Мінімалізм та функціональність у кожній деталі.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2 class="fade-up" style="font-size:clamp(1.4rem,5vw,2rem);margin-bottom:8px">Бестселери</h2>
+  <div class="prod-grid fade-up">
+    <div class="prod-card"><h4>Диван Aurelio L</h4><div class="price">₴89 000</div></div>
+    <div class="prod-card"><h4>Крісло Luna</h4><div class="price">₴34 500</div></div>
+    <div class="prod-card"><h4>Консоль Marlow</h4><div class="price">₴27 800</div></div>
+    <div class="prod-card"><h4>Стіл Aurelio D</h4><div class="price">₴56 200</div></div>
+  </div>
+</section>
+
+<section>
+  <h2 class="fade-up" style="font-size:clamp(1.4rem,5vw,2rem);margin-bottom:8px">Гарантії якості</h2>
+  <div class="assurance-list fade-up">
+    <div class="assurance-item"><h4>Преміальні матеріали</h4><p>Тільки найкращі тканини та масив дерева від європейських постачальників.</p></div>
+    <div class="assurance-item"><h4>Доставка та збірка</h4><p>Безкоштовна доставка по Україні та професійна збірка.</p></div>
+    <div class="assurance-item"><h4>Гарантія 2 роки</h4><p>Повна гарантія на всі вироби протягом 2 років.</p></div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2 class="fade-up">Створіть свій ідеальний інтер'єр</h2>
+  <p class="fade-up">Зв'яжіться з нами для консультації</p>
+  <a href="#" class="cta-btn fade-up">Замовити консультацію</a>
+</section>
+
+<footer>&copy; 2024 Gabba Ukraine · www.gabbaukraine.com</footer>
+
+<div class="sticky-cta">
+  <a href="tel:" class="s-secondary">Зателефонувати</a>
+  <a href="#" class="s-primary">Написати нам</a>
+</div>
+
+<script>
+window.addEventListener('load',()=>{document.getElementById('loader').classList.add('hide')});
+(()=>{const h=document.getElementById('heroTitle'),t=h.textContent;h.innerHTML='';t.split(' ').forEach((w,i)=>{const s=document.createElement('span');s.className='word';s.textContent=w+' ';s.style.animationDelay=(.18*i)+'s';h.appendChild(s)})})();
+const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')}),{threshold:.15});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+let counted=false;const cObs=new IntersectionObserver(e=>{if(e[0].isIntersecting&&!counted){counted=true;document.querySelectorAll('.stat-num').forEach(el=>{const t=+el.dataset.target,d=t>100?30:60,step=Math.ceil(t/d);let c=0;const iv=setInterval(()=>{c+=step;if(c>=t){c=t;clearInterval(iv)}el.textContent=c>999?c.toLocaleString()+'+':(t===6?c+'+':c)},30)})}},{threshold:.3});
+document.querySelectorAll('.stats-row').forEach(el=>cObs.observe(el));
+</script>
+</body>
+</html>

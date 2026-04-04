@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Gabba — Midnight Gold</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#08070B;--surface:#0F0E14;--card:rgba(255,255,255,0.03);
+      --gold:#D4A853;--gold-bright:#F0D078;--gold-dim:#8B7234;
+      --text:#F0ECE4;--muted:#8A8490;--subtle:#4A4650;
+      --border:rgba(212,168,83,0.1);--glow:rgba(212,168,83,0.15);
+      --ff:'Playfair Display',serif;--fb:'Inter',sans-serif;
+    }
+    html{scroll-behavior:smooth;scroll-snap-type:y mandatory}
+    body{font-family:var(--fb);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+    /* LOADER */
+    .loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease}
+    .loader.done{opacity:0;visibility:hidden;pointer-events:none}
+    .loader-brand{font-family:var(--ff);font-size:2.5rem;font-weight:600;letter-spacing:.15em;color:var(--gold);opacity:0;animation:logoIn 1.2s ease .2s forwards}
+    @keyframes logoIn{0%{opacity:0;transform:scale(.8) translateY(20px);filter:blur(8px)}100%{opacity:1;transform:scale(1) translateY(0);filter:blur(0)}}
+
+    /* SNAP SECTIONS */
+    .snap-section{min-height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;display:flex;flex-direction:column;justify-content:center;padding:1.25rem;overflow:hidden}
+
+    /* HEADER */
+    .header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;background:rgba(8,7,11,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);opacity:0;animation:fadeIn .6s ease 2s forwards}
+    @keyframes fadeIn{to{opacity:1}}
+    .brand{font-family:var(--ff);font-size:1.4rem;font-weight:600;letter-spacing:.1em;background:linear-gradient(135deg,var(--gold),var(--gold-bright));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hdr-a{display:flex;gap:.5rem}
+    .hdr-a a{display:flex;align-items:center;justify-content:center;width:2.4rem;height:2.4rem;border-radius:50%;border:1px solid var(--border);color:var(--muted);text-decoration:none;font-size:.95rem;transition:all .25s}
+    .hdr-a a:hover{border-color:var(--gold);color:var(--gold);box-shadow:0 0 20px var(--glow)}
+
+    /* HERO */
+    .hero{padding-top:5rem}
+    .hero-glow{position:absolute;width:80vw;height:80vw;border-radius:50%;filter:blur(80px);opacity:.25;pointer-events:none}
+    .hero-glow.g1{top:-20%;right:-30%;background:radial-gradient(circle,var(--gold),transparent 70%);animation:glowPulse 8s ease-in-out infinite}
+    .hero-glow.g2{bottom:-10%;left:-20%;background:radial-gradient(circle,rgba(100,70,180,.3),transparent 70%);animation:glowPulse 10s ease-in-out infinite 2s}
+    @keyframes glowPulse{0%,100%{transform:scale(1);opacity:.2}50%{transform:scale(1.15);opacity:.35}}
+
+    .hero-content{position:relative;z-index:1}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .8rem;border-radius:999px;border:1px solid var(--border);background:rgba(212,168,83,.05);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;opacity:0;animation:slideUp .8s ease 1.8s forwards}
+    .hero-eyebrow::before{content:'';width:.4rem;height:.4rem;border-radius:50%;background:var(--gold);animation:blink 2s ease-in-out infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+    @keyframes slideUp{to{opacity:1;transform:translateY(0)}}
+    .hero-eyebrow,.hero h1,.hero-text,.hero-ctas{transform:translateY(30px)}
+
+    .hero h1{font-family:var(--ff);font-size:clamp(3rem,12vw,5.5rem);font-weight:600;line-height:.9;margin-bottom:1.5rem}
+    .hero h1 .l{display:block;overflow:hidden}
+    .hero h1 .l span{display:block;opacity:0;transform:translateY(100%);animation:wordUp 1s cubic-bezier(.16,1,.3,1) forwards}
+    .hero h1 .l:nth-child(2) span{animation-delay:2.1s}
+    .hero h1 .l:nth-child(3) span{animation-delay:2.3s}
+    .hero h1 .l:nth-child(1) span{animation-delay:1.9s}
+    @keyframes wordUp{to{opacity:1;transform:translateY(0)}}
+    .hero h1 em{font-style:italic;background:linear-gradient(135deg,var(--gold),var(--gold-bright),#7DD4A8,var(--gold));background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 5s ease-in-out infinite}
+    @keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+    .hero-text{font-size:.95rem;font-weight:300;line-height:1.8;color:var(--muted);max-width:28rem;margin-bottom:2rem;opacity:0;animation:slideUp .8s ease 2.5s forwards}
+    .hero-ctas{display:flex;gap:.75rem;opacity:0;animation:slideUp .8s ease 2.7s forwards}
+
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:3.25rem;padding:0 1.75rem;border-radius:999px;font-size:.88rem;font-weight:500;text-decoration:none;transition:all .35s;position:relative;overflow:hidden}
+    .btn-glow{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#0A090E;box-shadow:0 0 30px var(--glow)}
+    .btn-glow:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(212,168,83,.3)}
+    .btn-glow::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent 40%,rgba(255,255,255,.15) 50%,transparent 60%);animation:btnShine 3s ease-in-out infinite}
+    @keyframes btnShine{0%{transform:translateX(-100%) rotate(45deg)}100%{transform:translateX(100%) rotate(45deg)}}
+    .btn-ghost{border:1px solid var(--border);color:var(--text);backdrop-filter:blur(10px)}
+    .btn-ghost:hover{border-color:var(--gold);background:rgba(212,168,83,.06)}
+
+    /* SCROLL INDICATOR */
+    .scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fadeIn .6s ease 3s forwards}
+    .scroll-hint span{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--subtle)}
+    .scroll-dot{width:1.5rem;height:2.5rem;border-radius:999px;border:1px solid var(--subtle);position:relative}
+    .scroll-dot::after{content:'';position:absolute;top:4px;left:50%;transform:translateX(-50%);width:3px;height:8px;border-radius:999px;background:var(--gold);animation:scrollBob 1.5s ease-in-out infinite}
+    @keyframes scrollBob{0%,100%{transform:translateX(-50%) translateY(0);opacity:1}50%{transform:translateX(-50%) translateY(8px);opacity:.3}}
+
+    /* TRUST SECTION */
+    .trust-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem;width:100%;max-width:500px}
+    .trust-card{padding:1.25rem;border-radius:1rem;border:1px solid var(--border);background:var(--card);backdrop-filter:blur(12px);transition:all .3s}
+    .trust-card:hover{border-color:rgba(212,168,83,.2);background:rgba(255,255,255,.05)}
+    .trust-card span{display:block;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem}
+    .trust-card strong{font-family:var(--ff);font-size:1.15rem;font-weight:500}
+
+    /* COUNTER ANIMATION */
+    .counter{font-family:var(--ff);font-size:2.2rem;font-weight:600;color:var(--gold);display:block;margin-bottom:.3rem}
+
+    /* COLLECTION SECTION */
+    .col-scroll{display:flex;gap:.75rem;overflow-x:auto;scrollbar-width:none;padding:1.5rem 0;scroll-snap-type:x mandatory;width:calc(100% + 2.5rem);margin-left:-1.25rem;padding-left:1.25rem;padding-right:1.25rem}
+    .col-scroll::-webkit-scrollbar{display:none}
+    .col-card{flex:0 0 82vw;max-width:350px;scroll-snap-align:start;min-height:420px;border-radius:1.5rem;overflow:hidden;border:1px solid var(--border);background:var(--card);backdrop-filter:blur(12px);display:flex;flex-direction:column;transition:all .4s}
+    .col-card:hover{border-color:rgba(212,168,83,.2);transform:translateY(-6px);box-shadow:0 20px 60px rgba(212,168,83,.06)}
+    .col-media{flex:1;min-height:250px;background:linear-gradient(135deg,var(--surface),#18162A);display:flex;align-items:center;justify-content:center;color:var(--subtle);font-size:.7rem;letter-spacing:.1em;position:relative;overflow:hidden}
+    .col-media::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(8,7,11,.8))}
+    .col-body{padding:1.25rem;display:flex;flex-direction:column;gap:.4rem}
+    .col-body span{font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+    .col-body h3{font-family:var(--ff);font-size:1.8rem;font-weight:600}
+    .col-body p{font-size:.85rem;font-weight:300;color:var(--muted);line-height:1.7}
+
+    /* PRODUCTS */
+    .prod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem;width:100%;max-width:500px}
+    .prod-card{border-radius:1.1rem;overflow:hidden;border:1px solid var(--border);background:var(--card);backdrop-filter:blur(12px);transition:all .35s}
+    .prod-card:hover{border-color:rgba(212,168,83,.2);transform:scale(1.02)}
+    .prod-media{aspect-ratio:3/4;background:linear-gradient(145deg,var(--surface),#18162A);display:flex;align-items:center;justify-content:center;color:var(--subtle);font-size:.6rem}
+    .prod-body{padding:.8rem;display:flex;flex-direction:column;gap:.15rem}
+    .prod-body span{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+    .prod-body h4{font-family:var(--ff);font-size:1rem;font-weight:500}
+    .prod-body .price{font-size:.8rem;font-weight:300;color:var(--muted)}
+
+    /* ASSURANCE */
+    .asr-list{display:flex;flex-direction:column;gap:.6rem;width:100%;max-width:500px}
+    .asr-card{display:flex;gap:1rem;padding:1.15rem;border-radius:1.1rem;border:1px solid var(--border);background:var(--card);backdrop-filter:blur(12px);transition:all .3s}
+    .asr-card:hover{border-color:rgba(212,168,83,.2)}
+    .asr-icon{flex-shrink:0;width:2.5rem;height:2.5rem;display:flex;align-items:center;justify-content:center;border-radius:.75rem;background:rgba(212,168,83,.08);border:1px solid rgba(212,168,83,.12);color:var(--gold);font-size:1rem}
+    .asr-card h4{font-family:var(--ff);font-size:1.05rem;font-weight:500;margin-bottom:.2rem}
+    .asr-card p{font-size:.8rem;font-weight:300;color:var(--muted);line-height:1.7}
+
+    /* FINAL CTA */
+    .final-inner{padding:3rem 1.5rem;border-radius:1.5rem;border:1px solid var(--border);background:var(--card);backdrop-filter:blur(16px);text-align:center;position:relative;overflow:hidden}
+    .final-inner::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,var(--glow),transparent,rgba(100,70,180,.03),transparent);animation:rotateSlow 15s linear infinite}
+    @keyframes rotateSlow{to{transform:rotate(360deg)}}
+    .final-inner>*{position:relative;z-index:1}
+    .final-inner h2{font-family:var(--ff);font-size:clamp(2rem,7vw,3rem);font-weight:600;margin-bottom:.75rem}
+    .final-inner p{font-weight:300;color:var(--muted);line-height:1.7;margin-bottom:2rem}
+
+    /* STICKY CTA */
+    .sticky{position:fixed;bottom:0;left:0;right:0;z-index:90;padding:.75rem 1.25rem;padding-bottom:calc(.75rem + env(safe-area-inset-bottom));background:rgba(8,7,11,.9);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;gap:.5rem}
+    .sticky a{flex:1;display:flex;align-items:center;justify-content:center;min-height:2.85rem;border-radius:999px;font-size:.82rem;font-weight:500;text-decoration:none;transition:all .25s}
+    .sticky .sg{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#0A090E}
+    .sticky .so{border:1px solid var(--border);color:var(--text)}
+
+    /* SECTION LABELS */
+    .s-label{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem}
+    .s-title{font-family:var(--ff);font-size:clamp(2rem,7vw,3rem);font-weight:600;line-height:1;margin-bottom:.75rem}
+    .s-text{font-weight:300;color:var(--muted);line-height:1.8;margin-bottom:1.5rem;max-width:30rem}
+
+    /* FOOTER */
+    .footer{padding:2rem 1.25rem;padding-bottom:calc(5rem + env(safe-area-inset-bottom));text-align:center;border-top:1px solid var(--border)}
+    .footer .fb{font-family:var(--ff);font-size:1.1rem;background:linear-gradient(135deg,var(--gold),var(--gold-bright));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.4rem}
+    .footer p{font-size:.7rem;color:var(--subtle)}
+
+    /* FADE UP */
+    .fu{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1)}
+    .fu.v{opacity:1;transform:translateY(0)}
+    .fu.d1{transition-delay:.1s}.fu.d2{transition-delay:.2s}.fu.d3{transition-delay:.3s}
+  </style>
+</head>
+<body>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader-brand">GABBA</div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="brand">GABBA</div>
+    <div class="hdr-a">
+      <a href="#" aria-label="Пошук">⌕</a>
+      <a href="#" aria-label="Кошик">▫</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="snap-section hero">
+    <div class="hero-glow g1"></div>
+    <div class="hero-glow g2"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Преміальні меблі в Україні</p>
+      <h1>
+        <span class="l"><span>Мистецтво</span></span>
+        <span class="l"><span>створювати</span></span>
+        <span class="l"><span><em>розкіш</em></span></span>
+      </h1>
+      <p class="hero-text">Gabba — дизайнерські меблі з Європи. Кожен предмет — це баланс форми, матеріалу та емоції.</p>
+      <div class="hero-ctas">
+        <a href="#collections" class="btn btn-glow">Колекції</a>
+        <a href="#story" class="btn btn-ghost">Про нас</a>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-dot"></div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section class="snap-section">
+    <p class="s-label fu">��аша впевненість</p>
+    <h2 class="s-title fu d1">Чому<br>обирають нас</h2>
+    <div class="trust-grid fu d2">
+      <div class="trust-card">
+        <span>Доставка</span>
+        <strong>Безкоштовно</strong>
+      </div>
+      <div class="trust-card">
+        <span>Якість</span>
+        <strong>Європейська</strong>
+      </div>
+      <div class="trust-card">
+        <span>Гарантія</span>
+        <strong>2 роки</strong>
+      </div>
+      <div class="trust-card">
+        <span>Наявність</span>
+        <strong>На складі</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="snap-section" style="align-items:center;text-align:center">
+    <p class="s-label fu">Gabba у цифрах</p>
+    <div class="fu d1" style="display:flex;gap:2.5rem;margin-top:1rem">
+      <div>
+        <span class="counter" data-target="6">0</span>
+        <span style="font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)">Років</span>
+      </div>
+      <div>
+        <span class="counter" data-target="8">0</span>
+        <span style="font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)">Колекцій</span>
+      </div>
+      <div>
+        <span class="counter" data-target="1200">0</span>
+        <span style="font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)">К��ієнтів</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLLECTIONS -->
+  <section class="snap-section" id="collections">
+    <p class="s-label fu">Колекції</p>
+    <h2 class="s-title fu d1">Оберіть свій стиль</h2>
+    <div class="col-scroll fu d2">
+      <article class="col-card">
+        <div class="col-media">Фото</div>
+        <div class="col-body"><span>Колекція I</span><h3>Aurelio</h3><p>Елегантність класики з характером сучасності.</p></div>
+      </article>
+      <article class="col-card">
+        <div class="col-media">Фото</div>
+        <div class="col-body"><span>Колекція II</span><h3>Luna</h3><p>Тепло натуральних матеріалів та м'якість форм.</p></div>
+      </article>
+      <article class="col-card">
+        <div class="col-media">Фото</div>
+        <div class="col-body"><span>Колекція III</span><h3>Marlow</h3><p>Чистий мінімалізм для сучасних просторів.</p></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="snap-section" id="products">
+    <p class="s-label fu">Бестселери</p>
+    <h2 class="s-title fu d1">Обрані клієнтами</h2>
+    <div class="prod-grid fu d2">
+      <article class="prod-card"><div class="prod-media">Фото</div><div class="prod-body"><span>Aurelio</span><h4>Диван Aurelio L</h4><p class="price">₴ 89 000</p></div></article>
+      <article class="prod-card"><div class="prod-media">Фото</div><div class="prod-body"><span>Luna</span><h4>Крісло Luna</h4><p class="price">₴ 34 500</p></div></article>
+      <article class="prod-card"><div class="prod-media">Фото</div><div class="prod-body"><span>Marlow</span><h4>Консоль Marlow</h4><p class="price">₴ 27 800</p></div></article>
+      <article class="prod-card"><div class="prod-media">Фото</div><div class="prod-body"><span>Aurelio</span><h4>Стіл Aurelio D</h4><p class="price">₴ 56 200</p></div></article>
+    </div>
+  </section>
+
+  <!-- ASSURANCE -->
+  <section class="snap-section" id="story">
+    <p class="s-label fu">Переваги</p>
+    <h2 class="s-title fu d1">Gabba — це</h2>
+    <div class="asr-list fu d2">
+      <article class="asr-card"><div class="asr-icon">◇</div><div><h4>Преміум матеріали</h4><p>Натуральне дерево, італійська шкіра, тканини від кращих європейських постачальників.</p></div></article>
+      <article class="asr-card"><div class="asr-icon">⟐</div><div><h4>Доставка та збірка</h4><p>Безкоштовна доставка по Україні з професійною збіркою.</p></div></article>
+      <article class="asr-card"><div class="asr-icon">↻</div><div><h4>Гарантія 2 роки</h4><p>Повна гарантія та персональний менеджер для кожного клієнта.</p></div></article>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="snap-section" style="justify-content:center">
+    <div class="final-inner fu">
+      <h2>Готові до <em>змін</em>?</h2>
+      <p>Безкоштовна консультація з дизайнером для вашого ідеального простору.</p>
+      <a href="#" class="btn btn-glow">Написати в WhatsApp ��</a>
+    </div>
+
+    <footer class="footer" style="margin-top:2rem">
+      <p class="fb">GABBA</p>
+      <p>© 2024 Gabba Ukraine · www.gabbaukraine.com</p>
+    </footer>
+  </section>
+
+  <!-- STICKY -->
+  <div class="sticky">
+    <a href="#" class="sg">Написати нам</a>
+    <a href="tel:+380" class="so">Зателефонувати</a>
+  </div>
+
+  <script>
+    // Loader
+    setTimeout(()=>document.getElementById('loader').classList.add('done'),1600);
+
+    // Scroll observer
+    const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('v')})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+
+    // Counter animation
+    const counterObs=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const el=entry.target;
+          const target=+el.dataset.target;
+          const dur=1500;
+          const start=performance.now();
+          const step=now=>{
+            const p=Math.min((now-start)/dur,1);
+            const ease=1-Math.pow(1-p,3);
+            el.textContent=Math.floor(ease*target)+(target>100?'+':'+'||'');
+            if(p<1)requestAnimationFrame(step);
+            else el.textContent=target+(target>=100?'+':'+');
+          };
+          requestAnimationFrame(step);
+          counterObs.unobserve(el);
+        }
+      });
+    },{threshold:.5});
+    document.querySelectorAll('.counter').forEach(el=>counterObs.observe(el));
+  </script>
+</body>
+</html>
