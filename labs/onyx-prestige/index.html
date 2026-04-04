@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Gabba Ukraine — Onyx Prestige</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0A0A0A;
+      --bg-surface: #111111;
+      --bg-card: #161616;
+      --white: #F5F5F5;
+      --white-dim: #CCCCCC;
+      --white-subtle: #666666;
+      --gold: #B89B5E;
+      --gold-glow: rgba(184,155,94,0.06);
+      --border: rgba(255,255,255,0.05);
+      --border-hover: rgba(184,155,94,0.2);
+      --font-display: 'Bodoni Moda', serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--white);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* === SUBTLE NOISE TEXTURE === */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.015;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .content { position: relative; z-index: 1; }
+
+    /* === HEADER === */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .menu-btn {
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .menu-btn:hover { border-color: var(--gold); }
+
+    .menu-btn span {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .menu-btn span::before,
+    .menu-btn span::after {
+      content: '';
+      display: block;
+      width: 16px;
+      height: 1px;
+      background: var(--white);
+    }
+
+    /* === HERO === */
+    .hero {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6rem 1.25rem 3rem;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 15vh;
+      background: linear-gradient(180deg, transparent, var(--gold), transparent);
+      opacity: 0;
+      animation: lineReveal 1.5s ease 0.5s forwards;
+    }
+
+    @keyframes lineReveal {
+      to { opacity: 0.4; }
+    }
+
+    .hero-label {
+      font-size: 0.6rem;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: prestige 1s ease 0.3s forwards;
+    }
+
+    @keyframes prestige {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-label { transform: translateY(10px); }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 12vw, 6rem);
+      font-weight: 400;
+      line-height: 0.88;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 .char-wrap {
+      display: inline-block;
+      overflow: hidden;
+    }
+
+    .hero h1 .char-wrap span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(100%);
+      animation: charUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .hero h1 .w2 span { animation-delay: 0.15s; }
+    .hero h1 .w3 span { animation-delay: 0.3s; }
+    .hero h1 .w4 span { animation-delay: 0.45s; }
+
+    @keyframes charUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 0.95rem;
+      font-weight: 200;
+      line-height: 1.8;
+      color: var(--white-dim);
+      max-width: 26rem;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: prestige 1s ease 0.8s forwards;
+    }
+
+    .hero-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      opacity: 0;
+      animation: prestige 1s ease 1s forwards;
+      transform: translateY(10px);
+      transition: color 0.3s ease;
+    }
+
+    .hero-link:hover { color: var(--gold); }
+
+    .hero-link::after {
+      content: '';
+      width: 2.5rem;
+      height: 1px;
+      background: var(--gold);
+      transition: width 0.3s ease;
+    }
+
+    .hero-link:hover::after { width: 4rem; }
+
+    /* === METRICS BAR === */
+    .metrics {
+      display: flex;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .metric {
+      flex: 1;
+      padding: 1.75rem 1rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .metric:last-child { border-right: none; }
+
+    .metric strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 0.25rem;
+    }
+
+    .metric span {
+      font-size: 0.55rem;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--white-subtle);
+    }
+
+    /* === SECTION === */
+    .section {
+      padding: 4rem 1.25rem;
+    }
+
+    .section-label {
+      font-size: 0.58rem;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 7vw, 3.2rem);
+      font-weight: 400;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-text {
+      font-weight: 200;
+      color: var(--white-dim);
+      line-height: 1.8;
+    }
+
+    /* === COLLECTIONS === */
+    .collections-scroll {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin-top: 2rem;
+      scroll-snap-type: x mandatory;
+    }
+
+    .collections-scroll::-webkit-scrollbar { display: none; }
+
+    .collection-card {
+      flex: 0 0 85vw;
+      scroll-snap-align: start;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem;
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .collection-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 50%;
+      background: linear-gradient(180deg, transparent, rgba(10,10,10,0.9));
+    }
+
+    .collection-card > * { position: relative; z-index: 1; }
+
+    .collection-card span {
+      font-size: 0.55rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .collection-card h3 {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 400;
+      margin-bottom: 0.4rem;
+    }
+
+    .collection-card p {
+      font-size: 0.85rem;
+      font-weight: 200;
+      color: var(--white-dim);
+      line-height: 1.6;
+    }
+
+    /* === PRODUCTS === */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      margin-top: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .product-card {
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      transition: background 0.3s ease;
+    }
+
+    .product-card:nth-child(2n) { border-right: none; }
+    .product-card:nth-last-child(-n+2) { border-bottom: none; }
+
+    .product-card:hover { background: var(--bg-surface); }
+
+    .product-media {
+      aspect-ratio: 3/4;
+      background: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white-subtle);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+    }
+
+    .product-body {
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .product-body span {
+      font-size: 0.5rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .product-body h4 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .product-body .price {
+      font-size: 0.8rem;
+      font-weight: 200;
+      color: var(--white-dim);
+    }
+
+    /* === ASSURANCE === */
+    .assurance-list {
+      margin-top: 2rem;
+    }
+
+    .assurance-item {
+      display: grid;
+      grid-template-columns: 3rem 1fr;
+      gap: 1rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+
+    .assurance-item:last-child { border-bottom: none; }
+
+    .assurance-num {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+    }
+
+    .assurance-item h4 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+    }
+
+    .assurance-item p {
+      font-size: 0.82rem;
+      font-weight: 200;
+      color: var(--white-dim);
+      line-height: 1.7;
+    }
+
+    /* === FINAL === */
+    .final-section {
+      padding: 5rem 1.25rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      position: relative;
+    }
+
+    .final-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 1px;
+      height: 3rem;
+      background: linear-gradient(180deg, var(--gold), transparent);
+    }
+
+    .final-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 8vw, 3.5rem);
+      font-weight: 400;
+      margin: 2rem 0 0.75rem;
+    }
+
+    .final-section p {
+      font-weight: 200;
+      color: var(--white-dim);
+      margin-bottom: 2.5rem;
+    }
+
+    .final-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3.25rem;
+      padding: 0 2.5rem;
+      border: 1px solid var(--white);
+      color: var(--white);
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .final-btn:hover {
+      background: var(--white);
+      color: var(--bg);
+    }
+
+    /* === STICKY === */
+    .sticky-cta {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 90;
+      padding: 0.75rem 1.25rem;
+      padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .sticky-cta a {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.75rem;
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .sticky-cta .sw {
+      border: 1px solid var(--white);
+      color: var(--white);
+    }
+
+    .sticky-cta .sw:hover { background: var(--white); color: var(--bg); }
+
+    .sticky-cta .sg {
+      border: 1px solid var(--border);
+      color: var(--white-subtle);
+    }
+
+    /* === FOOTER === */
+    .footer {
+      padding: 2.5rem 1.25rem;
+      padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer .bf {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer p {
+      font-size: 0.65rem;
+      font-weight: 200;
+      color: var(--white-subtle);
+      letter-spacing: 0.1em;
+    }
+
+    /* === ANIM === */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <div class="content">
+
+    <header class="header">
+      <div class="brand">Gabba</div>
+      <div class="menu-btn" aria-label="Меню"><span></span></div>
+    </header>
+
+    <section class="hero">
+      <p class="hero-label">Преміальні меблі</p>
+      <h1>
+        <div class="char-wrap w1"><span>Де</span></div>
+        <div class="char-wrap w2"><span> кожна</span></div><br>
+        <div class="char-wrap w3"><span><em>деталь</em></span></div>
+        <div class="char-wrap w4"><span> має</span></div><br>
+        <div class="char-wrap w3"><span>значення</span></div>
+      </h1>
+      <p class="hero-sub">Меблі Gabba — це мова простору, зрозуміла тим, хто відчуває різницю.</p>
+      <a href="#collections" class="hero-link">Дивитися колекції</a>
+    </section>
+
+    <div class="metrics">
+      <div class="metric fade-up"><strong>6+</strong><span>Років</span></div>
+      <div class="metric fade-up"><strong>8</strong><span>Колекцій</span></div>
+      <div class="metric fade-up"><strong>1.2K</strong><span>Клієнтів</span></div>
+    </div>
+
+    <section class="section" id="collections">
+      <p class="section-label fade-up">Колекції</p>
+      <h2 class="section-title fade-up">Оберіть свій<br>стиль</h2>
+
+      <div class="collections-scroll">
+        <article class="collection-card"><span>I</span><h3>Aurelio</h3><p>Класична елегантність з характером сучасності.</p></article>
+        <article class="collection-card"><span>II</span><h3>Luna</h3><p>М'якість форм та тепло матеріалів.</p></article>
+        <article class="collection-card"><span>III</span><h3>Marlow</h3><p>Чистий мінімалізм та функціональна краса.</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label fade-up">Бестселери</p>
+      <h2 class="section-title fade-up">Обрані<br>клієнтами</h2>
+
+      <div class="product-grid">
+        <article class="product-card"><div class="product-media">Фото</div><div class="product-body"><span>Aurelio</span><h4>Диван Aurelio L</h4><p class="price">₴ 89 000</p></div></article>
+        <article class="product-card"><div class="product-media">Фото</div><div class="product-body"><span>Luna</span><h4>Крісло Luna</h4><p class="price">₴ 34 500</p></div></article>
+        <article class="product-card"><div class="product-media">Фото</div><div class="product-body"><span>Marlow</span><h4>Консоль Marlow</h4><p class="price">₴ 27 800</p></div></article>
+        <article class="product-card"><div class="product-media">Фото</div><div class="product-body"><span>Aurelio</span><h4>Стіл Aurelio D</h4><p class="price">₴ 56 200</p></div></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label fade-up">Переваги</p>
+      <h2 class="section-title fade-up">Чому Gabba</h2>
+
+      <div class="assurance-list">
+        <article class="assurance-item fade-up"><div class="assurance-num">001</div><div><h4>Преміум матеріали</h4><p>Натуральне дерево, італійська шкіра, тканини від кращих європейських постачальників.</p></div></article>
+        <article class="assurance-item fade-up"><div class="assurance-num">002</div><div><h4>Доставка та збірка</h4><p>Безкоштовна доставка по Україні з професійною збіркою та встановленням.</p></div></article>
+        <article class="assurance-item fade-up"><div class="assurance-num">003</div><div><h4>Гарантія 2 роки</h4><p>Повна гарантія та персональний менеджер для кожного клієнта.</p></div></article>
+      </div>
+    </section>
+
+    <section class="final-section">
+      <h2 class="fade-up">Готові?</h2>
+      <p class="fade-up">Безкоштовна консультація з дизайнером.</p>
+      <a href="#" class="final-btn fade-up">Зв'язатися</a>
+    </section>
+
+    <footer class="footer">
+      <p class="bf">GABBA</p>
+      <p>© 2024 Gabba Ukraine · www.gabbaukraine.com</p>
+    </footer>
+
+  </div>
+
+  <div class="sticky-cta">
+    <a href="#" class="sw">Написати</a>
+    <a href="tel:+380" class="sg">Зателефонувати</a>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
