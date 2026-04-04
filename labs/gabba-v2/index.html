@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>GABBA Ukraine | Magazine Editorial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--heading:'Cormorant Garamond',serif;--body:'Outfit',sans-serif;--black:#111;--cream:#F5F0EB;--warm:#8B7355;--line:rgba(0,0,0,.12)}
+html{overflow-x:hidden}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1!important;transform:none!important}}
+body{font-family:var(--body);background:var(--cream);color:var(--black);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* LOADER */
+.loader{position:fixed;inset:0;z-index:9999;background:var(--cream);display:flex;align-items:center;justify-content:center;transition:opacity .6s .3s,visibility .6s .3s}
+.loader.hidden{opacity:0;visibility:hidden}
+.loader-text{font-family:var(--heading);font-size:32px;font-weight:300;letter-spacing:8px;overflow:hidden}
+.loader-text span{display:inline-block;animation:slideUp .6s ease forwards;opacity:0}
+@keyframes slideUp{to{opacity:1;transform:translateY(0)}}
+.loader-text span:nth-child(1){animation-delay:.1s;transform:translateY(100%)}
+.loader-text span:nth-child(2){animation-delay:.15s;transform:translateY(100%)}
+.loader-text span:nth-child(3){animation-delay:.2s;transform:translateY(100%)}
+.loader-text span:nth-child(4){animation-delay:.25s;transform:translateY(100%)}
+.loader-text span:nth-child(5){animation-delay:.3s;transform:translateY(100%)}
+
+/* GENERAL */
+.divider{width:100%;height:1px;background:var(--line);margin:0}
+.section-num{font-family:var(--heading);font-size:clamp(80px,20vw,140px);font-weight:300;color:rgba(0,0,0,.06);line-height:1;position:absolute;top:-10px;right:16px;pointer-events:none}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* HEADER */
+.header{padding:20px 20px 16px;display:flex;align-items:center;justify-content:space-between}
+.header img{height:28px}
+.header-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--warm)}
+
+/* HERO */
+.hero{padding:0 20px 40px;position:relative}
+.hero-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.hero-overlay{position:absolute;bottom:40px;left:20px;right:20px;padding:24px;background:rgba(245,240,235,.9);backdrop-filter:blur(8px)}
+.hero-overlay h1{font-family:var(--heading);font-size:clamp(28px,7vw,42px);font-weight:300;line-height:1.15;margin-bottom:8px}
+.hero-overlay p{font-size:13px;color:var(--warm);letter-spacing:1px}
+
+/* EDITORIAL INTRO */
+.editorial-intro{padding:48px 20px;position:relative}
+.editorial-intro .lead{font-family:var(--heading);font-size:clamp(22px,5.5vw,32px);font-weight:300;line-height:1.5;font-style:italic;color:var(--black)}
+
+/* PRODUCT ROW: alternating */
+.product-editorial{padding:40px 0;position:relative;overflow:hidden}
+.product-editorial .inner{padding:0 20px}
+.product-editorial .img-block{width:100%;aspect-ratio:4/5;overflow:hidden;margin-bottom:20px}
+.product-editorial .img-block img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.product-editorial:hover .img-block img{transform:scale(1.03)}
+.product-editorial .text-block{padding-right:20px}
+.product-editorial .text-block .label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--warm);margin-bottom:8px}
+.product-editorial .text-block h3{font-family:var(--heading);font-size:clamp(24px,6vw,36px);font-weight:400;margin-bottom:8px;line-height:1.2}
+.product-editorial .text-block .price{font-size:18px;font-weight:300;color:#666}
+.product-editorial .text-block .desc{font-size:14px;color:#888;line-height:1.6;margin-top:12px}
+
+/* REVERSE (for visual variety on larger screens) */
+.product-editorial.reverse .inner{display:flex;flex-direction:column}
+
+/* COLLECTIONS STRIP */
+.collections-strip{padding:48px 20px;position:relative}
+.collections-strip h2{font-family:var(--heading);font-size:clamp(28px,7vw,40px);font-weight:300;margin-bottom:32px}
+.coll-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.coll-item{position:relative;aspect-ratio:3/4;overflow:hidden}
+.coll-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.coll-item:hover img{transform:scale(1.05)}
+.coll-item .coll-label{position:absolute;bottom:0;left:0;right:0;padding:16px 12px;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;font-family:var(--heading);font-size:20px;font-weight:400}
+.coll-item:first-child{grid-column:1/-1;aspect-ratio:16/10}
+
+/* STATS BAR */
+.stats-bar{padding:48px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center;background:var(--black);color:#fff}
+.stat-num{font-family:var(--heading);font-size:clamp(32px,8vw,48px);font-weight:300;color:var(--warm);line-height:1}
+.stat-lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-top:6px;color:rgba(255,255,255,.5)}
+
+/* TRUST */
+.trust-strip{padding:48px 20px}
+.trust-strip h2{font-family:var(--heading);font-size:clamp(24px,6vw,36px);font-weight:300;margin-bottom:32px}
+.trust-row{display:flex;flex-direction:column;gap:24px}
+.trust-card{display:flex;gap:16px;align-items:flex-start}
+.trust-card .icon{width:40px;height:40px;flex-shrink:0;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.trust-card h4{font-family:var(--heading);font-size:18px;font-weight:600;margin-bottom:2px}
+.trust-card p{font-size:13px;color:#888;line-height:1.5}
+
+/* STORES */
+.stores{padding:48px 20px;background:var(--black);color:#fff}
+.stores h2{font-family:var(--heading);font-size:clamp(24px,6vw,36px);font-weight:300;margin-bottom:32px;color:#fff}
+.store-item{padding:20px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.store-item:last-child{border:none}
+.store-city{font-family:var(--heading);font-size:22px;font-weight:400}
+.store-address{font-size:13px;color:rgba(255,255,255,.4);margin-top:4px}
+
+/* FOOTER */
+.footer{padding:40px 20px calc(80px + env(safe-area-inset-bottom,0px));text-align:center}
+.footer img{height:24px;margin-bottom:12px;opacity:.4}
+.footer a{color:var(--warm);text-decoration:none;font-size:13px}
+.footer .pay{font-size:11px;color:#aaa;margin-top:16px}
+.footer .copy{font-size:11px;color:#ccc;margin-top:8px}
+
+/* STICKY CTA */
+.sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(245,240,235,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;transform:translateY(100%);transition:transform .4s ease}
+.sticky-cta.show{transform:translateY(0)}
+.cta-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:8px;text-decoration:none;font-family:var(--body);font-size:13px;font-weight:500;min-height:48px;transition:transform .2s}
+.cta-btn:active{transform:scale(.96)}
+.cta-wa{background:#25D366;color:#fff}
+.cta-tel{background:var(--black);color:#fff}
+.cta-btn svg{width:18px;height:18px;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <div class="loader-text"><span>G</span><span>A</span><span>B</span><span>B</span><span>A</span></div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <img src="images/logo/gabba-logo.png" alt="GABBA">
+  <span class="header-tag">Ukraine</span>
+</header>
+
+<div class="divider"></div>
+
+<!-- HERO -->
+<section class="hero reveal">
+  <img src="images/hero/hero-main.jpg" alt="GABBA Interior" class="hero-img">
+  <div class="hero-overlay">
+    <h1>Мистецтво<br>облаштування<br>простору</h1>
+    <p>Преміальні меблі з Європи</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EDITORIAL INTRO -->
+<section class="editorial-intro reveal">
+  <span class="section-num">01</span>
+  <p class="lead">GABBA створює простори, де кожен предмет розповідає свою історію. Європейська якість, український характер.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRODUCT 1 -->
+<section class="product-editorial reveal">
+  <span class="section-num">02</span>
+  <div class="inner">
+    <div class="img-block"><img src="images/products/madrid-sofa.jpg" alt="Madrid Sofa" loading="lazy"></div>
+    <div class="text-block">
+      <p class="label">Madrid Collection</p>
+      <h3>Диван Madrid</h3>
+      <p class="price">₴101 582</p>
+      <p class="desc">Витончений силует та бездоганна якість оббивки. Створений для тих, хто цінує справжню розкіш.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRODUCT 2 -->
+<section class="product-editorial reverse reveal">
+  <div class="inner">
+    <div class="img-block"><img src="images/products/galante-bed.jpg" alt="Galante Bed" loading="lazy"></div>
+    <div class="text-block">
+      <p class="label">Galante Collection</p>
+      <h3>Ліжко Galante</h3>
+      <p class="price">₴147 941</p>
+      <p class="desc">Неперевершений комфорт для повноцінного відпочинку. Кожна ніч стає розкішшю.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRODUCT 3 -->
+<section class="product-editorial reveal">
+  <span class="section-num">03</span>
+  <div class="inner">
+    <div class="img-block"><img src="images/products/milano-sofa.jpg" alt="Milano Sofa" loading="lazy"></div>
+    <div class="text-block">
+      <p class="label">Milano Collection</p>
+      <h3>Диван Milano</h3>
+      <p class="price">₴115 597</p>
+      <p class="desc">Італьянська елегантність у кожному вигині. Досконалі пропорції та виняткова зручність.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRODUCT 4 -->
+<section class="product-editorial reverse reveal">
+  <div class="inner">
+    <div class="img-block"><img src="images/products/terra-dresser.jpg" alt="Terra Dresser" loading="lazy"></div>
+    <div class="text-block">
+      <p class="label">Terra Collection</p>
+      <h3>Комод Terra</h3>
+      <p class="price">₴80 179</p>
+      <p class="desc">Натуральна краса дерева та сучасний дизайн. Функціональність у кожній деталі.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRODUCT 5 -->
+<section class="product-editorial reveal">
+  <span class="section-num">04</span>
+  <div class="inner">
+    <div class="img-block"><img src="images/products/lyon-tv-unit.jpg" alt="Lyon TV Unit" loading="lazy"></div>
+    <div class="text-block">
+      <p class="label">Lyon Collection</p>
+      <h3>ТВ-тумба Lyon</h3>
+      <p class="price">₴75 707</p>
+      <p class="desc">Мінімалізм та витонченість для сучасної вітальні.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- COLLECTIONS -->
+<section class="collections-strip reveal">
+  <span class="section-num">05</span>
+  <h2>Колекції</h2>
+  <div class="coll-grid">
+    <div class="coll-item"><img src="images/collections/madrid.jpg" alt="Madrid" loading="lazy"><div class="coll-label">Madrid</div></div>
+    <div class="coll-item"><img src="images/collections/luna.jpg" alt="Luna" loading="lazy"><div class="coll-label">Luna</div></div>
+    <div class="coll-item"><img src="images/collections/montana.jpg" alt="Montana" loading="lazy"><div class="coll-label">Montana</div></div>
+    <div class="coll-item"><img src="images/collections/leora.jpg" alt="Leora" loading="lazy"><div class="coll-label">Leora</div></div>
+    <div class="coll-item"><img src="images/collections/moka.jpg" alt="Moka" loading="lazy"><div class="coll-label">Moka</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- STATS -->
+<section class="stats-bar">
+  <div class="reveal">
+    <div class="stat-num" data-target="6">0</div>
+    <div class="stat-lbl">Років</div>
+  </div>
+  <div class="reveal">
+    <div class="stat-num" data-target="8">0</div>
+    <div class="stat-lbl">Колекцій</div>
+  </div>
+  <div class="reveal">
+    <div class="stat-num" data-target="1200">0</div>
+    <div class="stat-lbl">Клієнтів</div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust-strip reveal">
+  <h2>Наші переваги</h2>
+  <div class="trust-row">
+    <div class="trust-card">
+      <div class="icon">🚚</div>
+      <div><h4>Безкоштовна доставка</h4><p>По всій території України</p></div>
+    </div>
+    <div class="trust-card">
+      <div class="icon">🛡️</div>
+      <div><h4>Гарантія 2 роки</h4><p>На всю продукцію GABBA</p></div>
+    </div>
+    <div class="trust-card">
+      <div class="icon">🇪🇺</div>
+      <div><h4>Європейська якість</h4><p>Матеріали та виробництво найвищого рівня</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- STORES -->
+<section class="stores reveal">
+  <h2>Салони</h2>
+  <div class="store-item"><div class="store-city">Київ</div><div class="store-address">ТЦ 4ROOM, 1-й поверх</div></div>
+  <div class="store-item"><div class="store-city">Львів</div><div class="store-address">ТРЦ TRY SLONY, 2-й поверх</div></div>
+  <div class="store-item"><div class="store-city">Одеса</div><div class="store-address">ТЦ MEGADOM, 2-й поверх</div></div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <img src="images/logo/gabba-logo.png" alt="GABBA"><br>
+  <a href="https://www.gabbaukraine.com">www.gabbaukraine.com</a>
+  <p class="pay">Visa | Mastercard | Apple Pay | Google Pay</p>
+  <p class="copy">&copy; 2026 GABBA Ukraine</p>
+</footer>
+
+<!-- STICKY CTA -->
+<div class="sticky-cta" id="stickyCta">
+  <a href="https://wa.me/380990042222" class="cta-btn cta-wa">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    WhatsApp
+  </a>
+  <a href="tel:+380990042222" class="cta-btn cta-tel">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    Зателефонувати
+  </a>
+</div>
+
+<script>
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('hidden')},1400)});
+
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');const num=e.target.querySelector('.stat-num');if(num)animateCounter(num)}})},{threshold:0.2});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+function animateCounter(el){
+  if(el.dataset.done)return;el.dataset.done='1';
+  const t=+el.dataset.target,d=2000,s=performance.now();
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){el.textContent=t+(t>=1000?'+':'+');return}
+  (function u(n){const p=Math.min((n-s)/d,1),v=Math.round((1-Math.pow(1-p,3))*t);el.textContent=v+(p>=1?(t>=1000?'+':'+'):'');if(p<1)requestAnimationFrame(u)})(s);
+}
+
+window.addEventListener('scroll',()=>{
+  if(window.scrollY>300)document.getElementById('stickyCta').classList.add('show');
+},{passive:true});
+</script>
+</body>
+</html>

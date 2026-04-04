@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>GABBA Ukraine | Card Stack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--heading:'DM Serif Display',serif;--body:'DM Sans',sans-serif;--bg:#F2F0ED;--card:#FFFFFF;--text:#1D1B18;--muted:#8A8580;--accent:#6B5B3E;--shadow:0 2px 20px rgba(0,0,0,.06);--shadow-lg:0 8px 40px rgba(0,0,0,.08);--radius:20px;--radius-sm:14px}
+html{overflow-x:hidden;background:var(--bg)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.card-reveal{opacity:1!important;transform:none!important}}
+body{font-family:var(--body);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:calc(80px + env(safe-area-inset-bottom,0px))}
+
+/* LOADER */
+.loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .5s .2s,visibility .5s .2s}
+.loader.hidden{opacity:0;visibility:hidden}
+.loader-card{width:80px;height:80px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow-lg);display:flex;align-items:center;justify-content:center;animation:loaderBounce 1.2s ease infinite}
+.loader-card img{width:40px}
+@keyframes loaderBounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-12px) scale(1.05)}}
+
+.card-reveal{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+.card-reveal.visible{opacity:1;transform:translateY(0)}
+
+/* WRAPPER */
+.wrapper{padding:16px;max-width:480px;margin:0 auto}
+
+/* HEADER */
+.header-card{background:var(--card);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.header-card img{height:24px}
+.header-card .badge{font-size:10px;letter-spacing:2px;text-transform:uppercase;background:var(--bg);padding:6px 12px;border-radius:20px;color:var(--accent);font-weight:600}
+
+/* HERO CARD */
+.hero-card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-lg);margin-bottom:16px}
+.hero-card img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+.hero-card .hero-info{padding:24px 20px}
+.hero-card .hero-info h1{font-family:var(--heading);font-size:clamp(26px,6.5vw,36px);line-height:1.2;margin-bottom:8px}
+.hero-card .hero-info p{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* SECTION HEADER */
+.sec-header{padding:32px 4px 16px;display:flex;align-items:baseline;justify-content:space-between}
+.sec-header h2{font-family:var(--heading);font-size:22px}
+.sec-header span{font-size:12px;color:var(--accent);font-weight:500}
+
+/* COLLECTION STACK */
+.coll-stack{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.coll-card{background:var(--card);border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--shadow);display:flex;align-items:center;gap:16px;padding-right:16px}
+.coll-card img{width:100px;height:100px;object-fit:cover;flex-shrink:0}
+.coll-card .coll-info h3{font-family:var(--heading);font-size:18px;margin-bottom:2px}
+.coll-card .coll-info p{font-size:12px;color:var(--muted)}
+
+/* MASONRY PRODUCTS */
+.masonry{columns:2;column-gap:12px;margin-bottom:16px}
+.masonry-item{break-inside:avoid;background:var(--card);border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--shadow);margin-bottom:12px;display:inline-block;width:100%}
+.masonry-item img{width:100%;display:block}
+.masonry-item .item-info{padding:12px}
+.masonry-item .item-info h4{font-family:var(--heading);font-size:15px;margin-bottom:2px}
+.masonry-item .item-info .price{font-size:13px;color:var(--accent);font-weight:500}
+.masonry-item:nth-child(odd) img{aspect-ratio:3/4;object-fit:cover}
+.masonry-item:nth-child(even) img{aspect-ratio:1/1;object-fit:cover}
+
+/* STATS CARDS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.stat-card{background:var(--card);border-radius:var(--radius-sm);padding:20px 12px;text-align:center;box-shadow:var(--shadow)}
+.stat-card .num{font-family:var(--heading);font-size:clamp(28px,7vw,36px);color:var(--accent);line-height:1}
+.stat-card .lbl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* TRUST CARDS */
+.trust-cards{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.trust-card{background:var(--card);border-radius:var(--radius-sm);padding:20px;box-shadow:var(--shadow);display:flex;gap:16px;align-items:center}
+.trust-card .emoji{font-size:28px;flex-shrink:0}
+.trust-card h4{font-family:var(--heading);font-size:16px;margin-bottom:2px}
+.trust-card p{font-size:12px;color:var(--muted);line-height:1.4}
+
+/* LIFESTYLE GALLERY */
+.lifestyle-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.lifestyle-row .ls-card{border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--shadow)}
+.lifestyle-row .ls-card:first-child{grid-column:1/-1}
+.lifestyle-row .ls-card img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+.lifestyle-row .ls-card:not(:first-child) img{aspect-ratio:1/1}
+
+/* STORES */
+.store-cards{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.store-card{background:var(--card);border-radius:var(--radius-sm);padding:20px;box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center}
+.store-card .city{font-family:var(--heading);font-size:20px}
+.store-card .addr{font-size:12px;color:var(--muted);text-align:right;max-width:60%}
+
+/* FOOTER CARD */
+.footer-card{background:var(--card);border-radius:var(--radius);padding:32px 20px;box-shadow:var(--shadow);text-align:center}
+.footer-card img{height:24px;margin-bottom:12px;opacity:.5}
+.footer-card a{color:var(--accent);text-decoration:none;font-size:13px;font-weight:500}
+.footer-card .pay{font-size:11px;color:var(--muted);margin-top:16px}
+.footer-card .copy{font-size:10px;color:#ccc;margin-top:6px}
+
+/* STICKY CTA */
+.sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:100;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;transform:translateY(100%);transition:transform .4s ease}
+.sticky-cta.show{transform:translateY(0)}
+.cta-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:16px;text-decoration:none;font-family:var(--body);font-size:13px;font-weight:600;min-height:48px;box-shadow:var(--shadow-lg);transition:transform .2s}
+.cta-btn:active{transform:scale(.96)}
+.cta-wa{background:#25D366;color:#fff}
+.cta-tel{background:var(--text);color:#fff}
+.cta-btn svg{width:18px;height:18px;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <div class="loader-card"><img src="images/logo/gabba-logo.png" alt="GABBA"></div>
+</div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header-card card-reveal"><img src="images/logo/gabba-logo.png" alt="GABBA"><span class="badge">Ukraine</span></div>
+
+  <!-- HERO -->
+  <div class="hero-card card-reveal">
+    <img src="images/hero/hero-main.jpg" alt="GABBA Interior">
+    <div class="hero-info">
+      <h1>Преміальні меблі для вишуканих інтер'єрів</h1>
+      <p>Відкрийте колекцію GABBA — де європейська якість зустрічається з українським духом</p>
+    </div>
+  </div>
+
+  <!-- COLLECTIONS -->
+  <div class="sec-header card-reveal"><h2>Колекції</h2><span>5 колекцій</span></div>
+  <div class="coll-stack">
+    <div class="coll-card card-reveal"><img src="images/collections/madrid.jpg" alt="Madrid"><div class="coll-info"><h3>Madrid</h3><p>Середземноморська елегантність</p></div></div>
+    <div class="coll-card card-reveal"><img src="images/collections/luna.jpg" alt="Luna"><div class="coll-info"><h3>Luna</h3><p>М'які лінії та комфорт</p></div></div>
+    <div class="coll-card card-reveal"><img src="images/collections/montana.jpg" alt="Montana"><div class="coll-info"><h3>Montana</h3><p>Сучасна класика</p></div></div>
+    <div class="coll-card card-reveal"><img src="images/collections/leora.jpg" alt="Leora"><div class="coll-info"><h3>Leora</h3><p>Витончений мінімалізм</p></div></div>
+    <div class="coll-card card-reveal"><img src="images/collections/moka.jpg" alt="Moka"><div class="coll-info"><h3>Moka</h3><p>Теплий затишок</p></div></div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="sec-header card-reveal"><h2>Каталог</h2><span>12 виробів</span></div>
+  <div class="masonry">
+    <div class="masonry-item card-reveal"><img src="images/products/madrid-sofa.jpg" alt="Madrid Sofa" loading="lazy"><div class="item-info"><h4>Диван Madrid</h4><div class="price">₴101 582</div></div></div>
+    <div class="masonry-item card-reveal"><img src="images/products/milano-armchair.jpg" alt="Milano Armchair" loading="lazy"><div class="item-info"><h4>Крісло Milano</h4><div class="price">₴50 791</div></div></div>
+    <div class="masonry-item card-reveal"><img src="images/products/galante-bed.jpg" alt="Galante Bed" loading="lazy"><div class="item-info"><h4>Ліжко Galante</h4><div class="price">₴147 941</div></div></div>
+    <div class="masonry-item card-reveal"><img src="images/products/genova-chair.jpg" alt="Genova Chair" loading="lazy"><div class="item-info"><h4>Стілець Genova</h4><div class="price">₴18 143</div></div></div>
+    <div class="masonry-item card-reveal"><img src="images/products/milano-sofa.jpg" alt="Milano Sofa" loading="lazy"><div class="item-info"><h4>Диван Milano</h4><div class="price">₴115 597</div></div></div>
+    <div class="masonry-item card-reveal"><img src="images/products/terra-dresser.jpg" alt="Terra Dresser" loading="lazy"><div class="item-info"><h4>Комод Terra</h4><div class="price">₴80 179</div></div></div>
+    <div class="masonry-item card-reveal"><img src="images/products/lyon-tv-unit.jpg" alt="Lyon TV Unit" loading="lazy"><div class="item-info"><h4>ТВ-тумба Lyon</h4><div class="price">₴75 707</div></div></div>
+    <div class="masonry-item card-reveal"><img src="images/products/luna-armchair.jpg" alt="Luna Armchair" loading="lazy"><div class="item-info"><h4>Крісло Luna</h4><div class="price">₴43 444</div></div></div>
+    <div class="masonry-item card-reveal"><img src="images/products/madrid-table.jpg" alt="Madrid Table" loading="lazy"><div class="item-info"><h4>Стіл Madrid</h4><div class="price">₴69 318</div></div></div>
+    <div class="masonry-item card-reveal"><img src="images/products/montana-armchair.jpg" alt="Montana Armchair" loading="lazy"><div class="item-info"><h4>Крісло Montana Lux</h4><div class="price">₴44 977</div></div></div>
+    <div class="masonry-item card-reveal"><img src="images/products/madrid-console.jpg" alt="Madrid Console" loading="lazy"><div class="item-info"><h4>Консоль Madrid</h4><div class="price">₴102 860</div></div></div>
+    <div class="masonry-item card-reveal"><img src="images/products/terra-table.jpg" alt="Terra Table" loading="lazy"><div class="item-info"><h4>Стіл Terra</h4><div class="price">₴103 499</div></div></div>
+  </div>
+
+  <!-- LIFESTYLE -->
+  <div class="sec-header card-reveal"><h2>Натхнення</h2></div>
+  <div class="lifestyle-row card-reveal">
+    <div class="ls-card"><img src="images/hero/lifestyle-1.jpg" alt="Lifestyle" loading="lazy"></div>
+    <div class="ls-card"><img src="images/hero/lifestyle-2.jpg" alt="Lifestyle" loading="lazy"></div>
+    <div class="ls-card"><img src="images/hero/lifestyle-3.jpg" alt="Lifestyle" loading="lazy"></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row card-reveal">
+    <div class="stat-card"><div class="num" data-target="6">0</div><div class="lbl">Років</div></div>
+    <div class="stat-card"><div class="num" data-target="8">0</div><div class="lbl">Колекцій</div></div>
+    <div class="stat-card"><div class="num" data-target="1200">0</div><div class="lbl">Клієнтів</div></div>
+  </div>
+
+  <!-- TRUST -->
+  <div class="sec-header card-reveal"><h2>Переваги</h2></div>
+  <div class="trust-cards">
+    <div class="trust-card card-reveal"><div class="emoji">🚚</div><div><h4>Безкоштовна доставка</h4><p>По всій Україні без додаткових витрат</p></div></div>
+    <div class="trust-card card-reveal"><div class="emoji">🛡️</div><div><h4>Гарантія 2 роки</h4><p>Повна гарантія на всі вироби GABBA</p></div></div>
+    <div class="trust-card card-reveal"><div class="emoji">🇪🇺</div><div><h4>Європейська якість</h4><p>Найкращі матеріали та технології</p></div></div>
+  </div>
+
+  <!-- STORES -->
+  <div class="sec-header card-reveal"><h2>Салони</h2><span>3 міста</span></div>
+  <div class="store-cards">
+    <div class="store-card card-reveal"><div class="city">Київ</div><div class="addr">ТЦ 4ROOM<br>1-й поверх</div></div>
+    <div class="store-card card-reveal"><div class="city">Львів</div><div class="addr">ТРЦ TRY SLONY<br>2-й поверх</div></div>
+    <div class="store-card card-reveal"><div class="city">Одеса</div><div class="addr">ТЦ MEGADOM<br>2-й поверх</div></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-card card-reveal" style="margin-top:16px">
+    <img src="images/logo/gabba-logo.png" alt="GABBA"><br>
+    <a href="https://www.gabbaukraine.com">www.gabbaukraine.com</a>
+    <p class="pay">Visa | Mastercard | Apple Pay | Google Pay</p>
+    <p class="copy">&copy; 2026 GABBA Ukraine</p>
+  </div>
+
+</div><!-- wrapper -->
+
+<!-- STICKY CTA -->
+<div class="sticky-cta" id="stickyCta">
+  <a href="https://wa.me/380990042222" class="cta-btn cta-wa">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    WhatsApp
+  </a>
+  <a href="tel:+380990042222" class="cta-btn cta-tel">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    Зателефонувати
+  </a>
+</div>
+
+<script>
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('hidden')},900)});
+
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');e.target.querySelectorAll('.num').forEach(animateCounter)}})},{threshold:0.15});
+document.querySelectorAll('.card-reveal,.stats-row').forEach(el=>obs.observe(el));
+
+function animateCounter(el){
+  if(el.dataset.done)return;el.dataset.done='1';
+  const t=+el.dataset.target,d=2000,s=performance.now();
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){el.textContent=t+(t>=1000?'+':'+');return}
+  (function u(n){const p=Math.min((n-s)/d,1),v=Math.round((1-Math.pow(1-p,3))*t);el.textContent=v+(p>=1?(t>=1000?'+':'+'):'');if(p<1)requestAnimationFrame(u)})(s);
+}
+
+window.addEventListener('scroll',()=>{
+  if(window.scrollY>300)document.getElementById('stickyCta').classList.add('show');
+},{passive:true});
+</script>
+</body>
+</html>
