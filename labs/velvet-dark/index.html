@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Gabba Ukraine — Velvet Dark</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #141118;
+      --bg-surface: #1D1A22;
+      --bg-card: #252230;
+      --copper: #C4856C;
+      --copper-light: #D9A48E;
+      --copper-glow: rgba(196, 133, 108, 0.12);
+      --text: #F0ECE6;
+      --text-muted: #9B95A3;
+      --text-subtle: #6B6573;
+      --border: rgba(240, 236, 230, 0.08);
+      --border-strong: rgba(196, 133, 108, 0.2);
+      --font-display: 'Bodoni Moda', serif;
+      --font-body: 'Jost', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* === HEADER === */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      background: rgba(20, 17, 24, 0.88);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .header-actions a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.25s ease;
+    }
+
+    .header-actions a:hover {
+      border-color: var(--copper);
+      color: var(--copper);
+      background: var(--copper-glow);
+    }
+
+    /* === HERO === */
+    .hero {
+      position: relative;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6rem 1.25rem 3rem;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse at 70% 20%, rgba(196,133,108,0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 80%, rgba(120,80,180,0.06) 0%, transparent 50%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-surface) 100%);
+    }
+
+    .hero-badge {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--copper-glow);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 1.5rem;
+      width: fit-content;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 50%;
+      background: var(--copper);
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      position: relative;
+      z-index: 1;
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 10vw, 4.5rem);
+      font-weight: 400;
+      line-height: 1;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--copper);
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 1;
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--text-muted);
+      max-width: 30rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-ctas {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      min-height: 3.25rem;
+      padding: 0 1.75rem;
+      border-radius: 0.875rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-copper {
+      background: linear-gradient(135deg, var(--copper), #A06B55);
+      color: #1A1118;
+      box-shadow: 0 8px 32px rgba(196, 133, 108, 0.2);
+    }
+
+    .btn-copper:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(196, 133, 108, 0.3);
+    }
+
+    .btn-glass {
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-glass:hover {
+      border-color: var(--copper);
+      background: var(--copper-glow);
+    }
+
+    /* === TRUST === */
+    .trust-strip {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      padding: 1.5rem 1.25rem;
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .trust-item {
+      padding: 1rem;
+      border-radius: 0.875rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+    }
+
+    .trust-item span {
+      display: block;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 0.35rem;
+    }
+
+    .trust-item strong {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    /* === SECTION === */
+    .section {
+      padding: 3.5rem 1.25rem;
+    }
+
+    .section-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 6vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-text {
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    /* === COLLECTIONS === */
+    .collections-scroll {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 1.5rem 1.25rem 0.5rem;
+      scroll-snap-type: x mandatory;
+    }
+
+    .collections-scroll::-webkit-scrollbar { display: none; }
+
+    .collection-card {
+      flex: 0 0 78vw;
+      max-width: 330px;
+      scroll-snap-align: start;
+      border-radius: 1.25rem;
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .collection-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-4px);
+    }
+
+    .collection-media {
+      height: 240px;
+      background:
+        radial-gradient(circle at 30% 50%, rgba(196,133,108,0.08), transparent 60%),
+        linear-gradient(135deg, var(--bg-surface), var(--bg-card));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-subtle);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+    }
+
+    .collection-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .collection-body span {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--copper);
+    }
+
+    .collection-body h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 500;
+    }
+
+    .collection-body p {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* === PRODUCTS === */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      padding: 1.5rem 1.25rem 0;
+    }
+
+    .product-card {
+      border-radius: 1rem;
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .product-media {
+      aspect-ratio: 3/4;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(196,133,108,0.05), transparent 60%),
+        linear-gradient(145deg, var(--bg-surface), var(--bg-card));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-subtle);
+      font-size: 0.65rem;
+    }
+
+    .product-body {
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .product-body span {
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--copper);
+    }
+
+    .product-body h4 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .product-body .price {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--text-muted);
+    }
+
+    /* === STORY === */
+    .story-card {
+      margin: 0 1.25rem;
+      padding: 2rem 1.5rem;
+      border-radius: 1.25rem;
+      background:
+        radial-gradient(circle at top right, var(--copper-glow), transparent 50%),
+        var(--bg-card);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .story-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .story-stat:last-child { border-bottom: none; }
+
+    .story-stat span {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--copper);
+    }
+
+    .story-stat strong {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    /* === ASSURANCE === */
+    .assurance-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1.5rem 1.25rem 0;
+    }
+
+    .assurance-card {
+      display: flex;
+      gap: 1rem;
+      padding: 1.25rem;
+      border-radius: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+    }
+
+    .assurance-icon {
+      flex-shrink: 0;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.75rem;
+      background: var(--copper-glow);
+      border: 1px solid rgba(196, 133, 108, 0.15);
+      color: var(--copper);
+      font-size: 1rem;
+    }
+
+    .assurance-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .assurance-card p {
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* === FINAL === */
+    .final-cta-section {
+      padding: 3.5rem 1.25rem;
+      text-align: center;
+    }
+
+    .final-cta-inner {
+      padding: 3rem 1.5rem;
+      border-radius: 1.25rem;
+      background:
+        radial-gradient(circle at center top, var(--copper-glow), transparent 50%),
+        var(--bg-card);
+      border: 1px solid var(--border);
+    }
+
+    .final-cta-inner h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 6vw, 2.5rem);
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+    }
+
+    .final-cta-inner p {
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    /* === STICKY CTA === */
+    .sticky-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 90;
+      padding: 0.75rem 1.25rem;
+      padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+      background: rgba(20, 17, 24, 0.92);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .sticky-cta a {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3rem;
+      border-radius: 0.875rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .sticky-cta .s-copper {
+      background: linear-gradient(135deg, var(--copper), #A06B55);
+      color: #1A1118;
+    }
+
+    .sticky-cta .s-glass {
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* === FOOTER === */
+    .footer {
+      padding: 2rem 1.25rem;
+      padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+      text-align: center;
+      color: var(--text-subtle);
+      font-size: 0.78rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer .brand-footer {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--copper);
+      margin-bottom: 0.4rem;
+    }
+
+    /* === ANIMATIONS === */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="brand">GABBA</div>
+    <div class="header-actions">
+      <a href="#" aria-label="Пошук">⌕</a>
+      <a href="#" aria-label="Кошик">▫</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-badge">Нова колекція 2024</div>
+    <h1>Розкіш у<br>кожній <em>деталі</em></h1>
+    <p class="hero-text">Gabba — дизайнерські меблі з Європи, створені для простору, який хочеться відчувати.</p>
+    <div class="hero-ctas">
+      <a href="#collections" class="btn btn-copper">Колекції</a>
+      <a href="#story" class="btn btn-glass">Про Gabba</a>
+    </div>
+  </section>
+
+  <div class="trust-strip">
+    <div class="trust-item">
+      <span>Доставка</span>
+      <strong>Безкоштовно</strong>
+    </div>
+    <div class="trust-item">
+      <span>Якість</span>
+      <strong>Європейська</strong>
+    </div>
+    <div class="trust-item">
+      <span>Гарантія</span>
+      <strong>2 роки</strong>
+    </div>
+    <div class="trust-item">
+      <span>Наявність</span>
+      <strong>На складі</strong>
+    </div>
+  </div>
+
+  <section class="section" id="collections">
+    <p class="section-eyebrow fade-up">Колекції</p>
+    <h2 class="section-title fade-up">Оберіть свій стиль</h2>
+    <p class="section-text fade-up">Кожна колекція — це історія, розказана через форму, текстуру та матеріали.</p>
+
+    <div class="collections-scroll">
+      <article class="collection-card">
+        <div class="collection-media">Фото колекції</div>
+        <div class="collection-body">
+          <span>Колекція</span>
+          <h3>Aurelio</h3>
+          <p>Вишуканість класики у сучасній інтерпретації.</p>
+        </div>
+      </article>
+      <article class="collection-card">
+        <div class="collection-media">Фото колекції</div>
+        <div class="collection-body">
+          <span>Колекція</span>
+          <h3>Luna</h3>
+          <p>Тепло та м'якість для ідеального затишку.</p>
+        </div>
+      </article>
+      <article class="collection-card">
+        <div class="collection-media">Фото колекції</div>
+        <div class="collection-body">
+          <span>Колекція</span>
+          <h3>Marlow</h3>
+          <p>Сучасний мінімалізм з акцентом на деталі.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-eyebrow fade-up">Бестселери</p>
+    <h2 class="section-title fade-up">Обрані клієнтами</h2>
+
+    <div class="product-grid">
+      <article class="product-card">
+        <div class="product-media">Фото</div>
+        <div class="product-body">
+          <span>Aurelio</span>
+          <h4>Диван Aurelio L</h4>
+          <p class="price">₴ 89 000</p>
+        </div>
+      </article>
+      <article class="product-card">
+        <div class="product-media">Фото</div>
+        <div class="product-body">
+          <span>Luna</span>
+          <h4>Крісло Luna</h4>
+          <p class="price">₴ 34 500</p>
+        </div>
+      </article>
+      <article class="product-card">
+        <div class="product-media">Фото</div>
+        <div class="product-body">
+          <span>Marlow</span>
+          <h4>Консоль Marlow</h4>
+          <p class="price">₴ 27 800</p>
+        </div>
+      </article>
+      <article class="product-card">
+        <div class="product-media">Фото</div>
+        <div class="product-body">
+          <span>Aurelio</span>
+          <h4>Стіл Aurelio D</h4>
+          <p class="price">₴ 56 200</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="story">
+    <p class="section-eyebrow fade-up">Про Gabba</p>
+    <h2 class="section-title fade-up">Відчуйте різницю</h2>
+    <p class="section-text fade-up" style="margin-bottom: 1.5rem;">Ми поєднуємо європейську майстерність з сучасним дизайном, щоб створити меблі, які стають частиною вашого життя.</p>
+
+    <div class="story-card fade-up">
+      <div class="story-stat">
+        <span>Досвід</span>
+        <strong>6+ років</strong>
+      </div>
+      <div class="story-stat">
+        <span>Колекції</span>
+        <strong>8 ліній</strong>
+      </div>
+      <div class="story-stat">
+        <span>Клієнти</span>
+        <strong>1 200+</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-eyebrow fade-up">Переваги</p>
+    <h2 class="section-title fade-up">Чому обирають Gabba</h2>
+
+    <div class="assurance-grid">
+      <article class="assurance-card fade-up">
+        <div class="assurance-icon">◇</div>
+        <div>
+          <h4>Преміум матеріали</h4>
+          <p>Натуральне дерево, італійська шкіра та тканини від кращих європейських постачальників.</p>
+        </div>
+      </article>
+      <article class="assurance-card fade-up">
+        <div class="assurance-icon">⟐</div>
+        <div>
+          <h4>Доставка та збірка</h4>
+          <p>Безкоштовна доставка по Україні з професійною збіркою та встановленням.</p>
+        </div>
+      </article>
+      <article class="assurance-card fade-up">
+        <div class="assurance-icon">↻</div>
+        <div>
+          <h4>Гарантія 2 роки</h4>
+          <p>Повна гарантія на всі вироби та персональний менеджер для кожного клієнта.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="final-cta-section">
+    <div class="final-cta-inner fade-up">
+      <h2>Створіть свій простір</h2>
+      <p>Безкоштовна консультація. Допоможемо підібрати ідеальне рішення для вашого інтер'єру.</p>
+      <a href="#" class="btn btn-copper">Написати в WhatsApp →</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p class="brand-footer">GABBA</p>
+    <p>© 2024 Gabba Ukraine. Усі права захищені.</p>
+    <p>www.gabbaukraine.com</p>
+  </footer>
+
+  <div class="sticky-cta">
+    <a href="#" class="s-copper">Написати нам</a>
+    <a href="tel:+380" class="s-glass">Зателефонувати</a>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

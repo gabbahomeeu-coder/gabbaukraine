@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Gabba Ukraine — Noir Gold</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0C0A09;
+      --bg-card: #1C1917;
+      --bg-card-hover: #292524;
+      --gold: #D4A853;
+      --gold-light: #E8C97A;
+      --gold-dark: #A16207;
+      --text: #FAFAF9;
+      --text-muted: #A8A29E;
+      --text-subtle: #78716C;
+      --border: rgba(212, 168, 83, 0.15);
+      --border-strong: rgba(212, 168, 83, 0.3);
+      --font-display: 'Playfair Display', serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* === HEADER === */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      background: rgba(12, 10, 9, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .header-actions a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+    }
+
+    .header-actions a:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* === HERO === */
+    .hero {
+      position: relative;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6rem 1.25rem 2.5rem;
+      background:
+        linear-gradient(180deg, rgba(12,10,9,0.1) 0%, rgba(12,10,9,0.7) 50%, rgba(12,10,9,0.95) 100%),
+        linear-gradient(135deg, #1C1917 0%, #292524 50%, #1C1917 100%);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -30%;
+      width: 80vw;
+      height: 80vw;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,168,83,0.12) 0%, transparent 70%);
+      animation: pulseGlow 6s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 10vw, 4.5rem);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-text {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 32rem;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #0C0A09;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+      min-height: 3.25rem;
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(212, 168, 83, 0.3);
+    }
+
+    /* === TRUST STRIP === */
+    .trust-strip {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 0 1.25rem;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .trust-strip::-webkit-scrollbar { display: none; }
+
+    .trust-item {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 1.5rem;
+      white-space: nowrap;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      border-right: 1px solid var(--border);
+    }
+
+    .trust-item:last-child { border-right: none; }
+
+    .trust-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(212, 168, 83, 0.1);
+      color: var(--gold);
+      font-size: 0.7rem;
+    }
+
+    /* === SECTION === */
+    .section {
+      padding: 3.5rem 1.25rem;
+    }
+
+    .section-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 6vw, 2.8rem);
+      font-weight: 600;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .section-text {
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 36rem;
+    }
+
+    /* === COLLECTIONS SCROLL === */
+    .collections-scroll {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 1.5rem 1.25rem 0.5rem;
+      scroll-snap-type: x mandatory;
+    }
+
+    .collections-scroll::-webkit-scrollbar { display: none; }
+
+    .collection-card {
+      flex: 0 0 75vw;
+      max-width: 320px;
+      scroll-snap-align: start;
+      border-radius: 1.25rem;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      transition: all 0.3s ease;
+    }
+
+    .collection-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-4px);
+    }
+
+    .collection-media {
+      height: 220px;
+      background: linear-gradient(135deg, #292524, #1C1917);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-subtle);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .collection-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .collection-body span {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .collection-body h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .collection-body p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* === PRODUCT GRID === */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      padding: 1.5rem 1.25rem 0;
+    }
+
+    .product-card {
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .product-media {
+      aspect-ratio: 3/4;
+      background: linear-gradient(145deg, #292524, #1C1917);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-subtle);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .product-body {
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .product-body span {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .product-body h4 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .product-body .price {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* === STORY === */
+    .story {
+      padding: 3.5rem 1.25rem;
+    }
+
+    .story-card {
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      background: var(--bg-card);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .story-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .story-stat:last-child { border-bottom: none; }
+
+    .story-stat span {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .story-stat strong {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    /* === ASSURANCE === */
+    .assurance-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1.5rem 1.25rem 0;
+    }
+
+    .assurance-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.25rem;
+      border-radius: 1rem;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+
+    .assurance-icon {
+      flex-shrink: 0;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.75rem;
+      background: rgba(212, 168, 83, 0.1);
+      color: var(--gold);
+      font-size: 1.1rem;
+    }
+
+    .assurance-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .assurance-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* === FINAL CTA === */
+    .final-cta {
+      padding: 3.5rem 1.25rem;
+      text-align: center;
+    }
+
+    .final-cta-inner {
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      padding: 3rem 1.5rem;
+      background:
+        radial-gradient(circle at top, rgba(212,168,83,0.08) 0%, transparent 60%),
+        var(--bg-card);
+    }
+
+    .final-cta h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 6vw, 2.5rem);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .final-cta p {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    /* === STICKY BOTTOM CTA === */
+    .sticky-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 90;
+      padding: 0.75rem 1.25rem;
+      padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+      background: rgba(12, 10, 9, 0.92);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .sticky-cta a {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      min-height: 3rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .sticky-cta .cta-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #0C0A09;
+    }
+
+    .sticky-cta .cta-secondary {
+      border: 1px solid var(--border-strong);
+      color: var(--gold);
+      background: transparent;
+    }
+
+    /* === FOOTER === */
+    .footer {
+      padding: 2rem 1.25rem;
+      padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+      text-align: center;
+      color: var(--text-subtle);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer .brand-footer {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    /* === ANIMATIONS === */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="brand">GABBA</div>
+    <div class="header-actions">
+      <a href="#" aria-label="Пошук">&#x2315;</a>
+      <a href="#" aria-label="Кошик">&#x1D5D4;</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <p class="hero-eyebrow">Преміальні меблі в Україні</p>
+    <h1>Створіть простір,<br>який <em>надихає</em></h1>
+    <p class="hero-text">Gabba — це колекція дизайнерських меблів для тих, хто цінує якість, стиль та увагу до деталей.</p>
+    <a href="#collections" class="hero-cta">Переглянути колекції →</a>
+  </section>
+
+  <!-- Trust Strip -->
+  <div class="trust-strip">
+    <div class="trust-item">
+      <div class="trust-icon">✓</div>
+      Безкоштовна доставка
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">◈</div>
+      Преміум якість
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">↻</div>
+      Гарантія 2 роки
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">★</div>
+      Наявність на складі
+    </div>
+  </div>
+
+  <!-- Collections -->
+  <section class="section" id="collections">
+    <p class="section-eyebrow fade-up">Колекції</p>
+    <h2 class="section-title fade-up">Оберіть свій стиль</h2>
+    <p class="section-text fade-up">Кожна колекція — це цілісна візія простору, створена дизайнерами з Європи.</p>
+
+    <div class="collections-scroll">
+      <article class="collection-card">
+        <div class="collection-media">Фото колекції</div>
+        <div class="collection-body">
+          <span>Колекція</span>
+          <h3>Aurelio</h3>
+          <p>Елегантність у кожній лінії. Класичний стиль з сучасним характером.</p>
+        </div>
+      </article>
+      <article class="collection-card">
+        <div class="collection-media">Фото колекції</div>
+        <div class="collection-body">
+          <span>Колекція</span>
+          <h3>Luna</h3>
+          <p>М'які форми та теплі тони для затишної атмосфери вашого дому.</p>
+        </div>
+      </article>
+      <article class="collection-card">
+        <div class="collection-media">Фото колекції</div>
+        <div class="collection-body">
+          <span>Колекція</span>
+          <h3>Marlow</h3>
+          <p>Сучасний мінімалізм з акцентом на функціональність та простоту.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Best Sellers -->
+  <section class="section">
+    <p class="section-eyebrow fade-up">Бестселери</p>
+    <h2 class="section-title fade-up">Обрані клієнтами</h2>
+
+    <div class="product-grid">
+      <article class="product-card">
+        <div class="product-media">Фото</div>
+        <div class="product-body">
+          <span>Aurelio</span>
+          <h4>Диван Aurelio L</h4>
+          <p class="price">₴ 89 000</p>
+        </div>
+      </article>
+      <article class="product-card">
+        <div class="product-media">Фото</div>
+        <div class="product-body">
+          <span>Luna</span>
+          <h4>Крісло Luna</h4>
+          <p class="price">₴ 34 500</p>
+        </div>
+      </article>
+      <article class="product-card">
+        <div class="product-media">Фото</div>
+        <div class="product-body">
+          <span>Marlow</span>
+          <h4>Консоль Marlow</h4>
+          <p class="price">₴ 27 800</p>
+        </div>
+      </article>
+      <article class="product-card">
+        <div class="product-media">Фото</div>
+        <div class="product-body">
+          <span>Aurelio</span>
+          <h4>Стіл Aurelio D</h4>
+          <p class="price">₴ 56 200</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="story">
+    <div class="story-card fade-up">
+      <p class="section-eyebrow">Про Gabba</p>
+      <h2 class="section-title">Меблі, що розповідають історію</h2>
+      <p class="section-text">Gabba створює преміальні меблі з 2018 року. Кожен виріб — це поєднання європейських традицій, сучасного дизайну та найкращих матеріалів.</p>
+
+      <div class="story-stat">
+        <span>Досвід</span>
+        <strong>6+ років на ринку</strong>
+      </div>
+      <div class="story-stat">
+        <span>Колекції</span>
+        <strong>8 авторських ліній</strong>
+      </div>
+      <div class="story-stat">
+        <span>Клієнти</span>
+        <strong>1 200+ задоволених</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- Assurance -->
+  <section class="section">
+    <p class="section-eyebrow fade-up">Чому Gabba</p>
+    <h2 class="section-title fade-up">Ваша впевненість — наш пріоритет</h2>
+
+    <div class="assurance-grid">
+      <article class="assurance-card fade-up">
+        <div class="assurance-icon">◇</div>
+        <div>
+          <h4>Преміум матеріали</h4>
+          <p>Натуральне дерево, італійська шкіра, тканини від європейських постачальників.</p>
+        </div>
+      </article>
+      <article class="assurance-card fade-up">
+        <div class="assurance-icon">⟐</div>
+        <div>
+          <h4>Доставка по Україні</h4>
+          <p>Безкоштовна доставка у будь-яке місто. Збірка та встановлення включені.</p>
+        </div>
+      </article>
+      <article class="assurance-card fade-up">
+        <div class="assurance-icon">↻</div>
+        <div>
+          <h4>Гарантія та підтримка</h4>
+          <p>2 роки гарантії на всі вироби. Персональний менеджер для кожного клієнта.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <div class="final-cta-inner fade-up">
+      <h2>Готові оновити ваш простір?</h2>
+      <p>Зв'яжіться з нами для персональної консультації або відвідайте шоурум.</p>
+      <a href="#" class="hero-cta">Написати в WhatsApp →</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="brand-footer">GABBA</p>
+    <p>© 2024 Gabba Ukraine. Усі права захищені.</p>
+    <p>www.gabbaukraine.com</p>
+  </footer>
+
+  <!-- Sticky Bottom CTA -->
+  <div class="sticky-cta">
+    <a href="#" class="cta-primary">Написати нам</a>
+    <a href="tel:+380" class="cta-secondary">Зателефонувати</a>
+  </div>
+
+  <script>
+    // Scroll-triggered fade-up animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
