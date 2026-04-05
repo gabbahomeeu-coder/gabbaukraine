@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GABBA — Luxury Furniture Ukraine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0C0A08;--text:#EDE8E0;--gold:#C4A265;--muted:#7A7268;--card:#161310;
+--display:'Bodoni Moda',Georgia,serif;--sans:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);font-weight:300;color:var(--text);background:var(--bg);line-height:1.6;overflow-x:hidden}
+img{display:block;width:100%;object-fit:cover;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+
+/* Loader */
+.loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px}
+.loader-line{width:0;height:1px;background:var(--gold);animation:lineExpand 1s ease forwards}
+.loader-text{font-family:var(--display);font-size:24px;letter-spacing:8px;opacity:0;animation:fadeIn .6s ease .8s forwards}
+.loader.done{opacity:0;pointer-events:none;transition:opacity .6s ease}
+@keyframes lineExpand{to{width:60px}}
+@keyframes fadeIn{to{opacity:1}}
+
+/* Header */
+.header{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 20px;display:flex;align-items:center;justify-content:space-between}
+.header-logo{height:22px;width:auto;display:block;filter:brightness(0) invert(1)}
+.header-burger{display:flex;flex-direction:column;gap:5px;width:22px}
+.header-burger span{display:block;height:1px;width:100%;background:var(--text)}
+
+/* Hero */
+.hero{position:relative;height:100vh;height:100dvh;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
+.hero-bg{position:absolute;inset:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;display:block;opacity:.3}
+.hero-bg::after{content:'';position:absolute;inset:0;background:rgba(12,10,8,.5)}
+.hero-content{position:relative;z-index:2;padding:0 24px}
+.hero-title{font-family:var(--display);font-weight:400;font-size:clamp(4rem,15vw,8rem);letter-spacing:.15em;line-height:1;margin-bottom:12px}
+.hero-sub{font-size:12px;letter-spacing:4px;text-transform:uppercase;opacity:.6;margin-bottom:40px;font-weight:200}
+.hero-cta{display:inline-block;padding:14px 36px;border:1px solid rgba(237,232,224,.3);font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:300;transition:border-color .3s ease}
+
+/* Gold line */
+.gold-line{display:flex;justify-content:center;padding:48px 0}
+.gold-line span{display:block;width:40px;height:1px;background:var(--gold)}
+
+/* Lifestyle Gallery */
+.lifestyle-gallery{display:flex;flex-direction:column}
+.lifestyle-gallery img{width:100%;height:60vh;object-fit:cover;display:block}
+
+/* Section heading */
+.sh{padding:48px 24px 24px;text-align:center}
+.sh-title{font-family:var(--display);font-weight:400;font-size:clamp(28px,7vw,40px);margin-bottom:8px;letter-spacing:.05em}
+.sh-sub{font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-weight:200}
+
+/* Collections */
+.collections{display:flex;flex-direction:column}
+.coll-section{position:relative}
+.coll-section img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.coll-card{margin:-48px 20px 48px;background:var(--card);padding:28px 24px;border:1px solid rgba(196,162,101,.1)}
+.coll-name{font-family:var(--display);font-size:24px;letter-spacing:.05em;margin-bottom:8px}
+.coll-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;font-weight:200}
+.coll-link{font-size:12px;color:var(--gold);letter-spacing:1px}
+
+/* Products */
+.products{display:flex;flex-direction:column;gap:0}
+.product-item{border-bottom:1px solid rgba(255,255,255,.05)}
+.product-item img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.product-info{padding:20px 24px 32px}
+.product-collection{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:6px;font-weight:300}
+.product-name{font-family:var(--display);font-size:20px;letter-spacing:.03em;margin-bottom:6px}
+.product-price{font-size:14px;color:var(--muted);font-weight:200}
+
+/* Stats */
+.stats{padding:0 24px}
+.stats-inner{border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);padding:32px 0;display:flex;justify-content:space-between;text-align:center}
+.stat-num{font-family:var(--display);font-size:clamp(28px,8vw,40px);color:var(--gold);margin-bottom:4px}
+.stat-label{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;font-weight:200}
+
+/* Trust */
+.trust-list{padding:40px 24px;display:flex;flex-direction:column;gap:16px}
+.trust-item{display:flex;align-items:flex-start;gap:12px}
+.trust-dot{flex-shrink:0;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:7px}
+.trust-text{font-size:13px;color:var(--muted);font-weight:200;line-height:1.5}
+
+/* Stores */
+.stores{padding:0 24px 40px}
+.stores-title{font-family:var(--display);font-size:28px;text-align:center;margin-bottom:24px;letter-spacing:.05em}
+.store-item{padding:20px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.store-city{font-size:15px;font-weight:400;margin-bottom:4px}
+.store-address{font-size:13px;color:var(--muted);font-weight:200}
+
+/* CTA */
+.cta{padding:48px 24px;text-align:center}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:14px 36px;border-radius:50px;font-size:13px;font-weight:400}
+.cta-btn svg{width:18px;height:18px}
+
+/* Footer */
+.footer{padding:32px 24px 100px;text-align:center;border-top:1px solid rgba(255,255,255,.05)}
+.footer-logo{height:20px;width:auto;margin:0 auto 12px;filter:brightness(0) invert(1);opacity:.4}
+.footer-text{font-size:11px;color:var(--muted);font-weight:200}
+.footer-phone{display:block;font-size:12px;color:var(--muted);margin-top:4px;font-weight:200}
+
+/* Sticky bar */
+.sticky-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;gap:8px;padding:12px 16px;background:rgba(12,10,8,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.06)}
+.sticky-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px;border-radius:50px;font-size:13px;font-weight:300}
+.sticky-btn.primary{background:rgba(237,232,224,.1);color:var(--text);border:1px solid rgba(237,232,224,.15)}
+.sticky-btn.outline{border:1px solid rgba(237,232,224,.1);color:var(--muted)}
+.sticky-btn svg{width:16px;height:16px}
+
+/* Animations */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div class="loader" id="loader">
+  <span class="loader-line"></span>
+  <div class="loader-text">GABBA</div>
+</div>
+
+<!-- Header -->
+<header class="header">
+  <img src="images/logo/gabba-logo.png" alt="GABBA" class="header-logo">
+  <div class="header-burger" aria-label="Menu">
+    <span></span><span></span>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="images/hero/hero-main.jpg" alt="GABBA Luxury" loading="eager">
+  </div>
+  <div class="hero-content">
+    <h1 class="hero-title">GABBA</h1>
+    <div class="hero-sub">Luxury Furniture &middot; Ukraine</div>
+    <a href="#collections" class="hero-cta">Відкрити колекції</a>
+  </div>
+</section>
+
+<!-- Lifestyle Gallery -->
+<div class="lifestyle-gallery">
+  <img src="images/hero/lifestyle-1.jpg" alt="Lifestyle" loading="lazy">
+  <img src="images/hero/lifestyle-2.jpg" alt="Lifestyle" loading="lazy">
+  <img src="images/hero/lifestyle-3.jpg" alt="Lifestyle" loading="lazy">
+</div>
+
+<div class="gold-line"><span></span></div>
+
+<!-- Collections -->
+<div class="sh reveal" id="collections">
+  <div class="sh-title">Колекції</div>
+  <div class="sh-sub">Ексклюзивний дизайн</div>
+</div>
+<div class="collections">
+  <div class="coll-section reveal">
+    <img src="images/collections/madrid.jpg" alt="Madrid" loading="lazy">
+    <div class="coll-card">
+      <div class="coll-name">Madrid</div>
+      <div class="coll-desc">Елегантність класичних форм у поєднанні з сучасним комфортом та бездоганними лініями.</div>
+      <a href="#" class="coll-link">Переглянути →</a>
+    </div>
+  </div>
+  <div class="coll-section reveal">
+    <img src="images/collections/luna.jpg" alt="Luna" loading="lazy">
+    <div class="coll-card">
+      <div class="coll-name">Luna</div>
+      <div class="coll-desc">Плавні силуети та ніжна палітра, натхненні м'яким світлом місяця.</div>
+      <a href="#" class="coll-link">Переглянути →</a>
+    </div>
+  </div>
+  <div class="coll-section reveal">
+    <img src="images/collections/montana.jpg" alt="Montana" loading="lazy">
+    <div class="coll-card">
+      <div class="coll-name">Montana</div>
+      <div class="coll-desc">Сила натуральних текстур та масивних форм для інтер'єрів з характером.</div>
+      <a href="#" class="coll-link">Переглянути →</a>
+    </div>
+  </div>
+  <div class="coll-section reveal">
+    <img src="images/collections/leora.jpg" alt="Leora" loading="lazy">
+    <div class="coll-card">
+      <div class="coll-name">Leora</div>
+      <div class="coll-desc">Витончена розкіш у кожній деталі. Гармонія форми та функції.</div>
+      <a href="#" class="coll-link">Переглянути →</a>
+    </div>
+  </div>
+  <div class="coll-section reveal">
+    <img src="images/collections/moka.jpg" alt="Moka" loading="lazy">
+    <div class="coll-card">
+      <div class="coll-name">Moka</div>
+      <div class="coll-desc">Теплі тони та органічні форми для тих, хто цінує затишок та стиль.</div>
+      <a href="#" class="coll-link">Переглянути →</a>
+    </div>
+  </div>
+</div>
+
+<div class="gold-line"><span></span></div>
+
+<!-- Products -->
+<div class="sh reveal">
+  <div class="sh-title">Вироби</div>
+  <div class="sh-sub">Преміальна колекція</div>
+</div>
+<div class="products">
+  <div class="product-item reveal">
+    <img src="images/products/madrid-sofa.jpg" alt="Диван Madrid" loading="lazy">
+    <div class="product-info">
+      <div class="product-collection">Madrid</div>
+      <div class="product-name">Диван Madrid</div>
+      <div class="product-price">₴101 582</div>
+    </div>
+  </div>
+  <div class="product-item reveal">
+    <img src="images/products/milano-sofa.jpg" alt="Диван Milano" loading="lazy">
+    <div class="product-info">
+      <div class="product-collection">Milano</div>
+      <div class="product-name">Диван Milano</div>
+      <div class="product-price">₴115 597</div>
+    </div>
+  </div>
+  <div class="product-item reveal">
+    <img src="images/products/galante-bed.jpg" alt="Ліжко Galante" loading="lazy">
+    <div class="product-info">
+      <div class="product-collection">Galante</div>
+      <div class="product-name">Ліжко Galante</div>
+      <div class="product-price">₴147 941</div>
+    </div>
+  </div>
+  <div class="product-item reveal">
+    <img src="images/products/milano-armchair.jpg" alt="Крісло Milano" loading="lazy">
+    <div class="product-info">
+      <div class="product-collection">Milano</div>
+      <div class="product-name">Крісло Milano</div>
+      <div class="product-price">₴50 791</div>
+    </div>
+  </div>
+  <div class="product-item reveal">
+    <img src="images/products/montana-armchair.jpg" alt="Крісло Montana Lux" loading="lazy">
+    <div class="product-info">
+      <div class="product-collection">Montana</div>
+      <div class="product-name">Крісло Montana Lux</div>
+      <div class="product-price">₴44 977</div>
+    </div>
+  </div>
+  <div class="product-item reveal">
+    <img src="images/products/lyon-tv-unit.jpg" alt="TV Юніт Lyon" loading="lazy">
+    <div class="product-info">
+      <div class="product-collection">Lyon</div>
+      <div class="product-name">TV Юніт Lyon</div>
+      <div class="product-price">₴75 707</div>
+    </div>
+  </div>
+  <div class="product-item reveal">
+    <img src="images/products/luna-armchair.jpg" alt="Крісло Luna" loading="lazy">
+    <div class="product-info">
+      <div class="product-collection">Luna</div>
+      <div class="product-name">Крісло Luna</div>
+      <div class="product-price">₴43 444</div>
+    </div>
+  </div>
+  <div class="product-item reveal">
+    <img src="images/products/terra-dresser.jpg" alt="Комод Terra" loading="lazy">
+    <div class="product-info">
+      <div class="product-collection">Terra</div>
+      <div class="product-name">Комод Terra</div>
+      <div class="product-price">₴80 179</div>
+    </div>
+  </div>
+  <div class="product-item reveal">
+    <img src="images/products/madrid-console.jpg" alt="Консоль Madrid" loading="lazy">
+    <div class="product-info">
+      <div class="product-collection">Madrid</div>
+      <div class="product-name">Консоль Madrid</div>
+      <div class="product-price">₴102 860</div>
+    </div>
+  </div>
+  <div class="product-item reveal">
+    <img src="images/products/terra-table.jpg" alt="Стіл Terra" loading="lazy">
+    <div class="product-info">
+      <div class="product-collection">Terra</div>
+      <div class="product-name">Стіл Terra</div>
+      <div class="product-price">₴103 499</div>
+    </div>
+  </div>
+</div>
+
+<div class="gold-line"><span></span></div>
+
+<!-- Stats -->
+<div class="stats reveal">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-num" data-target="6">6+</div>
+      <div class="stat-label">Колекцій</div>
+    </div>
+    <div>
+      <div class="stat-num" data-target="8">8</div>
+      <div class="stat-label">Років досвіду</div>
+    </div>
+    <div>
+      <div class="stat-num" data-target="1200">1200+</div>
+      <div class="stat-label">Клієнтів</div>
+    </div>
+  </div>
+</div>
+
+<!-- Trust -->
+<div class="trust-list reveal">
+  <div class="trust-item"><span class="trust-dot"></span><span class="trust-text">Офіційна гарантія на всі вироби</span></div>
+  <div class="trust-item"><span class="trust-dot"></span><span class="trust-text">Професійна доставка та збірка по Україні</span></div>
+  <div class="trust-item"><span class="trust-dot"></span><span class="trust-text">Оплата: Visa, Mastercard, Apple Pay, Google Pay</span></div>
+  <div class="trust-item"><span class="trust-dot"></span><span class="trust-text">Безкоштовна дизайн-консультація</span></div>
+  <div class="trust-item"><span class="trust-dot"></span><span class="trust-text">Індивідуальне виготовлення під замовлення</span></div>
+</div>
+
+<div class="gold-line"><span></span></div>
+
+<!-- Stores -->
+<div class="stores reveal">
+  <div class="stores-title">Завітайте</div>
+  <div class="store-item">
+    <div class="store-city">Київ</div>
+    <div class="store-address">ТЦ 4ROOM, 1 поверх</div>
+  </div>
+  <div class="store-item">
+    <div class="store-city">Львів</div>
+    <div class="store-address">ТЦ TRY SLONY, 2 поверх</div>
+  </div>
+  <div class="store-item">
+    <div class="store-city">Одеса</div>
+    <div class="store-address">ТЦ MEGADOM, 2 поверх</div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta reveal">
+  <a href="https://wa.me/380990042222" target="_blank" class="cta-btn">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+    Написати в WhatsApp
+  </a>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <img src="images/logo/gabba-logo.png" alt="GABBA" class="footer-logo">
+  <div class="footer-text">&copy; 2024 GABBA. Усі права захищені.</div>
+  <a href="tel:+380990042222" class="footer-phone">+38 099 004 22 22</a>
+</footer>
+
+<!-- Sticky Bar -->
+<div class="sticky-bar">
+  <a href="https://wa.me/380990042222" target="_blank" class="sticky-btn primary">
+    <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+    Написати
+  </a>
+  <a href="tel:+380990042222" class="sticky-btn outline">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:16px;height:16px"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    Зателефонувати
+  </a>
+</div>
+
+<script>
+// Loader
+window.addEventListener('load',()=>{
+  setTimeout(()=>{document.getElementById('loader').classList.add('done')},1800);
+});
+
+// Scroll reveal
+const reveals=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+},{threshold:.12});
+reveals.forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
