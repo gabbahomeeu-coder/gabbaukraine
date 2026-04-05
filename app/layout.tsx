@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, DM_Sans } from "next/font/google";
+import { GoogleAnalytics, MetaPixel } from "@/components/analytics";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -45,7 +46,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="uk" className={`${playfair.variable} ${dmSans.variable}`}>
-      <body>{children}</body>
+      <body>
+        <GoogleAnalytics />
+        <MetaPixel />
+        {children}
+      </body>
     </html>
   );
 }

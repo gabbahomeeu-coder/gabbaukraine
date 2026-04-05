@@ -4,6 +4,11 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 import {
+  OrganizationJsonLd,
+  WebSiteJsonLd,
+  LocalBusinessJsonLd,
+} from "@/components/json-ld";
+import {
   Phone,
   Search,
   ShoppingBag,
@@ -141,7 +146,8 @@ export default function HomePage() {
   const collScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoaded(true), 1800);
+    // Logo (0.3s delay + 1.2s anim) + çizgi (0.8s delay + 1.2s anim) = 2s + 0.5s bekleme
+    const timer = setTimeout(() => setLoaded(true), 2500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -166,10 +172,19 @@ export default function HomePage() {
 
   return (
     <>
+      {/* SEO — JSON-LD */}
+      <OrganizationJsonLd />
+      <WebSiteJsonLd />
+      <LocalBusinessJsonLd name="GABBA Kyiv" city="Київ" address="ТЦ 4ROOM, 1 поверх" />
+      <LocalBusinessJsonLd name="GABBA Lviv" city="Львів" address="ТЦ TRY SLONY, 2 поверх" />
+      <LocalBusinessJsonLd name="GABBA Odesa" city="Одеса" address="ТЦ MEGADOM, 2 поверх" />
+
       {/* LOADER */}
       <div className={`${styles.loader} ${loaded ? styles.loaderDone : ""}`}>
-        <Image src="/images/logo/gabba-logo.png" alt="GABBA" width={200} height={96} className={styles.loaderLogo} priority />
-        <div className={styles.loaderLine} />
+        <div className={styles.loaderLogoWrap}>
+          <Image src="/images/logo/gabba-logo.png" alt="GABBA" width={200} height={96} className={styles.loaderLogo} priority />
+          <div className={styles.loaderLine} />
+        </div>
       </div>
 
       {/* HEADER */}
@@ -183,7 +198,7 @@ export default function HomePage() {
 
       {/* HERO */}
       <section className={styles.hero}>
-        <Image src="/images/hero/hero-main.jpg" alt="GABBA інтер'єр" fill className={styles.heroImage} priority style={{ position: "relative", height: "70vh" }} />
+        <img src="/images/hero/hero-main.jpg" alt="GABBA інтер'єр" className={styles.heroImage} />
         <div className={styles.heroOverlay} />
         <div className={styles.heroCard}>
           <p className={styles.heroTagline}>Luxury Redefined</p>
