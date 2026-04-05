@@ -93,26 +93,23 @@ a{color:inherit;text-decoration:none}
 .filter-pill{flex-shrink:0;padding:8px 18px;border-radius:50px;font-size:12px;font-weight:500;border:1px solid rgba(0,0,0,.1);background:var(--card);color:var(--text);white-space:nowrap;min-height:36px;cursor:pointer;transition:all .2s ease}
 .filter-pill.active{background:var(--text);color:#fff;border-color:var(--text)}
 
-.products-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px}
-.p-card{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 1px 10px rgba(0,0,0,.04);transition:transform .2s ease}
-.p-card:active{transform:scale(.98)}
-.p-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
-.p-info{padding:12px}
-.p-badge{display:inline-block;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);background:var(--gold-light);padding:3px 8px;border-radius:20px;margin-bottom:5px;font-weight:500}
-.p-stock{display:inline-block;font-size:8px;letter-spacing:.5px;color:#16a34a;background:rgba(22,163,74,.08);padding:2px 6px;border-radius:10px;margin-left:4px;font-weight:500}
-.p-name{font-family:var(--serif);font-size:14px;margin-bottom:3px;font-weight:500;line-height:1.3}
-.p-price{font-size:13px;color:var(--muted);font-weight:300}
+/* ========== MASONRY GRID — dik dik yatay pattern ========== */
+.masonry{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px}
+.m-card{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 1px 10px rgba(0,0,0,.04);transition:transform .2s ease}
+.m-card:active{transform:scale(.98)}
+.m-card img{width:100%;object-fit:cover;display:block}
+.m-card.vertical img{aspect-ratio:3/4}
+.m-card.horizontal{grid-column:span 2}
+.m-card.horizontal img{aspect-ratio:16/9}
+.m-info{padding:12px}
+.m-badge{display:inline-block;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);background:var(--gold-light);padding:3px 8px;border-radius:20px;margin-bottom:5px;font-weight:500}
+.m-stock{display:inline-block;font-size:8px;letter-spacing:.5px;color:#16a34a;background:rgba(22,163,74,.08);padding:2px 6px;border-radius:10px;margin-left:4px;font-weight:500}
+.m-name{font-family:var(--serif);font-size:14px;margin-bottom:3px;font-weight:500;line-height:1.3}
+.m-card.horizontal .m-name{font-size:16px}
+.m-price{font-size:13px;color:var(--muted);font-weight:300}
 
-/* ========== 7. YENİ GELENLER ========== */
-.new-scroll{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding:0 16px 8px}
-.new-scroll::-webkit-scrollbar{display:none}
-.new-card{flex-shrink:0;width:68vw;max-width:280px;scroll-snap-align:start;background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.05);transition:transform .2s ease}
-.new-card:active{transform:scale(.98)}
-.new-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
-.new-info{padding:14px}
-.new-badge{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:#d97706;font-weight:600;margin-bottom:4px}
-.new-name{font-family:var(--serif);font-size:16px;margin-bottom:3px;font-weight:500}
-.new-price{font-size:14px;color:var(--muted);font-weight:300}
+/* ========== 7. YENİ GELENLER — Aynı masonry ========== */
+.new-badge-tag{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:#d97706;font-weight:600;margin-bottom:4px;display:inline-block}
 
 /* ========== 8. MÜŞTERİ YORUMLARI — Edit3 ========== */
 .reviews-scroll{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding:0 16px 8px}
@@ -294,35 +291,47 @@ a{color:inherit;text-decoration:none}
   <button class="filter-pill" data-filter="table">Столи</button>
   <button class="filter-pill" data-filter="case">Корпусні</button>
 </div>
-<div class="products-grid reveal" id="productsGrid">
-  <a class="p-card" href="#" data-cat="sofa"><img src="images/products/madrid-sofa.jpg" alt="Диван Madrid" loading="lazy"><div class="p-info"><span class="p-badge">Madrid</span><span class="p-stock">В наявності</span><div class="p-name">Диван Madrid</div><div class="p-price">₴101 582</div></div></a>
-  <a class="p-card" href="#" data-cat="chair"><img src="images/products/milano-armchair.jpg" alt="Крісло Milano" loading="lazy"><div class="p-info"><span class="p-badge">Milano</span><span class="p-stock">В наявності</span><div class="p-name">Крісло Milano</div><div class="p-price">₴50 791</div></div></a>
-  <a class="p-card" href="#" data-cat="sofa"><img src="images/products/milano-sofa.jpg" alt="Диван Milano" loading="lazy"><div class="p-info"><span class="p-badge">Milano</span><span class="p-stock">В наявності</span><div class="p-name">Диван Milano</div><div class="p-price">₴115 597</div></div></a>
-  <a class="p-card" href="#" data-cat="chair"><img src="images/products/montana-armchair.jpg" alt="Крісло Montana Lux" loading="lazy"><div class="p-info"><span class="p-badge">Montana</span><span class="p-stock">В наявності</span><div class="p-name">Крісло Montana Lux</div><div class="p-price">₴44 977</div></div></a>
-  <a class="p-card" href="#" data-cat="case"><img src="images/products/lyon-tv-unit.jpg" alt="TV Юніт Lyon" loading="lazy"><div class="p-info"><span class="p-badge">Lyon</span><span class="p-stock">В наявності</span><div class="p-name">TV Юніт Lyon</div><div class="p-price">₴75 707</div></div></a>
-  <a class="p-card" href="#" data-cat="case"><img src="images/products/madrid-console.jpg" alt="Консоль Madrid" loading="lazy"><div class="p-info"><span class="p-badge">Madrid</span><span class="p-stock">В наявності</span><div class="p-name">Консоль Madrid</div><div class="p-price">₴102 860</div></div></a>
-  <a class="p-card" href="#" data-cat="chair"><img src="images/products/genova-chair.jpg" alt="Стілець Genova" loading="lazy"><div class="p-info"><span class="p-badge">Montana</span><span class="p-stock">В наявності</span><div class="p-name">Стілець Genova</div><div class="p-price">₴18 143</div></div></a>
-  <a class="p-card" href="#" data-cat="table"><img src="images/products/madrid-table.jpg" alt="Стіл Madrid" loading="lazy"><div class="p-info"><span class="p-badge">Madrid</span><span class="p-stock">В наявності</span><div class="p-name">Стіл Madrid</div><div class="p-price">₴69 318</div></div></a>
+<div class="masonry reveal" id="productsGrid">
+  <!-- Dik Dik -->
+  <a class="m-card vertical" href="#" data-cat="chair"><img src="images/products/milano-armchair.jpg" alt="Крісло Milano" loading="lazy"><div class="m-info"><span class="m-badge">Milano</span><span class="m-stock">В наявності</span><div class="m-name">Крісло Milano</div><div class="m-price">₴50 791</div></div></a>
+  <a class="m-card vertical" href="#" data-cat="chair"><img src="images/products/montana-armchair.jpg" alt="Крісло Montana Lux" loading="lazy"><div class="m-info"><span class="m-badge">Montana</span><span class="m-stock">В наявності</span><div class="m-name">Крісло Montana Lux</div><div class="m-price">₴44 977</div></div></a>
+  <!-- Yatay -->
+  <a class="m-card horizontal" href="#" data-cat="sofa"><img src="images/products/madrid-sofa.jpg" alt="Диван Madrid" loading="lazy"><div class="m-info"><span class="m-badge">Madrid</span><span class="m-stock">В наявності</span><div class="m-name">Диван Madrid</div><div class="m-price">₴101 582</div></div></a>
+  <!-- Dik Dik -->
+  <a class="m-card vertical" href="#" data-cat="case"><img src="images/products/lyon-tv-unit.jpg" alt="TV Юніт Lyon" loading="lazy"><div class="m-info"><span class="m-badge">Lyon</span><span class="m-stock">В наявності</span><div class="m-name">TV Юніт Lyon</div><div class="m-price">₴75 707</div></div></a>
+  <a class="m-card vertical" href="#" data-cat="case"><img src="images/products/madrid-console.jpg" alt="Консоль Madrid" loading="lazy"><div class="m-info"><span class="m-badge">Madrid</span><span class="m-stock">В наявності</span><div class="m-name">Консоль Madrid</div><div class="m-price">₴102 860</div></div></a>
+  <!-- Yatay -->
+  <a class="m-card horizontal" href="#" data-cat="sofa"><img src="images/products/milano-sofa.jpg" alt="Диван Milano" loading="lazy"><div class="m-info"><span class="m-badge">Milano</span><span class="m-stock">В наявності</span><div class="m-name">Диван Milano</div><div class="m-price">₴115 597</div></div></a>
+  <!-- Dik Dik -->
+  <a class="m-card vertical" href="#" data-cat="chair"><img src="images/products/genova-chair.jpg" alt="Стілець Genova" loading="lazy"><div class="m-info"><span class="m-badge">Montana</span><span class="m-stock">В наявності</span><div class="m-name">Стілець Genova</div><div class="m-price">₴18 143</div></div></a>
+  <a class="m-card vertical" href="#" data-cat="table"><img src="images/products/madrid-table.jpg" alt="Стіл Madrid" loading="lazy"><div class="m-info"><span class="m-badge">Madrid</span><span class="m-stock">В наявності</span><div class="m-name">Стіл Madrid</div><div class="m-price">₴69 318</div></div></a>
 </div>
 
 <!-- ===== 7. YENİ GELENLER ===== -->
 <div class="section reveal" style="margin-top:32px"><div class="section-title">Новинки</div></div>
-<div class="new-scroll reveal reveal-d1">
-  <div class="new-card">
+<div class="masonry reveal reveal-d1">
+  <!-- Dik Dik -->
+  <div class="m-card vertical">
     <img src="images/products/luna-armchair.jpg" alt="Крісло Luna" loading="lazy">
-    <div class="new-info"><div class="new-badge">Новинка</div><div class="new-name">Крісло Luna</div><div class="new-price">₴43 444</div></div>
+    <div class="m-info"><span class="new-badge-tag">Новинка</span><div class="m-name">Крісло Luna</div><div class="m-price">₴43 444</div></div>
   </div>
-  <div class="new-card">
+  <div class="m-card vertical">
     <img src="images/products/terra-dresser.jpg" alt="Комод Terra" loading="lazy">
-    <div class="new-info"><div class="new-badge">Новинка</div><div class="new-name">Комод Terra</div><div class="new-price">₴80 179</div></div>
+    <div class="m-info"><span class="new-badge-tag">Новинка</span><div class="m-name">Комод Terra</div><div class="m-price">₴80 179</div></div>
   </div>
-  <div class="new-card">
-    <img src="images/products/terra-table.jpg" alt="Стіл Terra" loading="lazy">
-    <div class="new-info"><div class="new-badge">Новинка</div><div class="new-name">Стіл Terra</div><div class="new-price">₴103 499</div></div>
-  </div>
-  <div class="new-card">
+  <!-- Yatay -->
+  <div class="m-card horizontal">
     <img src="images/products/galante-bed.jpg" alt="Ліжко Galante" loading="lazy">
-    <div class="new-info"><div class="new-badge">Новинка</div><div class="new-name">Ліжко Galante</div><div class="new-price">₴147 941</div></div>
+    <div class="m-info"><span class="new-badge-tag">Новинка</span><div class="m-name">Ліжко Galante</div><div class="m-price">₴147 941</div></div>
+  </div>
+  <!-- Dik Dik -->
+  <div class="m-card vertical">
+    <img src="images/products/terra-table.jpg" alt="Стіл Terra" loading="lazy">
+    <div class="m-info"><span class="new-badge-tag">Новинка</span><div class="m-name">Стіл Terra</div><div class="m-price">₴103 499</div></div>
+  </div>
+  <div class="m-card vertical">
+    <img src="images/products/madrid-table.jpg" alt="Стіл Madrid" loading="lazy">
+    <div class="m-info"><span class="new-badge-tag">Новинка</span><div class="m-name">Стіл Madrid</div><div class="m-price">₴69 318</div></div>
   </div>
 </div>
 
@@ -464,7 +473,8 @@ filterRow.addEventListener('click', (e) => {
   filterRow.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
   pill.classList.add('active');
   const filter = pill.dataset.filter;
-  grid.querySelectorAll('.p-card').forEach(card => {
+  grid.querySelectorAll('.m-card').forEach(card => {
+    if (!card.dataset.cat) return;
     card.style.display = (filter === 'all' || card.dataset.cat === filter) ? '' : 'none';
   });
 });
