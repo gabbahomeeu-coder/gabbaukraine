@@ -70,6 +70,12 @@ a{color:inherit;text-decoration:none}
 .cat-overlay{position:absolute;bottom:0;left:0;right:0;padding:12px 14px;background:linear-gradient(to top,rgba(0,0,0,.55),transparent);color:#fff;font-size:13px;font-weight:500}
 
 /* ========== 5. KOLEKSİYONLAR — Edit5 yatay kaydırma ========== */
+.coll-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.coll-filters{display:flex;gap:6px}
+.coll-filter{padding:6px 14px;border-radius:50px;font-size:11px;font-weight:500;border:1px solid rgba(0,0,0,.1);background:var(--card);color:var(--text);cursor:pointer;transition:all .2s ease;white-space:nowrap;min-height:32px}
+.coll-filter.active{background:var(--text);color:#fff;border-color:var(--text)}
+.coll-filter.coming-soon{opacity:.45;cursor:default}
+.coll-empty{padding:40px 16px;text-align:center;font-size:13px;color:var(--muted);font-weight:300;display:none}
 .coll-scroll{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding:0 16px 8px}
 .coll-scroll::-webkit-scrollbar{display:none}
 .coll-card{flex-shrink:0;width:80vw;max-width:320px;scroll-snap-align:start;background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.04);transition:transform .3s ease}
@@ -243,28 +249,39 @@ a{color:inherit;text-decoration:none}
   <div class="cat-card full"><img src="images/categories/bedroom.jpg" alt="Спальня" loading="lazy"><div class="cat-overlay">Спальня</div></div>
 </div>
 
-<!-- ===== 5. KOLEKSİYONLAR — Edit5 yatay kaydırma ===== -->
-<div class="section reveal"><div class="section-title">Колекції</div></div>
-<div class="coll-scroll reveal reveal-d1">
-  <div class="coll-card">
+<!-- ===== 5. KOLEKSİYONLAR — Marka filtreli yatay kaydırma ===== -->
+<div class="section reveal">
+  <div class="coll-header">
+    <div class="section-title" style="margin-bottom:0">Колекції</div>
+    <div class="coll-filters" id="collFilters">
+      <button class="coll-filter active" data-brand="all">Всі</button>
+      <button class="coll-filter" data-brand="gabba">Gabba</button>
+      <button class="coll-filter" data-brand="monett">Monett</button>
+      <button class="coll-filter coming-soon" data-brand="isil">Isil</button>
+    </div>
+  </div>
+</div>
+<div class="coll-empty" id="collEmpty">Колекція Isil — скоро у продажу</div>
+<div class="coll-scroll reveal reveal-d1" id="collScroll">
+  <div class="coll-card" data-brand="gabba">
     <img src="images/collections/madrid.jpg" alt="Madrid" loading="lazy">
-    <div class="coll-info"><p class="coll-label">Колекція</p><div class="coll-name">Madrid</div><div class="coll-desc">Класична елегантність у кремових тонах. Дивани, столи, консолі.</div><a href="#" class="coll-link">Дивитися →</a></div>
+    <div class="coll-info"><p class="coll-label">Gabba</p><div class="coll-name">Madrid</div><div class="coll-desc">Класична елегантність у кремових тонах. Дивани, столи, консолі.</div><a href="#" class="coll-link">Дивитися →</a></div>
   </div>
-  <div class="coll-card">
+  <div class="coll-card" data-brand="monett">
     <img src="images/collections/luna.jpg" alt="Luna" loading="lazy">
-    <div class="coll-info"><p class="coll-label">Колекція</p><div class="coll-name">Luna</div><div class="coll-desc">Плавні силуети та ніжна палітра для затишної атмосфери.</div><a href="#" class="coll-link">Дивитися →</a></div>
+    <div class="coll-info"><p class="coll-label">Monett</p><div class="coll-name">Luna</div><div class="coll-desc">Плавні силуети та ніжна палітра для затишної атмосфери.</div><a href="#" class="coll-link">Дивитися →</a></div>
   </div>
-  <div class="coll-card">
+  <div class="coll-card" data-brand="gabba">
     <img src="images/collections/montana.jpg" alt="Montana" loading="lazy">
-    <div class="coll-info"><p class="coll-label">Колекція</p><div class="coll-name">Montana</div><div class="coll-desc">Натуральне дерево та масивні форми для інтер'єрів з характером.</div><a href="#" class="coll-link">Дивитися →</a></div>
+    <div class="coll-info"><p class="coll-label">Gabba</p><div class="coll-name">Montana</div><div class="coll-desc">Натуральне дерево та масивні форми для інтер'єрів з характером.</div><a href="#" class="coll-link">Дивитися →</a></div>
   </div>
-  <div class="coll-card">
+  <div class="coll-card" data-brand="gabba">
     <img src="images/collections/leora.jpg" alt="Leora" loading="lazy">
-    <div class="coll-info"><p class="coll-label">Колекція</p><div class="coll-name">Leora</div><div class="coll-desc">Витончена розкіш. Гармонія форми та функції.</div><a href="#" class="coll-link">Дивитися →</a></div>
+    <div class="coll-info"><p class="coll-label">Gabba</p><div class="coll-name">Leora</div><div class="coll-desc">Витончена розкіш. Гармонія форми та функції.</div><a href="#" class="coll-link">Дивитися →</a></div>
   </div>
-  <div class="coll-card">
+  <div class="coll-card" data-brand="monett">
     <img src="images/collections/moka.jpg" alt="Moka" loading="lazy">
-    <div class="coll-info"><p class="coll-label">Колекція</p><div class="coll-name">Moka</div><div class="coll-desc">Теплі тони та органічні форми для стильного простору.</div><a href="#" class="coll-link">Дивитися →</a></div>
+    <div class="coll-info"><p class="coll-label">Monett</p><div class="coll-name">Moka</div><div class="coll-desc">Теплі тони та органічні форми для стильного простору.</div><a href="#" class="coll-link">Дивитися →</a></div>
   </div>
 </div>
 
@@ -450,6 +467,33 @@ filterRow.addEventListener('click', (e) => {
   grid.querySelectorAll('.p-card').forEach(card => {
     card.style.display = (filter === 'all' || card.dataset.cat === filter) ? '' : 'none';
   });
+});
+
+// Collection brand filter
+const collFilters = document.getElementById('collFilters');
+const collScroll = document.getElementById('collScroll');
+const collEmpty = document.getElementById('collEmpty');
+collFilters.addEventListener('click', (e) => {
+  const btn = e.target.closest('.coll-filter');
+  if (!btn || btn.classList.contains('coming-soon') && btn.dataset.brand === 'isil') {
+    // Show "coming soon" for Isil
+    if (btn && btn.dataset.brand === 'isil') {
+      collFilters.querySelectorAll('.coll-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      collScroll.style.display = 'none';
+      collEmpty.style.display = 'block';
+    }
+    return;
+  }
+  collFilters.querySelectorAll('.coll-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const brand = btn.dataset.brand;
+  collEmpty.style.display = 'none';
+  collScroll.style.display = 'flex';
+  collScroll.querySelectorAll('.coll-card').forEach(card => {
+    card.style.display = (brand === 'all' || card.dataset.brand === brand) ? '' : 'none';
+  });
+  collScroll.scrollTo({ left: 0, behavior: 'smooth' });
 });
 
 // Counter animation
