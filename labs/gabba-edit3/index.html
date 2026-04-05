@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GABBA — Дизайнерські меблі</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#FAF6F1;--card:#FFFFFF;--text:#201A12;--gold:#B8956A;--muted:#7D7369;--warm-bg:#F0EAE0;
+--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);font-weight:400;color:var(--text);background:var(--bg);line-height:1.6;overflow-x:hidden}
+img{display:block;width:100%;object-fit:cover;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+
+/* Loader */
+.loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.loader img{height:36px;width:auto;opacity:0;animation:loaderScale 1.5s ease forwards}
+.loader.done{opacity:0;pointer-events:none;transition:opacity .5s ease}
+@keyframes loaderScale{0%{opacity:0;transform:scale(.85)}50%{opacity:1;transform:scale(1)}100%{opacity:1;transform:scale(1)}}
+
+/* Header */
+.header{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(250,246,241,.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.header-logo{height:24px;width:auto;display:block}
+.header-right{display:flex;gap:16px;align-items:center}
+.header-icon{width:20px;height:20px;color:var(--text);opacity:.6}
+.header-icon svg{width:20px;height:20px}
+
+/* Hero with shimmer border */
+.hero{padding:72px 16px 0}
+.hero-img-wrap{position:relative;border-radius:20px;overflow:hidden;padding:3px;background:linear-gradient(135deg,var(--gold),#D4B896,var(--gold),#E8D5B8,var(--gold));background-size:400% 400%;animation:shimmerBorder 4s ease infinite}
+@keyframes shimmerBorder{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@media(prefers-reduced-motion:reduce){.hero-img-wrap{animation:none;background:var(--gold)}}
+.hero-img{width:100%;height:70vh;object-fit:cover;display:block;border-radius:18px}
+.hero-text{padding:24px 4px 0}
+.hero-title{font-family:var(--serif);font-weight:500;font-size:clamp(26px,7vw,36px);line-height:1.25;margin-bottom:12px;letter-spacing:-.3px}
+.hero-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:24px;font-weight:300}
+.hero-btns{display:flex;gap:10px}
+.btn-solid{display:inline-flex;align-items:center;justify-content:center;padding:14px 28px;background:var(--text);color:#fff;border-radius:50px;font-size:13px;font-weight:500;min-height:44px}
+.btn-outline{display:inline-flex;align-items:center;justify-content:center;padding:14px 28px;border:1px solid rgba(0,0,0,.15);border-radius:50px;font-size:13px;font-weight:400;color:var(--text);min-height:44px}
+
+/* Trust strip */
+.trust-strip{display:flex;gap:20px;overflow-x:auto;padding:32px 16px;scrollbar-width:none;-ms-overflow-style:none}
+.trust-strip::-webkit-scrollbar{display:none}
+.trust-chip{flex-shrink:0;display:flex;align-items:center;gap:8px;background:var(--card);padding:10px 16px;border-radius:50px;box-shadow:0 1px 6px rgba(0,0,0,.04);font-size:12px;color:var(--muted);white-space:nowrap}
+.trust-chip svg{width:16px;height:16px;color:var(--gold);flex-shrink:0}
+
+/* Section */
+.section{padding:48px 16px 0}
+.section-title{font-family:var(--serif);font-weight:500;font-size:clamp(22px,6vw,30px);margin-bottom:16px;letter-spacing:-.3px}
+
+/* Categories */
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px;margin-bottom:32px}
+.cat-card{position:relative;border-radius:14px;overflow:hidden}
+.cat-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.cat-card.full{grid-column:span 2}
+.cat-card.full img{aspect-ratio:2/1}
+.cat-overlay{position:absolute;bottom:0;left:0;right:0;padding:12px 14px;background:linear-gradient(to top,rgba(0,0,0,.55),transparent);color:#fff;font-size:13px;font-weight:500}
+
+/* Collection TABS */
+.coll-tabs{display:flex;gap:8px;overflow-x:auto;padding:0 16px 16px;scrollbar-width:none;-ms-overflow-style:none}
+.coll-tabs::-webkit-scrollbar{display:none}
+.coll-tab{flex-shrink:0;padding:10px 20px;border-radius:50px;font-size:13px;font-weight:500;background:var(--card);color:var(--text);border:1px solid rgba(0,0,0,.08);cursor:pointer;white-space:nowrap;min-height:44px;display:flex;align-items:center}
+.coll-tab.active{background:var(--text);color:#fff;border-color:var(--text)}
+
+/* Collection content panels */
+.coll-panel{display:none;padding:0 16px 32px}
+.coll-panel.active{display:block}
+.coll-panel-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:16px;margin-bottom:16px}
+.coll-panel-name{font-family:var(--serif);font-weight:500;font-size:20px;margin-bottom:6px}
+.coll-panel-desc{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:16px;font-weight:300}
+.coll-panel-products{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.coll-panel-products .p-card{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 1px 10px rgba(0,0,0,.04)}
+.coll-panel-products .p-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+
+/* Product filter pills */
+.filter-pills{display:flex;gap:8px;overflow-x:auto;padding:0 16px 16px;scrollbar-width:none;-ms-overflow-style:none}
+.filter-pills::-webkit-scrollbar{display:none}
+.filter-pill{flex-shrink:0;padding:10px 18px;border-radius:50px;font-size:12px;font-weight:500;background:var(--card);color:var(--muted);border:1px solid rgba(0,0,0,.06);cursor:pointer;white-space:nowrap;min-height:44px;display:flex;align-items:center}
+.filter-pill.active{background:var(--gold);color:#fff;border-color:var(--gold)}
+
+/* Products grid */
+.products-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px;margin-bottom:32px}
+.p-card{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 1px 10px rgba(0,0,0,.04);position:relative}
+.p-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.p-info{padding:12px}
+.p-badge{display:inline-block;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);background:rgba(184,149,106,.08);padding:3px 8px;border-radius:20px;margin-bottom:6px;font-weight:500}
+.p-name{font-family:var(--serif);font-size:14px;margin-bottom:4px;font-weight:500}
+.p-price{font-size:13px;color:var(--muted);font-weight:300}
+.p-stock{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:#2E7D32;margin-top:4px;font-weight:500}
+.p-stock-dot{width:6px;height:6px;background:#4CAF50;border-radius:50%;display:inline-block}
+
+/* Reviews */
+.reviews-scroll{display:flex;gap:16px;overflow-x:auto;padding:0 16px 32px;scrollbar-width:none;-ms-overflow-style:none}
+.reviews-scroll::-webkit-scrollbar{display:none}
+.review-card{flex-shrink:0;width:80vw;max-width:320px;background:var(--card);border-radius:16px;padding:24px;box-shadow:0 2px 14px rgba(0,0,0,.04)}
+.review-stars{color:var(--gold);font-size:14px;margin-bottom:10px;letter-spacing:2px}
+.review-text{font-size:13px;color:var(--text);line-height:1.6;margin-bottom:14px;font-weight:300;font-style:italic}
+.review-author{font-size:12px;font-weight:500}
+.review-city{font-size:11px;color:var(--muted);font-weight:300}
+
+/* Brand story with counter animation */
+.brand{background:var(--warm-bg);padding:48px 24px;text-align:center;margin:48px 0}
+.brand-logo{height:32px;width:auto;margin:0 auto 12px;opacity:.7}
+.brand-tagline{font-family:var(--serif);font-size:18px;letter-spacing:2px;margin-bottom:16px;font-weight:400}
+.brand-text{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:32px;font-weight:300;max-width:360px;margin-left:auto;margin-right:auto}
+.brand-stats{display:flex;justify-content:space-around}
+.brand-stat-num{font-family:var(--serif);font-size:clamp(28px,7vw,36px);color:var(--gold);font-weight:500}
+.brand-stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;font-weight:300}
+
+/* Assurance */
+.assurance{padding:32px 16px;display:flex;flex-direction:column;gap:12px}
+.assure-card{background:var(--card);border-radius:14px;padding:20px;display:flex;gap:14px;box-shadow:0 1px 8px rgba(0,0,0,.03)}
+.assure-icon{flex-shrink:0;width:36px;height:36px;background:rgba(184,149,106,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--gold)}
+.assure-icon svg{width:18px;height:18px}
+.assure-title{font-size:14px;font-weight:500;margin-bottom:2px}
+.assure-text{font-size:12px;color:var(--muted);line-height:1.5;font-weight:300}
+
+/* Stores */
+.stores{padding:16px 16px 32px;display:flex;flex-direction:column;gap:10px}
+.store-card{background:var(--card);border-radius:14px;padding:18px;box-shadow:0 1px 8px rgba(0,0,0,.03)}
+.store-city{font-weight:500;font-size:15px;margin-bottom:4px}
+.store-address{font-size:12px;color:var(--muted);margin-bottom:10px;font-weight:300}
+.store-link{font-size:12px;color:var(--gold);font-weight:500}
+
+/* Final CTA */
+.final-cta{margin:0 16px 16px;background:linear-gradient(135deg,var(--warm-bg),#E8DFD2);border-radius:20px;padding:40px 24px;text-align:center}
+.final-cta-title{font-family:var(--serif);font-size:clamp(22px,6vw,28px);margin-bottom:16px;font-weight:500;line-height:1.3}
+.final-cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:14px 32px;border-radius:50px;font-size:14px;font-weight:500;min-height:44px}
+.final-cta-btn svg{width:18px;height:18px}
+
+/* Footer */
+.footer{padding:32px 16px 100px;text-align:center}
+.footer-logo{height:22px;width:auto;margin:0 auto 12px;opacity:.4}
+.footer-links{display:flex;justify-content:center;gap:20px;margin-bottom:12px}
+.footer-links a{font-size:12px;color:var(--muted);font-weight:300}
+.footer-copy{font-size:11px;color:var(--muted);font-weight:300}
+.footer-phone{display:block;font-size:12px;color:var(--muted);margin-top:4px;font-weight:300}
+
+/* Sticky bar */
+.sticky-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;gap:8px;padding:12px 16px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));background:rgba(250,246,241,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid rgba(0,0,0,.05)}
+.sticky-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px;border-radius:50px;font-size:13px;font-weight:500;min-height:44px}
+.sticky-btn.primary{background:var(--text);color:#fff}
+.sticky-btn.outline{border:1px solid rgba(0,0,0,.12);color:var(--text)}
+.sticky-btn svg{width:16px;height:16px}
+
+/* Animations */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){
+  .reveal{transition:none;opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div class="loader" id="loader">
+  <img src="images/logo/gabba-logo.png" alt="GABBA" style="height:36px;width:auto">
+</div>
+
+<!-- Header -->
+<header class="header">
+  <img src="images/logo/gabba-logo.png" alt="GABBA" class="header-logo">
+  <div class="header-right">
+    <span class="header-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></span>
+    <span class="header-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg></span>
+  </div>
+</header>
+
+<!-- Hero with shimmer border -->
+<section class="hero reveal">
+  <div class="hero-img-wrap">
+    <img src="images/hero/hero-main.jpg" alt="GABBA Furniture" class="hero-img" loading="eager">
+  </div>
+  <div class="hero-text">
+    <h1 class="hero-title">Дизайнерські меблі для вашого дому</h1>
+    <p class="hero-desc">Преміальні колекції від українського бренду. Створено для тих, хто цінує красу та комфорт.</p>
+    <div class="hero-btns">
+      <a href="#collections" class="btn-solid">Колекції</a>
+      <a href="#brand" class="btn-outline">Про нас</a>
+    </div>
+  </div>
+</section>
+
+<!-- Trust strip -->
+<div class="trust-strip">
+  <div class="trust-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Гарантія якості</div>
+  <div class="trust-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Доставка по Україні</div>
+  <div class="trust-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>Apple Pay / Google Pay</div>
+  <div class="trust-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Консультація</div>
+</div>
+
+<!-- Categories -->
+<div class="section reveal"><div class="section-title">Категорії</div></div>
+<div class="cat-grid reveal">
+  <div class="cat-card"><img src="images/categories/soft-furniture.jpg" alt="М'які меблі" loading="lazy"><div class="cat-overlay">М'які меблі</div></div>
+  <div class="cat-card"><img src="images/categories/tables.jpg" alt="Столи" loading="lazy"><div class="cat-overlay">Столи</div></div>
+  <div class="cat-card"><img src="images/categories/chairs.jpg" alt="Стільці" loading="lazy"><div class="cat-overlay">Стільці</div></div>
+  <div class="cat-card"><img src="images/categories/case-furniture.jpg" alt="Корпусні меблі" loading="lazy"><div class="cat-overlay">Корпусні меблі</div></div>
+  <div class="cat-card full"><img src="images/categories/bedroom.jpg" alt="Спальня" loading="lazy"><div class="cat-overlay">Спальня</div></div>
+</div>
+
+<!-- Collections with TABS -->
+<div class="section reveal" id="collections"><div class="section-title">Колекції</div></div>
+<div class="coll-tabs" id="collTabs">
+  <button class="coll-tab active" data-tab="madrid">Madrid</button>
+  <button class="coll-tab" data-tab="luna">Luna</button>
+  <button class="coll-tab" data-tab="montana">Montana</button>
+  <button class="coll-tab" data-tab="leora">Leora</button>
+  <button class="coll-tab" data-tab="moka">Moka</button>
+</div>
+
+<div class="coll-panel active" id="panel-madrid">
+  <img src="images/collections/madrid.jpg" alt="Madrid" class="coll-panel-img" loading="lazy">
+  <div class="coll-panel-name">Madrid</div>
+  <div class="coll-panel-desc">Елегантність класичних форм у поєднанні з сучасним комфортом. Колекція, що визначає стиль вашого простору.</div>
+  <div class="coll-panel-products">
+    <div class="p-card">
+      <img src="images/products/madrid-sofa.jpg" alt="Диван Madrid" loading="lazy">
+      <div class="p-info"><span class="p-badge">Madrid</span><div class="p-name">Диван Madrid</div><div class="p-price">₴101 582</div></div>
+    </div>
+    <div class="p-card">
+      <img src="images/products/madrid-console.jpg" alt="Консоль Madrid" loading="lazy">
+      <div class="p-info"><span class="p-badge">Madrid</span><div class="p-name">Консоль Madrid</div><div class="p-price">₴102 860</div></div>
+    </div>
+  </div>
+</div>
+<div class="coll-panel" id="panel-luna">
+  <img src="images/collections/luna.jpg" alt="Luna" class="coll-panel-img" loading="lazy">
+  <div class="coll-panel-name">Luna</div>
+  <div class="coll-panel-desc">Плавні силуети та ніжна палітра, натхненні світлом місяця.</div>
+  <div class="coll-panel-products">
+    <div class="p-card">
+      <img src="images/products/luna-armchair.jpg" alt="Крісло Luna" loading="lazy">
+      <div class="p-info"><span class="p-badge">Luna</span><div class="p-name">Крісло Luna</div><div class="p-price">₴43 444</div></div>
+    </div>
+  </div>
+</div>
+<div class="coll-panel" id="panel-montana">
+  <img src="images/collections/montana.jpg" alt="Montana" class="coll-panel-img" loading="lazy">
+  <div class="coll-panel-name">Montana</div>
+  <div class="coll-panel-desc">Натуральні текстури та масивні форми для інтер'єрів з характером.</div>
+  <div class="coll-panel-products">
+    <div class="p-card">
+      <img src="images/products/montana-armchair.jpg" alt="Крісло Montana Lux" loading="lazy">
+      <div class="p-info"><span class="p-badge">Montana</span><div class="p-name">Крісло Montana Lux</div><div class="p-price">₴44 977</div></div>
+    </div>
+    <div class="p-card">
+      <img src="images/products/genova-chair.jpg" alt="Стілець Genova" loading="lazy">
+      <div class="p-info"><span class="p-badge">Montana</span><div class="p-name">Стілець Genova</div><div class="p-price">₴18 143</div></div>
+    </div>
+  </div>
+</div>
+<div class="coll-panel" id="panel-leora">
+  <img src="images/collections/leora.jpg" alt="Leora" class="coll-panel-img" loading="lazy">
+  <div class="coll-panel-name">Leora</div>
+  <div class="coll-panel-desc">Витончена розкіш. Гармонія форми та функції.</div>
+</div>
+<div class="coll-panel" id="panel-moka">
+  <img src="images/collections/moka.jpg" alt="Moka" class="coll-panel-img" loading="lazy">
+  <div class="coll-panel-name">Moka</div>
+  <div class="coll-panel-desc">Теплі тони та органічні форми для затишку та стилю.</div>
+</div>
+
+<!-- Featured products with filters -->
+<div class="section reveal"><div class="section-title">Рекомендуємо</div></div>
+<div class="filter-pills" id="filterPills">
+  <button class="filter-pill active" data-filter="all">Всі</button>
+  <button class="filter-pill" data-filter="sofa">Дивани</button>
+  <button class="filter-pill" data-filter="chair">Крісла</button>
+  <button class="filter-pill" data-filter="table">Столи</button>
+  <button class="filter-pill" data-filter="case">Корпусні</button>
+</div>
+<div class="products-grid" id="productsGrid">
+  <div class="p-card reveal" data-cat="sofa">
+    <img src="images/products/madrid-sofa.jpg" alt="Диван Madrid" loading="lazy">
+    <div class="p-info">
+      <span class="p-badge">Madrid</span>
+      <div class="p-name">Диван Madrid</div>
+      <div class="p-price">₴101 582</div>
+      <div class="p-stock"><span class="p-stock-dot"></span> В наявності</div>
+    </div>
+  </div>
+  <div class="p-card reveal" data-cat="chair">
+    <img src="images/products/milano-armchair.jpg" alt="Крісло Milano" loading="lazy">
+    <div class="p-info">
+      <span class="p-badge">Milano</span>
+      <div class="p-name">Крісло Milano</div>
+      <div class="p-price">₴50 791</div>
+      <div class="p-stock"><span class="p-stock-dot"></span> В наявності</div>
+    </div>
+  </div>
+  <div class="p-card reveal" data-cat="sofa">
+    <img src="images/products/galante-bed.jpg" alt="Ліжко Galante" loading="lazy">
+    <div class="p-info">
+      <span class="p-badge">Galante</span>
+      <div class="p-name">Ліжко Galante</div>
+      <div class="p-price">₴147 941</div>
+      <div class="p-stock"><span class="p-stock-dot"></span> В наявності</div>
+    </div>
+  </div>
+  <div class="p-card reveal" data-cat="sofa">
+    <img src="images/products/milano-sofa.jpg" alt="Диван Milano" loading="lazy">
+    <div class="p-info">
+      <span class="p-badge">Milano</span>
+      <div class="p-name">Диван Milano</div>
+      <div class="p-price">₴115 597</div>
+      <div class="p-stock"><span class="p-stock-dot"></span> В наявності</div>
+    </div>
+  </div>
+  <div class="p-card reveal" data-cat="chair">
+    <img src="images/products/montana-armchair.jpg" alt="Крісло Montana Lux" loading="lazy">
+    <div class="p-info">
+      <span class="p-badge">Montana</span>
+      <div class="p-name">Крісло Montana Lux</div>
+      <div class="p-price">₴44 977</div>
+      <div class="p-stock"><span class="p-stock-dot"></span> В наявності</div>
+    </div>
+  </div>
+  <div class="p-card reveal" data-cat="case">
+    <img src="images/products/lyon-tv-unit.jpg" alt="TV Юніт Lyon" loading="lazy">
+    <div class="p-info">
+      <span class="p-badge">Lyon</span>
+      <div class="p-name">TV Юніт Lyon</div>
+      <div class="p-price">₴75 707</div>
+      <div class="p-stock"><span class="p-stock-dot"></span> В наявності</div>
+    </div>
+  </div>
+  <div class="p-card reveal" data-cat="chair">
+    <img src="images/products/genova-chair.jpg" alt="Стілець Genova" loading="lazy">
+    <div class="p-info">
+      <span class="p-badge">Genova</span>
+      <div class="p-name">Стілець Genova</div>
+      <div class="p-price">₴18 143</div>
+      <div class="p-stock"><span class="p-stock-dot"></span> В наявності</div>
+    </div>
+  </div>
+  <div class="p-card reveal" data-cat="case">
+    <img src="images/products/madrid-console.jpg" alt="Консоль Madrid" loading="lazy">
+    <div class="p-info">
+      <span class="p-badge">Madrid</span>
+      <div class="p-name">Консоль Madrid</div>
+      <div class="p-price">₴102 860</div>
+      <div class="p-stock"><span class="p-stock-dot"></span> В наявності</div>
+    </div>
+  </div>
+</div>
+
+<!-- Customer Reviews -->
+<div class="section reveal"><div class="section-title">Відгуки клієнтів</div></div>
+<div class="reviews-scroll">
+  <div class="review-card reveal">
+    <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+    <div class="review-text">"Замовили диван Madrid для вітальні. Якість матеріалів вражає, а комфорт перевершив усі очікування. Дуже задоволені покупкою!"</div>
+    <div class="review-author">Олена Коваленко</div>
+    <div class="review-city">Київ</div>
+  </div>
+  <div class="review-card reveal">
+    <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+    <div class="review-text">"Обрали колекцію Montana для кабінету. Крісло неймовірно зручне, а стіл виглядає просто розкішно. Рекомендую всім!"</div>
+    <div class="review-author">Андрій Шевченко</div>
+    <div class="review-city">Львів</div>
+  </div>
+  <div class="review-card reveal">
+    <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+    <div class="review-text">"Прекрасний сервіс та доставка. Ліжко Galante — це справжня розкіш. Спимо як на хмарці. Дякуємо команді GABBA!"</div>
+    <div class="review-author">Марія Бондаренко</div>
+    <div class="review-city">Одеса</div>
+  </div>
+</div>
+
+<!-- Brand story with counter animation -->
+<section class="brand reveal" id="brand">
+  <img src="images/logo/gabba-logo.png" alt="GABBA" class="brand-logo">
+  <div class="brand-tagline">Luxury Redefined</div>
+  <p class="brand-text">GABBA — український бренд дизайнерських меблів преміум-класу. Ми поєднуємо європейський дизайн з українською майстерністю, створюючи вироби, що надихають.</p>
+  <div class="brand-stats">
+    <div>
+      <div class="brand-stat-num" data-target="6" data-suffix="+">0</div>
+      <div class="brand-stat-label">Колекцій</div>
+    </div>
+    <div>
+      <div class="brand-stat-num" data-target="8" data-suffix="">0</div>
+      <div class="brand-stat-label">Років</div>
+    </div>
+    <div>
+      <div class="brand-stat-num" data-target="1200" data-suffix="+">0</div>
+      <div class="brand-stat-label">Клієнтів</div>
+    </div>
+  </div>
+</section>
+
+<!-- Assurance -->
+<div class="assurance">
+  <div class="assure-card reveal">
+    <div class="assure-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+    <div><div class="assure-title">Гарантія якості</div><div class="assure-text">Офіційна гарантія на кожен виріб. Преміальні матеріали та бездоганне виконання.</div></div>
+  </div>
+  <div class="assure-card reveal">
+    <div class="assure-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+    <div><div class="assure-title">Доставка та збірка</div><div class="assure-text">Професійна доставка по всій Україні. Збірка на місці нашими майстрами.</div></div>
+  </div>
+  <div class="assure-card reveal">
+    <div class="assure-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg></div>
+    <div><div class="assure-title">Зручна оплата</div><div class="assure-text">Visa, Mastercard, Apple Pay, Google Pay. Розстрочка від банків-партнерів.</div></div>
+  </div>
+</div>
+
+<!-- Stores -->
+<div class="section reveal"><div class="section-title">Наші магазини</div></div>
+<div class="stores">
+  <div class="store-card reveal"><div class="store-city">Київ</div><div class="store-address">ТЦ 4ROOM, 1 поверх</div><a href="#" class="store-link">Прокласти маршрут →</a></div>
+  <div class="store-card reveal"><div class="store-city">Львів</div><div class="store-address">ТЦ TRY SLONY, 2 поверх</div><a href="#" class="store-link">Прокласти маршрут →</a></div>
+  <div class="store-card reveal"><div class="store-city">Одеса</div><div class="store-address">ТЦ MEGADOM, 2 поверх</div><a href="#" class="store-link">Прокласти маршрут →</a></div>
+</div>
+
+<!-- Final CTA -->
+<div class="final-cta reveal">
+  <div class="final-cta-title">Створіть простір, який надихає</div>
+  <a href="https://wa.me/380990042222" target="_blank" class="final-cta-btn">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+    Написати в WhatsApp
+  </a>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <img src="images/logo/gabba-logo.png" alt="GABBA" class="footer-logo">
+  <div class="footer-links"><a href="#">Колекції</a><a href="#">Магазини</a><a href="#">Контакти</a></div>
+  <div class="footer-copy">&copy; 2024 GABBA. Усі права захищені.</div>
+  <a href="tel:+380990042222" class="footer-phone">+38 099 004 22 22</a>
+</footer>
+
+<!-- Sticky Bar -->
+<div class="sticky-bar">
+  <a href="https://wa.me/380990042222" target="_blank" class="sticky-btn primary">
+    <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+    WhatsApp
+  </a>
+  <a href="tel:+380990042222" class="sticky-btn outline">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:16px;height:16px"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    Зателефонувати
+  </a>
+</div>
+
+<script>
+// Loader
+window.addEventListener('load',()=>{
+  setTimeout(()=>{document.getElementById('loader').classList.add('done')},1500);
+});
+
+// Scroll reveal
+const reveals=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+},{threshold:.12});
+reveals.forEach(el=>obs.observe(el));
+
+// Collection tabs
+document.querySelectorAll('.coll-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.coll-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.coll-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
+  });
+});
+
+// Product filter
+document.querySelectorAll('.filter-pill').forEach(pill=>{
+  pill.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));
+    pill.classList.add('active');
+    const filter=pill.dataset.filter;
+    document.querySelectorAll('#productsGrid .p-card').forEach(card=>{
+      if(filter==='all'||card.dataset.cat===filter){
+        card.style.display='';
+      }else{
+        card.style.display='none';
+      }
+    });
+  });
+});
+
+// Counter animation
+const counterObs=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const el=entry.target;
+      const target=parseInt(el.dataset.target);
+      const suffix=el.dataset.suffix||'';
+      const duration=1500;
+      const start=performance.now();
+      const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(prefersReduced){el.textContent=target+suffix;counterObs.unobserve(el);return;}
+      function update(now){
+        const elapsed=now-start;
+        const progress=Math.min(elapsed/duration,1);
+        const eased=1-Math.pow(1-progress,3);
+        el.textContent=Math.round(target*eased)+suffix;
+        if(progress<1)requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+      counterObs.unobserve(el);
+    }
+  });
+},{threshold:.5});
+document.querySelectorAll('.brand-stat-num[data-target]').forEach(el=>counterObs.observe(el));
+</script>
+</body>
+</html>
