@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GABBA — Editorial Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --display:'Cormorant Garamond',serif;
+  --body:'Inter',sans-serif;
+  --bg:#FFFFFF;
+  --ink:#0E0D0B;
+  --muted:#8C857C;
+  --line:rgba(14,13,11,.08);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);font-weight:300;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;letter-spacing:.01em}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1!important;transform:none!important}}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 1.2s ease,transform 1.2s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ====== HEADER ====== */
+header{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:28px 40px;mix-blend-mode:difference;color:#fff;transition:background .3s}
+header.solid{background:rgba(255,255,255,.96);mix-blend-mode:normal;color:var(--ink);backdrop-filter:blur(20px)}
+.brand{display:flex;align-items:center}.brand img{height:30px;width:auto;display:block}
+.menu-btn{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;background:none;border:none;color:inherit;font-family:inherit}
+.menu-btn span{width:24px;height:1px;background:currentColor;display:inline-block}
+
+/* ====== HERO ====== */
+.hero{position:relative;height:100vh;min-height:640px;overflow:hidden}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-foot{position:absolute;bottom:48px;left:40px;right:40px;display:flex;justify-content:space-between;align-items:flex-end;color:#fff;z-index:2}
+.hero-foot .left h1{font-family:var(--display);font-size:clamp(46px,7.5vw,110px);font-weight:300;line-height:.95;letter-spacing:-1px}
+.hero-foot .left p{font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-top:18px;opacity:.85}
+.scroll-cue{font-size:11px;letter-spacing:3px;text-transform:uppercase;display:flex;align-items:center;gap:12px}
+.scroll-cue::before{content:'';width:48px;height:1px;background:currentColor}
+
+/* ====== INTRO STATEMENT ====== */
+.statement{padding:160px 40px;max-width:1100px;margin:0 auto;text-align:center}
+.statement p{font-family:var(--display);font-size:clamp(28px,3.6vw,48px);font-weight:300;line-height:1.35;letter-spacing:-.5px;color:var(--ink)}
+.statement em{font-style:italic;color:var(--muted)}
+
+/* ====== FOCUS ON ====== */
+.focus{padding:120px 0}
+.focus-head{padding:0 40px;margin-bottom:80px;display:flex;justify-content:space-between;align-items:flex-end;max-width:1400px;margin-left:auto;margin-right:auto}
+.focus-head .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.focus-head h2{font-family:var(--display);font-size:clamp(42px,5vw,68px);font-weight:300;letter-spacing:-1px;line-height:1;margin-top:8px}
+.focus-head .meta{font-size:13px;color:var(--muted)}
+.focus-row{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line)}
+.focus-item{position:relative;background:#fff;cursor:pointer;overflow:hidden}
+.focus-item-img{aspect-ratio:4/5;overflow:hidden}
+.focus-item-img img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s ease}
+.focus-item:hover .focus-item-img img{transform:scale(1.04)}
+.focus-item-cap{padding:40px;display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--line)}
+.focus-item-cap h3{font-family:var(--display);font-size:36px;font-weight:400;letter-spacing:.5px;line-height:1}
+.focus-item-cap small{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.discover{font-size:11px;letter-spacing:3px;text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;border-bottom:1px solid var(--ink);padding-bottom:4px}
+
+/* ====== INSPIRED PROJECTS ====== */
+.inspired{padding:140px 40px;background:#F7F5F1}
+.inspired-head{max-width:1400px;margin:0 auto 80px;text-align:center}
+.inspired-head h2{font-family:var(--display);font-size:clamp(42px,5vw,68px);font-weight:300;letter-spacing:-1px;line-height:1.05}
+.inspired-head p{font-size:14px;color:var(--muted);margin-top:16px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.6}
+.inspired-grid{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+.proj{position:relative;overflow:hidden}
+.proj img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s}
+.proj:hover img{transform:scale(1.03)}
+.proj-cap{position:absolute;left:24px;bottom:20px;color:#fff;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;text-shadow:0 1px 8px rgba(0,0,0,.4)}
+.proj.tall{grid-column:span 5;aspect-ratio:3/4}
+.proj.wide{grid-column:span 7;aspect-ratio:7/5}
+.proj.med-l{grid-column:span 7;aspect-ratio:7/4}
+.proj.med-r{grid-column:span 5;aspect-ratio:5/4}
+
+/* ====== MATERIALS ====== */
+.materials{padding:160px 40px}
+.materials .wrap{max-width:1400px;margin:0 auto}
+.materials-intro{text-align:center;max-width:680px;margin:0 auto 96px}
+.materials-intro .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:18px;display:block}
+.materials-intro h2{font-family:var(--display);font-size:clamp(36px,4.5vw,60px);font-weight:300;letter-spacing:-.5px;line-height:1.1;margin-bottom:24px}
+.materials-intro p{font-size:15px;color:var(--muted);line-height:1.7;font-weight:300}
+.materials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.material-card{display:flex;flex-direction:column;gap:20px}
+.material-card-img{aspect-ratio:1;overflow:hidden;background:#F0EDE8}
+.material-card-img img{width:100%;height:100%;object-fit:cover}
+.material-card h4{font-family:var(--display);font-size:24px;font-weight:400;letter-spacing:.5px}
+.material-card p{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* ====== SHOWROOMS ====== */
+.showrooms-block{padding:140px 40px;background:#0E0D0B;color:#fff;text-align:center}
+.showrooms-block h2{font-family:var(--display);font-size:clamp(42px,5.5vw,72px);font-weight:300;letter-spacing:-1px;line-height:1.05;margin-bottom:24px}
+.showrooms-block p{font-size:14px;opacity:.65;letter-spacing:.5px;max-width:480px;margin:0 auto 64px;line-height:1.7}
+.cities{display:flex;justify-content:center;gap:80px;flex-wrap:wrap;margin-bottom:64px}
+.city-item{display:flex;flex-direction:column;gap:6px}
+.city-item .name{font-family:var(--display);font-size:36px;font-weight:300;letter-spacing:1px}
+.city-item .meta{font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.55}
+.contact-link{font-size:12px;letter-spacing:3px;text-transform:uppercase;border-bottom:1px solid #fff;padding-bottom:4px}
+
+/* ====== FOOTER ====== */
+footer{padding:48px 40px 32px;background:#0E0D0B;color:#fff;border-top:1px solid rgba(255,255,255,.08)}
+.foot-line{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.55}
+.foot-line a{margin:0 12px}
+
+/* ====== MOBILE ====== */
+@media(max-width:880px){
+  header{padding:18px 20px}
+  .brand img{height:24px}
+  .hero{height:90vh}
+  .hero-foot{padding:0;left:20px;right:20px;bottom:32px;flex-direction:column;align-items:flex-start;gap:16px}
+  .scroll-cue{display:none}
+  .statement{padding:96px 20px}
+  .focus{padding:80px 0}
+  .focus-head,.focus-item-cap{padding-left:20px;padding-right:20px}
+  .focus-row{grid-template-columns:1fr}
+  .focus-item-cap{padding:24px 20px;flex-direction:column;align-items:flex-start;gap:12px}
+  .inspired,.materials{padding:96px 20px}
+  .inspired-grid{grid-template-columns:1fr;gap:14px}
+  .proj.tall,.proj.wide,.proj.med-l,.proj.med-r{grid-column:span 1;aspect-ratio:4/3}
+  .materials-grid{grid-template-columns:1fr;gap:36px}
+  .showrooms-block{padding:96px 20px}
+  .cities{gap:32px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="hdr">
+  <a class="brand" href="/"><img src="../images/logo/gabba-logo.png" alt="GABBA"></a>
+  <button class="menu-btn"><span></span> Menu</button>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <img src="../images/hero/hero-main.jpg" alt="" class="hero-img">
+  <div class="hero-foot">
+    <div class="left">
+      <h1>GABBA</h1>
+      <p>Italian Furniture · Since 2019</p>
+    </div>
+    <div class="scroll-cue">Scroll</div>
+  </div>
+</section>
+
+<!-- STATEMENT -->
+<section class="statement reveal">
+  <p>We believe that <em>furniture should disappear</em> into the spaces it inhabits, leaving only the feeling of being home.</p>
+</section>
+
+<!-- FOCUS ON -->
+<section class="focus">
+  <div class="focus-head reveal">
+    <div>
+      <span class="eyebrow">Focus On</span>
+      <h2>Collections</h2>
+    </div>
+    <span class="meta">2026 Edit</span>
+  </div>
+  <div class="focus-row">
+    <a class="focus-item reveal" href="#">
+      <div class="focus-item-img"><img src="../images/collections/madrid.jpg" alt="Madrid"></div>
+      <div class="focus-item-cap">
+        <div><h3>Madrid</h3><small>Mediterranean Classic · 4 pieces</small></div>
+        <span class="discover">Discover →</span>
+      </div>
+    </a>
+    <a class="focus-item reveal" href="#">
+      <div class="focus-item-img"><img src="../images/collections/montana.jpg" alt="Montana"></div>
+      <div class="focus-item-cap">
+        <div><h3>Montana</h3><small>Natural Oak · 2 pieces</small></div>
+        <span class="discover">Discover →</span>
+      </div>
+    </a>
+    <a class="focus-item reveal" href="#">
+      <div class="focus-item-img"><img src="../images/collections/luna.jpg" alt="Luna"></div>
+      <div class="focus-item-cap">
+        <div><h3>Luna</h3><small>Soft Forms · Monett</small></div>
+        <span class="discover">Discover →</span>
+      </div>
+    </a>
+    <a class="focus-item reveal" href="#">
+      <div class="focus-item-img"><img src="../images/collections/leora.jpg" alt="Leora"></div>
+      <div class="focus-item-cap">
+        <div><h3>Leora</h3><small>Refined Minimalism</small></div>
+        <span class="discover">Discover →</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- INSPIRED -->
+<section class="inspired">
+  <div class="inspired-head reveal">
+    <h2>Be Inspired</h2>
+    <p>Меблі GABBA в реальних домах, кав'ярнях та готелях — від Києва до Карпат.</p>
+  </div>
+  <div class="inspired-grid">
+    <div class="proj tall reveal"><img src="../images/hero/lifestyle-1.jpg" alt=""><span class="proj-cap">Apartment · Kyiv</span></div>
+    <div class="proj wide reveal"><img src="../images/hero/lifestyle-2.jpg" alt=""><span class="proj-cap">Villa · Kozyn</span></div>
+    <div class="proj med-l reveal"><img src="../images/hero/hero-main.jpg" alt=""><span class="proj-cap">Penthouse · Lviv</span></div>
+    <div class="proj med-r reveal"><img src="../images/hero/lifestyle-3.jpg" alt=""><span class="proj-cap">Boutique Hotel · Odesa</span></div>
+  </div>
+</section>
+
+<!-- MATERIALS -->
+<section class="materials">
+  <div class="wrap">
+    <div class="materials-intro reveal">
+      <span class="eyebrow">The World of Materials</span>
+      <h2>Кожен матеріал — це рішення.</h2>
+      <p>Шкіра, дерево, текстиль. Наш вибір починається на півночі Італії та завершується в українській майстерні. Ми не йдемо на компроміси з матеріалом — це означало б компроміс з вашим домом.</p>
+    </div>
+    <div class="materials-grid">
+      <div class="material-card reveal">
+        <div class="material-card-img"><img src="../images/products/milano-armchair.jpg" alt=""></div>
+        <h4>Italian Leather</h4>
+        <p>Шкіра Тоскани, обробка вручну. Кожен виріб має унікальний характер — і старіє з гідністю.</p>
+      </div>
+      <div class="material-card reveal">
+        <div class="material-card-img"><img src="../images/products/montana-armchair.jpg" alt=""></div>
+        <h4>Solid Oak</h4>
+        <p>Дуб з Південного Тіролю. Природна текстура, без штучних покриттів. Меблі, що дихають.</p>
+      </div>
+      <div class="material-card reveal">
+        <div class="material-card-img"><img src="../images/products/luna-armchair.jpg" alt=""></div>
+        <h4>Premium Textile</h4>
+        <p>Тканини з регіону Комо. Стійкість до зносу, природна м'якість, глибина кольору.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWROOMS -->
+<section class="showrooms-block reveal">
+  <h2>Visit Our Showrooms</h2>
+  <p>Меблі GABBA треба побачити та відчути. Запрошуємо вас до наших шоурумів — без поспіху, без зобов'язань.</p>
+  <div class="cities">
+    <div class="city-item"><span class="name">Київ</span><span class="meta">4ROOM · Велика Васильківська 100</span></div>
+    <div class="city-item"><span class="name">Львів</span><span class="meta">TRY SLONY · Чорновола 67</span></div>
+    <div class="city-item"><span class="name">Одеса</span><span class="meta">MEGADOM · Овідіопольська 3</span></div>
+  </div>
+  <a href="tel:+380990042222" class="contact-link">Contact us →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-line">
+    <span>© 2026 GABBA Ukraine</span>
+    <span><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Instagram</a></span>
+    <span>Made in Italy · Assembled in Ukraine</span>
+  </div>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');obs.unobserve(x.target)}})},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const hdr=document.getElementById('hdr');
+window.addEventListener('scroll',()=>{
+  if(window.scrollY>window.innerHeight*0.9)hdr.classList.add('solid');else hdr.classList.remove('solid');
+},{passive:true});
+</script>
+
+</body>
+</html>
