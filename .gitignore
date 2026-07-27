@@ -52,3 +52,6 @@ out/
 
 # Next.js otomatik üretir
 next-env.d.ts
+
+# Prisma üretilen istemci
+lib/generated/
