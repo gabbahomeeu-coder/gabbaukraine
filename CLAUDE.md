@@ -1,98 +1,129 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Bu dosya, Claude Code'a (claude.ai/code) bu depoda çalışırken yol gösterir.
 
-## Project Overview
+## Proje
 
-Antigravity Kit is an AI-powered design intelligence toolkit providing searchable databases of UI styles, color palettes, font pairings, chart types, and UX guidelines. It works as a skill/workflow for AI coding assistants (Claude Code, Windsurf, Cursor, etc.).
+**GABBA Ukraine** — premium mobilya markasının e-ticaret sitesi. Next.js 16 (App Router),
+TypeScript, CSS Modules. Site dili **Ukraynaca**, para birimi ₴ (hryvnia).
 
-## Search Command
+Trafik ağırlıklı olarak **Instagram/Meta reklamlarından mobil cihazlarla** geliyor.
+Bu yüzden her sayfa mobil öncelikli tasarlanır ve dönüşüme (WhatsApp/telefon/sipariş)
+odaklanır.
+
+### Hedef
+
+Bu site, şu an `www.gabbaukraine.com` adresinde çalışan **Shopify mağazasının yerini
+alacak**. Yani nihai kapsam bir vitrin değil, tam e-ticaret: sepet, ödeme, stok,
+sipariş yönetimi. Şu an sipariş akışı WhatsApp üzerinden ilerliyor.
+
+## Komutlar
 
 ```bash
-python3 src/ui-ux-pro-max/scripts/search.py "<query>" --domain <domain> [-n <max_results>]
+npm run dev      # geliştirme sunucusu (localhost:3000)
+npm run build    # üretim derlemesi — değişiklikten sonra mutlaka çalıştır
+npm start        # üretim sunucusu
+npm run lint     # eslint
 ```
 
-**Domain search:**
-- `product` - Product type recommendations (SaaS, e-commerce, portfolio)
-- `style` - UI styles (glassmorphism, minimalism, brutalism) + AI prompts and CSS keywords
-- `typography` - Font pairings with Google Fonts imports
-- `color` - Color palettes by product type
-- `landing` - Page structure and CTA strategies
-- `chart` - Chart types and library recommendations
-- `ux` - Best practices and anti-patterns
+Mobil görünümü gerçek telefonda test etmek için sunucuyu ağa aç:
+`npx next start -H 0.0.0.0` → `http://<yerel-ip>:3000`
 
-**Stack search:**
-```bash
-python3 src/ui-ux-pro-max/scripts/search.py "<query>" --stack <stack>
-```
-Available stacks: `html-tailwind` (default), `react`, `nextjs`, `astro`, `vue`, `nuxtjs`, `nuxt-ui`, `svelte`, `swiftui`, `react-native`, `flutter`, `shadcn`, `jetpack-compose`
-
-## Architecture
+## Mimari
 
 ```
-src/ui-ux-pro-max/                # Source of Truth
-├── data/                         # Canonical CSV databases
-│   ├── products.csv, styles.csv, colors.csv, typography.csv, ...
-│   └── stacks/                   # Stack-specific guidelines
-├── scripts/
-│   ├── search.py                 # CLI entry point
-│   ├── core.py                   # BM25 + regex hybrid search engine
-│   └── design_system.py          # Design system generation
-└── templates/
-    ├── base/                     # Base templates (skill-content.md, quick-reference.md)
-    └── platforms/                # Platform configs (claude.json, cursor.json, ...)
-
-cli/                              # CLI installer (uipro-cli on npm)
-├── src/
-│   ├── commands/init.ts          # Install command with template generation
-│   └── utils/template.ts         # Template rendering engine
-└── assets/                       # Bundled assets (~564KB)
-    ├── data/                     # Copy of src/ui-ux-pro-max/data/
-    ├── scripts/                  # Copy of src/ui-ux-pro-max/scripts/
-    └── templates/                # Copy of src/ui-ux-pro-max/templates/
-
-.claude/skills/ui-ux-pro-max/     # Claude Code skill (symlinks to src/)
-.factory/skills/ui-ux-pro-max/   # Droid (Factory) skill (symlinks to src/)
-.shared/ui-ux-pro-max/            # Symlink to src/ui-ux-pro-max/
-.claude-plugin/                   # Claude Marketplace publishing
+app/
+├── layout.tsx            # fontlar (Playfair + Manrope), metadata, GA + Meta Pixel
+├── page.tsx              # ana sayfa — SERVER component: JSON-LD + günlük kampanya
+├── home-client.tsx       # ana sayfa — CLIENT component: etkileşim katmanı
+├── page.module.css       # ana sayfa stilleri (mobil öncelikli)
+├── globals.css           # CSS değişkenleri: renk, tipografi, --bar-h
+├── collections/          # koleksiyon listesi + [slug] detay
+├── products/[slug]/      # ürün detay
+├── blog/ about/ contact/ faq/
+├── api/daily-deals/      # günlük kampanya uç noktası
+├── sitemap.ts robots.ts
+components/
+├── json-ld.tsx           # Organization, Product, LocalBusiness, FAQ, Breadcrumb şemaları
+└── analytics.tsx         # GA4 + Meta Pixel (env değişkeniyle aktifleşir)
+lib/
+├── catalog.ts            # ürün + koleksiyon verisi (CRM bağlanınca API'ye dönecek)
+├── daily-deals.ts        # her gün 70.000 ₴ altı 3 ürüne %20 indirim, tarih tohumlu
+└── site.ts               # iletişim, şubeler, kategoriler, yorumlar — tek kaynak
 ```
 
-The search engine uses BM25 ranking combined with regex matching. Domain auto-detection is available when `--domain` is omitted.
+**Sunucu/istemci ayrımı:** Sayfanın kendisi server component olur (JSON-LD, veri
+çekme, `revalidate`), etkileşim gerektiren kısım ayrı bir client component'e taşınır.
+Ana sayfa bu deseni izler — yeni sayfalarda da aynısını uygula.
 
-## Sync Rules
+## Tasarım sistemi
 
-**Source of Truth:** `src/ui-ux-pro-max/`
+Ana sayfa tasarımı **27 Temmuz 2026'da onaylandı**. Yeni sayfalar bu dili birebir
+takip eder; yeni yön arayışına girilmez.
 
-When modifying files:
+**Renkler** (`app/globals.css`):
 
-1. **Data & Scripts** - Edit in `src/ui-ux-pro-max/`:
-   - `data/*.csv` and `data/stacks/*.csv`
-   - `scripts/*.py`
-   - Changes automatically available via symlinks in `.claude/`, `.factory/`, `.shared/`
+| Değişken | Değer | Kullanım |
+|---|---|---|
+| `--bg` | `#FAF6F1` | sayfa zemini (krem) |
+| `--warm-bg` | `#F0EAE0` | vurgulu bölüm zemini, görsel yer tutucu |
+| `--dark` | `#201A12` | hero mesaj bloğu, editorial, final CTA, alt bar |
+| `--gold` | `#B8956A` | vurgu, eyebrow, birincil buton |
+| `--clay` | `#A4562F` | kampanya rozeti ve indirimli fiyat |
+| `--muted` / `--subtle` | `#7D7369` / `#B5AEA4` | ikincil metin |
 
-2. **Templates** - Edit in `src/ui-ux-pro-max/templates/`:
-   - `base/skill-content.md` - Common SKILL.md content
-   - `base/quick-reference.md` - Quick reference section (Claude only)
-   - `platforms/*.json` - Platform-specific configs
+**Tipografi:** Playfair Display (başlık, ürün adı) + Manrope (gövde, fiyat).
 
-3. **CLI Assets** - Run sync before publishing:
-   ```bash
-   cp -r src/ui-ux-pro-max/data/* cli/assets/data/
-   cp -r src/ui-ux-pro-max/scripts/* cli/assets/scripts/
-   cp -r src/ui-ux-pro-max/templates/* cli/assets/templates/
-   ```
+> Manrope zorunlu: Kiril + `cyrillic-ext` alt kümesini destekler, **₴ sembolü o alt
+> kümede**. Playfair'de ₴ glifi YOK — fiyatlarda asla serif kullanma, bozuk render olur.
+> Fiyat formatı `formatPrice()`: `101 582 ₴` (tutar önce, sembol sonra).
 
-4. **Reference Folders** - No manual sync needed. The CLI generates these from templates during `uipro init`.
+**Düzen kuralları:**
 
-## Prerequisites
+- **Mobil öncelikli yaz.** Temel CSS telefon içindir; `@media (min-width: 700px)` ve
+  `(min-width: 1000px)` ile büyüt. Asla tersini yapma.
+- Yatay listeler mobilde snap-scroll "rail", masaüstünde grid'e döner
+- Ürün fotoğrafları **5:3** oranında çekilmiş → kartlarda `aspect-ratio: 5/3` + `cover`
+- Köşe yarıçapı 2–3px (keskin, editoryal), buton min yükseklik 52px
+- Sabit alt bar mobilde her sayfada durur → içerik `padding-bottom: var(--bar-h)`
+- Animasyon minimum: sadece yumuşak fade-up. Efekt değil görsel kalite önceliklidir.
 
-Python 3.x (no external dependencies required)
+## Görsel envanteri — kısıtları bil
 
-## Git Workflow
+`public/images/` altında sınırlı malzeme var. **Kod yazmadan önce kullanacağın görseli
+gerçekten aç ve bak.**
 
-Never push directly to `main`. Always:
+- `categories/*.jpg` — 5 lifestyle render, 1000×750, watermarksız, **en iyi malzeme**
+- `products/*.jpg` — 12 ürün, beyaz zeminde cutout, 5:3
+- `hero/hero-main.jpg` — ⚠️ üzerinde GABBA watermark'ı var, **kullanma**
+- `luna-armchair`, `terra-dresser`, `galante-bed`, `hero/lifestyle-1..3` — 620×372 düşük
+  çözünürlük, tam ekran kullanma, sadece küçük kartlarda
 
-1. Create a new branch: `git checkout -b feat/...` or `fix/...`
-2. Commit changes
-3. Push branch: `git push -u origin <branch>`
-4. Create PR: `gh pr create`
+## Yayın akışı
+
+```
+MacBook → GitHub (gabbahomeeu-coder/gabbaukraine, public) → Vercel (gabbaukraine)
+```
+
+- Feature branch → **preview** deployment (Vercel giriş koruması var)
+- `main` → **production** → https://gabbaukraine.vercel.app
+- ⚠️ `www.gabbaukraine.com` hâlâ **Shopify'a** bağlı. Vercel'e bağlı değil.
+  Koddaki `https://www.gabbaukraine.com` adresleri (metadata, sitemap, JSON-LD)
+  geçiş anında doğrulanmalı.
+
+## Git kuralları
+
+`main`'e asla doğrudan push yapma:
+
+1. Dal aç: `git checkout -b feat/...` veya `fix/...`
+2. Commit et
+3. `git push -u origin <branch>`
+4. `gh pr create`
+
+## Çalışma şekli
+
+- **Her adımda önce ne yapacağını açıkla, onay bekle, sonra uygula.** Onaysız kod
+  yazma, dosya oluşturma veya komut çalıştırma yok.
+- Tasarım işlerinde çok sayıda alternatif üretme — tek iyi çözümü kur, üstünde birlikte
+  iyileştir.
+- Değişiklikten sonra `npm run build` çalıştır ve mobil görünümü gerçekten kontrol et.

@@ -47,7 +47,8 @@ out/
 .env.local
 .env.*.local
 
-# Local settings
-.claude/settings.local.json
-.claude/session-state/
-ui-ux-pro-max-website/*
+# Local settings — Claude Code ayarları ve skill'leri yerelde kalır
+.claude/
+
+# Next.js otomatik üretir
+next-env.d.ts
