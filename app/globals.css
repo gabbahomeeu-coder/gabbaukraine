@@ -11,8 +11,11 @@
   --subtle: #B5AEA4;
   --warm-bg: #F0EAE0;
   --green: #25D366;
-  --serif: 'Playfair Display', Georgia, serif;
-  --sans: 'DM Sans', system-ui, sans-serif;
+  --serif: var(--font-serif), 'Playfair Display', Georgia, serif;
+  --sans: var(--font-sans), 'Manrope', system-ui, sans-serif;
+
+  /* mobil sticky bar yüksekliği + iPhone alt güvenli alan */
+  --bar-h: calc(62px + env(safe-area-inset-bottom, 0px));
 }
 
 html {

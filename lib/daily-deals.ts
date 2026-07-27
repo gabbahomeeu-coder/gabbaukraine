@@ -76,5 +76,5 @@ export function getDailyDeals(date: Date = new Date()): DailyDeal[] {
 }
 
 export function formatPrice(price: number): string {
-  return "₴" + price.toLocaleString("uk-UA");
+  return price.toLocaleString("uk-UA").replace(/ /g, " ") + " ₴";
 }

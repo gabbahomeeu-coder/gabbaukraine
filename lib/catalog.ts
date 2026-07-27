@@ -5,7 +5,8 @@
 
 export type Product = {
   slug: string;
-  name: string;
+  name: string;        // Ukraynaca (web)
+  nameEn: string;      // İngilizce (commercial invoice, export)
   collection: string;
   collectionSlug: string;
   brand: "gabba" | "monett";
@@ -74,6 +75,7 @@ export const products: Product[] = [
   {
     slug: "madrid-sofa",
     name: "Диван Madrid",
+    nameEn: "Madrid Sofa",
     collection: "Madrid",
     collectionSlug: "madrid",
     brand: "gabba",
@@ -88,6 +90,7 @@ export const products: Product[] = [
   {
     slug: "milano-armchair",
     name: "Крісло Milano",
+    nameEn: "Milano Armchair",
     collection: "Milano",
     collectionSlug: "madrid",
     brand: "gabba",
@@ -102,6 +105,7 @@ export const products: Product[] = [
   {
     slug: "milano-sofa",
     name: "Диван Milano",
+    nameEn: "Milano Sofa",
     collection: "Milano",
     collectionSlug: "madrid",
     brand: "gabba",
@@ -116,6 +120,7 @@ export const products: Product[] = [
   {
     slug: "montana-armchair",
     name: "Крісло Montana Lux",
+    nameEn: "Montana Lux Armchair",
     collection: "Montana",
     collectionSlug: "montana",
     brand: "gabba",
@@ -130,6 +135,7 @@ export const products: Product[] = [
   {
     slug: "genova-chair",
     name: "Стілець Genova",
+    nameEn: "Genova Chair",
     collection: "Montana",
     collectionSlug: "montana",
     brand: "gabba",
@@ -144,6 +150,7 @@ export const products: Product[] = [
   {
     slug: "lyon-tv-unit",
     name: "TV Юніт Lyon",
+    nameEn: "Lyon TV Unit",
     collection: "Lyon",
     collectionSlug: "madrid",
     brand: "gabba",
@@ -158,6 +165,7 @@ export const products: Product[] = [
   {
     slug: "madrid-console",
     name: "Консоль Madrid",
+    nameEn: "Madrid Console",
     collection: "Madrid",
     collectionSlug: "madrid",
     brand: "gabba",
@@ -172,6 +180,7 @@ export const products: Product[] = [
   {
     slug: "madrid-table",
     name: "Стіл Madrid",
+    nameEn: "Madrid Dining Table",
     collection: "Madrid",
     collectionSlug: "madrid",
     brand: "gabba",
@@ -186,6 +195,7 @@ export const products: Product[] = [
   {
     slug: "galante-bed",
     name: "Ліжко Galante",
+    nameEn: "Galante Bed",
     collection: "Galante",
     collectionSlug: "madrid",
     brand: "gabba",
@@ -200,6 +210,7 @@ export const products: Product[] = [
   {
     slug: "luna-armchair",
     name: "Крісло Luna",
+    nameEn: "Luna Armchair",
     collection: "Luna",
     collectionSlug: "luna",
     brand: "monett",
@@ -214,6 +225,7 @@ export const products: Product[] = [
   {
     slug: "terra-dresser",
     name: "Комод Terra",
+    nameEn: "Terra Dresser",
     collection: "Terra",
     collectionSlug: "montana",
     brand: "gabba",
@@ -228,6 +240,7 @@ export const products: Product[] = [
   {
     slug: "terra-table",
     name: "Стіл Terra",
+    nameEn: "Terra Dining Table",
     collection: "Terra",
     collectionSlug: "montana",
     brand: "gabba",
@@ -261,6 +274,7 @@ export function getProductsByCollection(collectionSlug: string): Product[] {
   return products.filter((p) => p.collectionSlug === collectionSlug);
 }
 
+/** Ukrayna yazım standardı: tutar önce, sembol sonra — "101 582 ₴" */
 export function formatPrice(price: number): string {
-  return "₴" + price.toLocaleString("uk-UA");
+  return price.toLocaleString("uk-UA").replace(/ /g, " ") + " ₴";
 }

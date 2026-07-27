@@ -1,449 +1,984 @@
-/* ========== LOADER ========== */
-.loader {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: #0E0C08;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
-}
-.loaderDone { opacity: 0; visibility: hidden; pointer-events: none; }
-.loaderLogo {
-  height: 96px;
-  width: auto;
-  opacity: 0;
-  animation: loaderIn 1.2s ease 0.3s forwards;
-}
-.loaderLogoWrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-.loaderLine {
-  width: 100%;
-  height: 1px;
-  background: var(--gold);
-  transform: scaleX(0);
-  transform-origin: center;
-  animation: loaderLine 1.2s ease 0.8s forwards;
-}
-@keyframes loaderIn {
-  0% { opacity: 0; transform: translateY(12px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-@keyframes loaderLine {
-  to { transform: scaleX(1); }
+/* ══════════════════════════════════════════════════════════════
+   GABBA — ana sayfa
+   Mobil öncelikli: temel stiller telefon içindir,
+   büyük ekran kuralları en altta @media ile eklenir.
+   ══════════════════════════════════════════════════════════════ */
+
+.page {
+  --line: rgba(32, 26, 18, 0.09);
+  --pad: 20px;
+  --clay: #A4562F;
+  padding-bottom: calc(var(--bar-h) + 8px);
+  overflow-x: hidden;
 }
 
-/* ========== HEADER ========== */
+/* ── ortak: yumuşak beliriş ─────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.revealIn {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────── */
 .header {
   position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 200;
-  padding: 14px 16px;
+  inset: 0 0 auto 0;
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: transparent;
-  transition: background 0.35s ease, box-shadow 0.35s ease;
+  padding: 14px var(--pad);
+  padding-top: calc(14px + env(safe-area-inset-top, 0px));
+  transition: background 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease;
 }
-.headerScrolled {
-  background: rgba(250, 246, 241, 0.96);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+.headerSolid {
+  background: rgba(250, 246, 241, 0.92);
+  backdrop-filter: saturate(140%) blur(12px);
+  -webkit-backdrop-filter: saturate(140%) blur(12px);
+  box-shadow: 0 1px 0 var(--line);
+  padding-top: calc(10px + env(safe-area-inset-top, 0px));
+  padding-bottom: 10px;
 }
-.headerLogo {
+.headerLogo img {
   height: 24px;
   width: auto;
-  filter: brightness(10);
   transition: filter 0.35s ease;
+  filter: brightness(0) invert(1);
 }
-.headerScrolled .headerLogo { filter: none; }
-.headerRight { display: flex; gap: 12px; align-items: center; }
+.headerSolid .headerLogo img {
+  filter: none;
+}
+.headerActions {
+  display: flex;
+  gap: 8px;
+}
 .headerIcon {
-  width: 44px; height: 44px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 50%;
-  color: rgba(255, 255, 255, 0.8);
-  transition: color 0.35s ease;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  color: #fff;
+  filter: drop-shadow(0 1px 6px rgba(24, 19, 13, 0.45));
+  transition: color 0.35s ease, filter 0.35s ease;
 }
-.headerScrolled .headerIcon { color: var(--text); }
+.headerSolid .headerIcon {
+  color: var(--dark);
+  filter: none;
+}
 
-/* ========== HERO ========== */
-.hero { position: relative; margin-top: 0; }
-.heroImage {
-  width: 100%; height: 70vh;
-  object-fit: cover; display: block;
+/* ── HERO ───────────────────────────────────────────────────── */
+/* Mobil: görsel üstte, mesaj altta koyu blokta.
+   Yatay fotoğrafı dikey ekrana esnetmeden gösterir,
+   metin %100 okunur ve CTA ilk ekranda kalır. */
+.hero {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  background: var(--dark);
 }
-.heroOverlay {
-  position: absolute; top: 0; left: 0; right: 0; height: 70vh;
-  background: linear-gradient(180deg, rgba(32,26,18,0.15) 0%, transparent 30%, rgba(32,26,18,0.25) 100%);
-}
-.heroCard {
+.heroMedia {
   position: relative;
-  margin: -44px 16px 0;
-  background: var(--bg);
-  border-radius: 20px;
-  padding: 28px 24px;
-  box-shadow: 0 -8px 40px rgba(0,0,0,0.08);
-  z-index: 2;
+  flex: 0 0 auto;
+  height: 36svh;
+  min-height: 240px;
 }
-.heroTagline {
-  font-size: 10px; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--gold);
-  margin-bottom: 10px; font-weight: 500;
+.heroImg {
+  object-fit: cover;
+  object-position: 54% 58%;
+}
+.heroScrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(24, 19, 13, 0.5) 0%,
+    rgba(24, 19, 13, 0.06) 32%,
+    rgba(24, 19, 13, 0) 62%,
+    rgba(32, 26, 18, 0.55) 90%,
+    var(--dark) 100%
+  );
+}
+.heroBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  /* alt bar CTA'ları örtmesin */
+  padding: 26px var(--pad) calc(22px + var(--bar-h));
+  color: #fff;
+}
+.heroEyebrow {
+  font-size: 10.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
 }
 .heroTitle {
-  font-family: var(--font-serif, var(--serif));
-  font-weight: 500;
-  font-size: clamp(24px, 6.5vw, 34px);
-  line-height: 1.2; margin-bottom: 10px; letter-spacing: -0.3px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(28px, 7.9vw, 42px);
+  line-height: 1.14;
+  letter-spacing: -0.015em;
+  margin-bottom: 12px;
+  text-wrap: balance;
 }
-.heroDesc {
-  font-size: 14px; color: var(--muted);
-  line-height: 1.65; font-weight: 300;
+.heroText {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 34ch;
+  margin-bottom: 20px;
+}
+.heroCtas {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.heroProof {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.7);
+}
+.heroStars {
+  display: inline-flex;
+  gap: 1px;
+  color: var(--gold);
 }
 
-/* ========== TRUST BAR ========== */
-.trustDark {
-  background: var(--dark);
-  padding: 18px 16px;
-  display: flex; gap: 24px;
-  overflow-x: auto; scrollbar-width: none;
-  margin-top: 24px;
+/* ── butonlar ───────────────────────────────────────────────── */
+.btnPrimary,
+.btnGhost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 0 20px;
+  border-radius: 2px;
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
-.trustDark::-webkit-scrollbar { display: none; }
+.btnPrimary {
+  flex: 1 1 auto;
+  background: var(--gold);
+  color: #fff;
+  box-shadow: 0 10px 26px -14px rgba(184, 149, 106, 0.9);
+}
+.btnPrimary:active {
+  background: #a5835a;
+}
+.btnGhost {
+  flex: 0 0 auto;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(4px);
+}
+
+/* ── ГАРАНТІЇ şeridi ────────────────────────────────────────── */
+.trust {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border-bottom: 1px solid var(--line);
+}
 .trustItem {
-  flex-shrink: 0;
-  display: flex; align-items: center; gap: 8px;
-  font-size: 12px; color: rgba(255,255,255,0.7);
-  white-space: nowrap; font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 15px 14px;
+  background: var(--bg);
+  font-size: 11.5px;
+  letter-spacing: 0.01em;
+  color: var(--text);
+}
+.trustIcon {
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  flex: 0 0 auto;
 }
 
-/* ========== SECTION ========== */
-.section { padding: 40px 16px 0; }
+/* ── bölüm başlıkları ───────────────────────────────────────── */
+.sectionHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 52px var(--pad) 20px;
+}
+.eyebrow {
+  font-size: 10.5px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 9px;
+}
 .sectionTitle {
-  font-family: var(--font-serif, var(--serif));
-  font-weight: 500;
-  font-size: clamp(22px, 6vw, 30px);
-  margin-bottom: 16px; letter-spacing: -0.3px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(24px, 6.6vw, 34px);
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+}
+.sectionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--muted);
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
 }
 
-/* ========== CATEGORIES ========== */
+/* ── yatay kaydırma rayı ────────────────────────────────────── */
+.rail {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--pad);
+  padding: 2px var(--pad) 6px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+.rail > * {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+}
+
+/* ── ПРОПОЗИЦІЯ ДНЯ ─────────────────────────────────────────── */
+.deals {
+  margin-top: 44px;
+  padding: 28px 0 30px;
+  background: var(--warm-bg);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.dealsHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 var(--pad) 18px;
+}
+.dealsEyebrow {
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: 8px;
+}
+.dealsTitle {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(24px, 6.6vw, 34px);
+  line-height: 1.16;
+}
+.dealsTimer {
+  text-align: right;
+  flex: 0 0 auto;
+}
+.dealsTimerLabel {
+  display: block;
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 3px;
+}
+.dealClock {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  color: var(--dark);
+}
+.dealCard {
+  width: 76vw;
+  max-width: 300px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+/* ürün fotoğrafları 5:3 çekilmiş — aynı oranı kullanınca
+   ne kırpma ne de beyaz boşluk oluşuyor */
+.dealMedia {
+  position: relative;
+  aspect-ratio: 5 / 3;
+  background: #fff;
+}
+.dealImg {
+  object-fit: cover;
+  /* katalog fotoğraflarında ürün kadrajın ortasında küçük kalıyor —
+     hafif yakınlaştırma ürünü kartta hak ettiği ağırlığa getiriyor */
+  transform: scale(1.1);
+}
+.dealBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  background: var(--clay);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 4px 9px;
+  border-radius: 2px;
+}
+.dealInfo {
+  padding: 14px 15px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.dealPrices {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  margin-top: 2px;
+}
+/* fiyatlar sans: ₴ glifi serif fontta yok, ayrıca rakamlar daha net okunur */
+.dealNew {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--clay);
+}
+.dealOld {
+  font-size: 12.5px;
+  color: var(--subtle);
+  text-decoration: line-through;
+}
+
+/* ── kart ortak parçaları ───────────────────────────────────── */
+.cardCollection {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.cardName {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.3;
+  color: var(--dark);
+}
+.cardCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 10px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--dark);
+}
+
+/* ── КАТЕГОРІЇ ──────────────────────────────────────────────── */
 .catGrid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 10px; padding: 0 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 var(--pad);
 }
 .catCard {
-  position: relative; border-radius: 14px; overflow: hidden;
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: 3px;
+  overflow: hidden;
 }
-.catImage { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
-.catFull { grid-column: span 2; }
-.catFull .catImage { aspect-ratio: 2/1; }
-.catOverlay {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 12px 14px;
-  background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
-  color: #fff; font-size: 13px; font-weight: 500;
+.catWide {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 9;
+}
+.catLink {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.catImg {
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.catCard:active .catImg {
+  transform: scale(1.03);
+}
+.catScrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(24, 19, 13, 0) 34%,
+    rgba(24, 19, 13, 0.3) 62%,
+    rgba(24, 19, 13, 0.82) 100%
+  );
+}
+.catName {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 13px;
+  color: #fff;
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 1.25;
 }
 
-/* ========== COLLECTIONS ========== */
-.collHeader {
-  display: flex; align-items: center;
-  justify-content: space-between; flex-wrap: wrap; gap: 10px;
+/* ── ürün kartları ──────────────────────────────────────────── */
+.prodCard {
+  width: 64vw;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
 }
-.collFilters { display: flex; gap: 6px; }
-.collFilter {
-  padding: 6px 14px; border-radius: 50px;
-  font-size: 11px; font-weight: 500;
-  border: 1px solid rgba(0,0,0,0.1);
-  background: var(--card); color: var(--text);
-  cursor: pointer; transition: all 0.2s ease;
-  white-space: nowrap; min-height: 32px;
-}
-.collFilterActive { background: var(--text); color: #fff; border-color: var(--text); }
-.collFilterSoon { opacity: 0.45; cursor: default; }
-.collEmpty {
-  padding: 40px 16px; text-align: center;
-  font-size: 13px; color: var(--muted); font-weight: 300;
-}
-.collScroll {
-  display: flex; gap: 14px;
-  overflow-x: auto; scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-  padding: 0 16px 8px;
-}
-.collScroll::-webkit-scrollbar { display: none; }
-.collCard {
-  flex-shrink: 0; width: 80vw; max-width: 320px;
-  scroll-snap-align: start;
-  background: var(--card); border-radius: 16px;
+.prodMedia {
+  position: relative;
+  aspect-ratio: 5 / 3;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 3px;
   overflow: hidden;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-  transition: transform 0.3s ease;
 }
-.collCard:active { transform: scale(0.98); }
-.collCardImage {
-  width: 100%; aspect-ratio: 4/3;
-  object-fit: cover; display: block;
+.prodImg {
+  object-fit: cover;
+  transform: scale(1.1);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.collInfo { padding: 16px; }
-.collLabel {
-  font-size: 9px; text-transform: uppercase;
-  letter-spacing: 1.5px; color: var(--gold);
-  font-weight: 500; margin-bottom: 4px;
+.prodCard:active .prodImg {
+  transform: scale(1.16);
+}
+.prodInfo {
+  padding: 12px 2px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.prodBottom {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 3px;
+}
+.prodPrice {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--dark);
+}
+.prodStock {
+  font-size: 10.5px;
+  color: #5c7a52;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* ── ЕДИТОРІАЛ ──────────────────────────────────────────────── */
+.editorial {
+  margin-top: 56px;
+  background: var(--dark);
+  color: #f3ece2;
+}
+.editorialMedia {
+  position: relative;
+  aspect-ratio: 4 / 3;
+}
+.editorialImg {
+  object-fit: cover;
+}
+.editorialBody {
+  padding: 30px var(--pad) 36px;
+}
+.editorialTitle {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(24px, 6.6vw, 34px);
+  line-height: 1.2;
+  margin-bottom: 14px;
+  text-wrap: balance;
+}
+.editorialText {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(243, 236, 226, 0.7);
+  max-width: 46ch;
+}
+.editorialStats {
+  display: flex;
+  gap: 28px;
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(243, 236, 226, 0.14);
+}
+.statNum {
+  display: block;
+  font-family: var(--serif);
+  font-size: 26px;
+  color: var(--gold);
+  line-height: 1.1;
+}
+.statLabel {
+  display: block;
+  margin-top: 4px;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(243, 236, 226, 0.55);
+}
+
+/* ── КОЛЕКЦІЇ ───────────────────────────────────────────────── */
+.collCard {
+  width: 72vw;
+  max-width: 290px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.collMedia {
+  position: relative;
+  aspect-ratio: 1 / 1;
+}
+.collImg {
+  object-fit: cover;
+}
+.collInfo {
+  padding: 14px 15px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
 }
 .collName {
-  font-family: var(--font-serif, var(--serif));
-  font-weight: 500; font-size: 18px; margin-bottom: 4px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 19px;
+  color: var(--dark);
 }
 .collDesc {
-  font-size: 12px; color: var(--muted);
-  line-height: 1.5; margin-bottom: 10px; font-weight: 300;
-}
-.collLink { font-size: 12px; color: var(--gold); font-weight: 500; }
-
-/* ========== MASONRY PRODUCTS ========== */
-.masonry {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 10px; padding: 0 16px;
-}
-.mCard {
-  background: var(--card); border-radius: 14px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  box-shadow: 0 1px 10px rgba(0,0,0,0.04);
-  transition: transform 0.2s ease;
-  display: block; color: inherit; text-decoration: none;
-}
-.mCard:active { transform: scale(0.98); }
-.mCardVertical .mCardImage { aspect-ratio: 3/4; }
-.mCardHorizontal { grid-column: span 2; }
-.mCardHorizontal .mCardImage { aspect-ratio: 16/9; }
-.mCardImage {
-  width: 100%; object-fit: cover; display: block;
-}
-.mInfo { padding: 12px; }
-.mBadge {
-  display: inline-block; font-size: 9px;
-  text-transform: uppercase; letter-spacing: 1px;
-  color: var(--gold); background: var(--gold-light);
-  padding: 3px 8px; border-radius: 20px;
-  margin-bottom: 5px; font-weight: 500;
-}
-.mStock {
-  display: inline-block; font-size: 8px;
-  letter-spacing: 0.5px; color: #16a34a;
-  background: rgba(22,163,74,0.08);
-  padding: 2px 6px; border-radius: 10px;
-  margin-left: 4px; font-weight: 500;
-}
-.mName {
-  font-family: var(--font-serif, var(--serif));
-  font-size: 14px; margin-bottom: 3px;
-  font-weight: 500; line-height: 1.3;
-}
-.mCardHorizontal .mName { font-size: 16px; }
-.mPrice { font-size: 13px; color: var(--muted); font-weight: 300; }
-.newBadge {
-  font-size: 9px; text-transform: uppercase;
-  letter-spacing: 1.5px; color: #d97706;
-  font-weight: 600; margin-bottom: 4px; display: inline-block;
 }
 
-/* ========== FILTER ROW ========== */
-.filterRow {
-  display: flex; gap: 8px;
-  overflow-x: auto; scrollbar-width: none;
-  padding: 0 16px 16px;
-}
-.filterRow::-webkit-scrollbar { display: none; }
-.filterPill {
-  flex-shrink: 0; padding: 8px 18px;
-  border-radius: 50px; font-size: 12px; font-weight: 500;
-  border: 1px solid rgba(0,0,0,0.1);
-  background: var(--card); color: var(--text);
-  white-space: nowrap; min-height: 36px;
-  cursor: pointer; transition: all 0.2s ease;
-}
-.filterPillActive { background: var(--text); color: #fff; border-color: var(--text); }
-
-/* ========== REVIEWS ========== */
-.reviewsScroll {
-  display: flex; gap: 14px;
-  overflow-x: auto; scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-  padding: 0 16px 8px;
-}
-.reviewsScroll::-webkit-scrollbar { display: none; }
+/* ── ВІДГУКИ ────────────────────────────────────────────────── */
 .reviewCard {
-  flex-shrink: 0; width: 82vw; max-width: 320px;
-  scroll-snap-align: start;
-  background: var(--card); border-radius: 16px;
-  padding: 24px 20px;
-  box-shadow: 0 2px 14px rgba(0,0,0,0.04);
+  width: 78vw;
+  max-width: 320px;
+  padding: 20px 18px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
 }
-.reviewStars { color: var(--gold); font-size: 14px; letter-spacing: 2px; margin-bottom: 12px; }
-.reviewText {
-  font-size: 13px; color: var(--text);
-  line-height: 1.65; margin-bottom: 16px;
-  font-weight: 300; font-style: italic;
-}
-.reviewAuthor { font-size: 12px; font-weight: 500; }
-.reviewCity { font-size: 11px; color: var(--muted); font-weight: 300; }
-
-/* ========== BRAND STORY ========== */
-.brandDark {
-  background: var(--dark); position: relative;
-  padding: 56px 24px; text-align: center; overflow: hidden;
-}
-.brandDarkBg {
-  position: absolute; inset: 0; opacity: 0.12;
-}
-.brandDarkBgImg {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-}
-.brandContent { position: relative; z-index: 2; }
-.brandLogo {
-  height: 32px; width: auto;
-  margin: 0 auto 12px; filter: brightness(10);
-}
-.brandTagline {
-  font-family: var(--font-serif, var(--serif));
-  font-size: 16px; letter-spacing: 3px;
-  margin-bottom: 14px; font-weight: 400; color: var(--gold);
-}
-.brandText {
-  font-size: 13px; color: rgba(255,255,255,0.55);
-  line-height: 1.7; margin-bottom: 28px; font-weight: 300;
-  max-width: 340px; margin-left: auto; margin-right: auto;
-}
-.brandStats { display: flex; justify-content: space-around; }
-.brandStatNum {
-  font-family: var(--font-serif, var(--serif));
-  font-size: clamp(28px, 7vw, 36px);
-  color: var(--gold); font-weight: 500;
-}
-.brandStatLabel {
-  font-size: 10px; color: rgba(255,255,255,0.4);
-  text-transform: uppercase; letter-spacing: 1px;
-  margin-top: 2px; font-weight: 300;
-}
-
-/* ========== ASSURANCE ========== */
-.assurance {
-  padding: 32px 16px;
-  display: flex; flex-direction: column; gap: 10px;
-}
-.assureCard {
-  background: var(--card); border-radius: 14px;
-  padding: 18px; display: flex; gap: 14px;
-  box-shadow: 0 1px 8px rgba(0,0,0,0.03);
-}
-.assureIcon {
-  flex-shrink: 0; width: 36px; height: 36px;
-  background: var(--gold-light); border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
+.reviewStars {
+  display: flex;
+  gap: 2px;
   color: var(--gold);
+  margin-bottom: 12px;
 }
-.assureTitle { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
-.assureText { font-size: 12px; color: var(--muted); line-height: 1.5; font-weight: 300; }
+.reviewText {
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 1.62;
+  color: var(--text);
+  margin-bottom: 16px;
+  flex: 1;
+}
+.reviewMeta {
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+}
+.reviewAuthor {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dark);
+}
+.reviewCity {
+  display: block;
+  margin-top: 2px;
+  font-size: 11.5px;
+  color: var(--subtle);
+}
 
-/* ========== STORES ========== */
+/* ── ШОУРУМИ ────────────────────────────────────────────────── */
 .stores {
-  padding: 0 16px 32px;
-  display: flex; flex-direction: column; gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 var(--pad);
+}
+.storeItem {
+  display: flex;
 }
 .storeCard {
-  background: var(--card); border-radius: 14px;
-  padding: 16px 18px;
-  box-shadow: 0 1px 8px rgba(0,0,0,0.03);
-  display: flex; align-items: center; gap: 14px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 15px 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 3px;
 }
-.storePin {
-  flex-shrink: 0; width: 36px; height: 36px;
-  background: var(--gold-light); border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
+.storeText {
+  flex: 1;
+  min-width: 0;
+}
+.storeRoute {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 0 auto;
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
+  color: var(--gold);
+  white-space: nowrap;
+}
+.storeIcon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--gold-light);
   color: var(--gold);
 }
-.storeCity { font-weight: 500; font-size: 14px; margin-bottom: 2px; }
-.storeAddress { font-size: 12px; color: var(--muted); font-weight: 300; }
+.storeCity {
+  display: block;
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--dark);
+}
+.storeAddr {
+  display: block;
+  margin-top: 2px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
 
-/* ========== FINAL CTA ========== */
-.finalDark {
-  background: var(--dark); padding: 48px 24px; text-align: center;
+/* ── ФІНАЛЬНИЙ CTA ──────────────────────────────────────────── */
+.finalCta {
+  margin-top: 56px;
+  padding: 52px var(--pad) 56px;
+  background: var(--dark);
+  color: #f3ece2;
+  text-align: center;
+}
+.finalEyebrow {
+  font-size: 10.5px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
 }
 .finalTitle {
-  font-family: var(--font-serif, var(--serif));
-  font-size: clamp(22px, 6.5vw, 30px);
-  font-weight: 500; line-height: 1.25; color: #fff; margin-bottom: 10px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(25px, 7vw, 36px);
+  line-height: 1.2;
+  margin-bottom: 12px;
+  text-wrap: balance;
 }
-.finalDesc {
-  font-size: 13px; color: rgba(255,255,255,0.5);
-  margin-bottom: 24px; font-weight: 300;
+.finalText {
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(243, 236, 226, 0.68);
+  max-width: 36ch;
+  margin: 0 auto 26px;
 }
-.whatsappBtn {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--green); color: #fff;
-  padding: 14px 32px; border-radius: 50px;
-  font-size: 14px; font-weight: 500; min-height: 48px;
-  transition: transform 0.15s ease;
+.btnWhatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 54px;
+  width: 100%;
+  max-width: 340px;
+  padding: 0 22px;
+  border-radius: 2px;
+  background: var(--gold);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 14px 30px -18px rgba(184, 149, 106, 0.95);
 }
-.whatsappBtn:active { transform: scale(0.97); }
+.finalPhone {
+  display: block;
+  margin-top: 18px;
+  font-family: var(--serif);
+  font-size: 17px;
+  color: var(--gold);
+}
 
-/* ========== FOOTER ========== */
+/* ── FOOTER ─────────────────────────────────────────────────── */
 .footer {
-  padding: 28px 16px;
-  padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
-  text-align: center; background: var(--dark);
+  padding: 36px var(--pad) 34px;
+  text-align: center;
+  border-top: 1px solid var(--line);
 }
 .footerLogo {
-  height: 20px; width: auto;
-  margin: 0 auto 10px; filter: brightness(10); opacity: 0.35;
+  height: 22px;
+  width: auto;
+  margin: 0 auto 20px;
+  opacity: 0.85;
 }
-.footerLinks {
-  display: flex; justify-content: center; gap: 20px; margin-bottom: 10px;
+.footerNav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 20px;
+  margin-bottom: 18px;
+  font-size: 13px;
+  color: var(--muted);
 }
-.footerLink { font-size: 12px; color: rgba(255,255,255,0.4); font-weight: 300; }
-.footerCopy { font-size: 10px; color: rgba(255,255,255,0.25); font-weight: 300; }
-.footerPhone {
-  display: block; font-size: 12px;
-  color: rgba(255,255,255,0.35); margin-top: 4px; font-weight: 300;
+.footerIg {
+  display: inline-block;
+  font-size: 12.5px;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.footerCopy {
+  font-size: 11px;
+  color: var(--subtle);
+  letter-spacing: 0.02em;
 }
 
-/* ========== STICKY BAR ========== */
+/* ── МОБІЛЬНА ПАНЕЛЬ ────────────────────────────────────────── */
 .stickyBar {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  z-index: 200;
-  display: flex; gap: 8px;
-  padding: 10px 16px;
-  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-  background: rgba(250, 246, 241, 0.96);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  display: flex;
+  gap: 8px;
+  padding: 9px 12px;
+  padding-bottom: calc(9px + env(safe-area-inset-bottom, 0px));
+  background: rgba(28, 23, 16, 0.94);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border-top: 1px solid rgba(243, 236, 226, 0.1);
 }
-.stickyBtn {
+.stickyPrimary {
   flex: 1;
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 14px; border-radius: 50px;
-  font-size: 13px; font-weight: 500; min-height: 48px;
-  transition: transform 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  border-radius: 2px;
+  background: var(--gold);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
-.stickyBtn:active { transform: scale(0.97); }
-.stickyPrimary { background: var(--text); color: #fff; }
-.stickySecondary { border: 1px solid rgba(0,0,0,0.12); color: var(--text); }
+.stickySecondary {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  min-height: 46px;
+  border-radius: 2px;
+  border: 1px solid rgba(243, 236, 226, 0.24);
+  color: #f3ece2;
+}
 
-/* ========== ANIMATIONS ========== */
-.reveal {
-  opacity: 0; transform: translateY(16px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+/* ══════════════════════════════════════════════════════════════
+   TABLET  ≥ 700px
+   ══════════════════════════════════════════════════════════════ */
+@media (min-width: 700px) {
+  .page {
+    --pad: 40px;
+  }
+  .trust {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .trustItem {
+    justify-content: center;
+    font-size: 12px;
+  }
+  .catWide {
+    aspect-ratio: 21 / 9;
+  }
+  .heroMedia {
+    height: 54svh;
+  }
+  .heroText {
+    font-size: 16px;
+  }
+  .heroCtas {
+    gap: 12px;
+  }
+  .btnPrimary {
+    flex: 0 0 auto;
+    padding: 0 34px;
+  }
+  .btnGhost {
+    padding: 0 26px;
+  }
 }
-.revealVisible { opacity: 1; transform: translateY(0); }
+
+/* ══════════════════════════════════════════════════════════════
+   MASAÜSTÜ  ≥ 1000px
+   ══════════════════════════════════════════════════════════════ */
+@media (min-width: 1000px) {
+  .page {
+    --pad: 64px;
+    padding-bottom: 0;
+  }
+
+  /* geniş ekranda hero tekrar tam kadraj: metin görselin üstünde */
+  .hero {
+    display: block;
+    position: relative;
+    min-height: 88vh;
+  }
+  .heroMedia {
+    position: absolute;
+    inset: 0;
+    height: auto;
+  }
+  /* geniş ekranda metin sol tarafta duruyor: dikey karartmaya
+     soldan yatay bir gradyan ekleyerek okunabilirliği garantiliyoruz */
+  .heroScrim {
+    background: linear-gradient(
+        90deg,
+        rgba(20, 16, 11, 0.72) 0%,
+        rgba(20, 16, 11, 0.34) 34%,
+        rgba(20, 16, 11, 0) 58%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(24, 19, 13, 0.45) 0%,
+        rgba(24, 19, 13, 0.06) 30%,
+        rgba(24, 19, 13, 0.24) 58%,
+        rgba(24, 19, 13, 0.78) 100%
+      );
+  }
+  .heroBody {
+    position: relative;
+    min-height: 88vh;
+    justify-content: flex-end;
+    padding-bottom: 72px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .heroTitle {
+    font-size: 54px;
+    max-width: 16ch;
+  }
+
+  .sectionHead {
+    padding-top: 84px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* raylar masaüstünde ızgaraya dönüşür */
+  .rail {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    overflow: visible;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-left: var(--pad);
+    padding-right: var(--pad);
+  }
+  .dealCard,
+  .prodCard,
+  .collCard,
+  .reviewCard {
+    width: auto;
+    max-width: none;
+  }
+  /* üçlü içerikler (fırsatlar, koleksiyonlar, yorumlar) 3 sütuna oturur */
+  .deals .rail,
+  .railTrio {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .catGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .catWide {
+    grid-column: span 4;
+  }
+  .prodCard:hover .prodImg {
+    transform: scale(1.16);
+  }
+  .catCard:hover .catImg {
+    transform: scale(1.04);
+  }
+
+  .catGrid,
+  .stores {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .stores {
+    flex-direction: row;
+  }
+  .storeItem {
+    flex: 1;
+  }
+
+  .editorial {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+    margin-top: 96px;
+  }
+  .editorialMedia {
+    aspect-ratio: 5 / 4;
+    height: 100%;
+  }
+  .editorialBody {
+    padding: 64px 72px;
+  }
+  .editorialTitle {
+    font-size: 38px;
+  }
+
+  .finalCta {
+    padding: 96px var(--pad) 100px;
+  }
+  .stickyBar {
+    display: none;
+  }
+}

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, DM_Sans } from "next/font/google";
+import { Playfair_Display, Manrope } from "next/font/google";
 import { GoogleAnalytics, MetaPixel } from "@/components/analytics";
 import "./globals.css";
 
@@ -10,11 +10,12 @@ const playfair = Playfair_Display({
   weight: ["400", "500", "600"],
 });
 
-const dmSans = DM_Sans({
-  subsets: ["latin", "latin-ext"],
+// Manrope: Kiril + cyrillic-ext (₴ hryvnia sembolü bu alt kümede)
+const manrope = Manrope({
+  subsets: ["latin", "latin-ext", "cyrillic", "cyrillic-ext"],
   variable: "--font-sans",
   display: "swap",
-  weight: ["300", "400", "500"],
+  weight: ["300", "400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -45,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="uk" className={`${playfair.variable} ${dmSans.variable}`}>
+    <html lang="uk" className={`${playfair.variable} ${manrope.variable}`}>
       <body>
         <GoogleAnalytics />
         <MetaPixel />
