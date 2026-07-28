@@ -1071,3 +1071,101 @@
   background: var(--gold-light);
 }
 .havuzBtn:disabled { opacity: 0.4; cursor: default; }
+
+/* ══════════════ VİTRİN DÜZENİ ══════════════ */
+
+.vitrinKart { display: flex; flex-direction: column; position: relative; }
+.vitrinMedia {
+  position: relative;
+  aspect-ratio: 5 / 3;
+  background: var(--warm-bg);
+}
+.vitrinBilgi { display: flex; flex-direction: column; gap: 2px; padding: 9px 11px 11px; }
+.vitrinAd {
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vitrinMeta { font-size: 11.5px; color: var(--subtle); }
+.vitrinCikar {
+  position: absolute;
+  bottom: 9px;
+  right: 9px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--pline);
+  border-radius: 2px;
+  background: var(--pcard);
+  color: var(--muted);
+  cursor: pointer;
+}
+.vitrinCikar:hover { border-color: var(--pclay); color: var(--pclay); }
+
+.basitSatir { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.basitMedia {
+  position: relative;
+  width: 56px;
+  aspect-ratio: 5 / 3;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--warm-bg);
+  flex: 0 0 auto;
+}
+.basitAd { font-size: 14px; font-weight: 650; color: var(--dark); }
+.basitAlt { font-size: 12px; color: var(--subtle); margin-left: auto; white-space: nowrap; }
+
+/* vitrine ekleme */
+.ekleIzgara {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+.ekleKart {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 0 9px;
+  border: 1px solid var(--pline);
+  border-radius: 3px;
+  background: var(--pcard);
+  cursor: pointer;
+  text-align: left;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+.ekleKart:hover { border-color: var(--gold); }
+.ekleKart:disabled { opacity: 0.5; cursor: default; }
+.ekleMedia {
+  position: relative;
+  display: block;
+  aspect-ratio: 5 / 3;
+  background: var(--warm-bg);
+  margin-bottom: 6px;
+}
+.ekleArti {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #fff;
+}
+.ekleAd {
+  padding: 0 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ekleMeta { padding: 0 10px; font-size: 11.5px; color: var(--subtle); }

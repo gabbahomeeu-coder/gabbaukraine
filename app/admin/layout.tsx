@@ -30,6 +30,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link href="/admin/koleksiyonlar" className={styles.navHome}>
             Koleksiyonlar
           </Link>
+          <Link href="/admin/vitrin" className={styles.navHome}>
+            Vitrin düzeni
+          </Link>
 
           <p className={styles.navGroup}>Platform</p>
           {platform.map((m) => (
