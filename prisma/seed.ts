@@ -135,18 +135,18 @@ async function katalog() {
   }
 
   // kategoriler
-  const kategoriAdlari: Record<string, string> = {
-    sofa: "М'які меблі",
-    chair: "Крісла та стільці",
-    table: "Столи",
-    case: "Корпусні меблі",
-    bed: "Спальня",
+  const kategoriAdlari: Record<string, [string, string]> = {
+    sofa: ["М'які меблі", "/images/categories/soft-furniture.jpg"],
+    table: ["Столи", "/images/categories/tables.jpg"],
+    chair: ["Крісла та стільці", "/images/categories/chairs.jpg"],
+    case: ["Корпусні меблі", "/images/categories/case-furniture.jpg"],
+    bed: ["Спальня", "/images/categories/bedroom.jpg"],
   };
-  for (const [i, [slug, ad]] of Object.entries(kategoriAdlari).entries()) {
+  for (const [i, [slug, [ad, gorsel]]] of Object.entries(kategoriAdlari).entries()) {
     const kayit = await db.category.upsert({
       where: { slug },
-      update: { sortOrder: i },
-      create: { slug, sortOrder: i, isActive: true },
+      update: { image: gorsel },
+      create: { slug, image: gorsel, sortOrder: i, isActive: true },
     });
     await db.categoryTranslation.upsert({
       where: { categoryId_locale: { categoryId: kayit.id, locale: UK } },
@@ -184,6 +184,7 @@ async function katalog() {
         depthCm: p.depthCm,
         heightCm: p.heightCm,
         sortOrder: i,
+        isFeatured: i < 8, // ilk sekizi vitrine al — panelden değiştirilebilir
         isActive: true,
       },
     });

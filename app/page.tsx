@@ -14,7 +14,11 @@ export const revalidate = 3600;
 
 export default async function HomePage() {
   const deals = getDailyDeals();
-  const products = await tumUrunler();
+  const hepsi = await tumUrunler();
+  // Vitrine alınmış ürünler varsa onlar gösterilir (panelden sıralanır),
+  // yoksa katalog sırasındaki ilk ürünler
+  const oneCikanlar = hepsi.filter((p) => p.isFeatured);
+  const products = oneCikanlar.length > 0 ? oneCikanlar : hepsi;
   const collections = await tumKoleksiyonlar();
 
   return (
