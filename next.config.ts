@@ -6,10 +6,23 @@ import type { NextConfig } from "next";
  * sunucuya sadece .next/standalone klasörü kopyalanır.
  */
 
-// Katalog görselleri muhasebe sunucusunda barınıyor; adres .env.local'den gelir
-const katalogHost = process.env.CATALOG_API_URL
-  ? new URL(process.env.CATALOG_API_URL).hostname
-  : undefined;
+/**
+ * Katalog görselleri muhasebe sunucusunda barınıyor.
+ *
+ * Görsel alanı API alanından FARKLI olabilir — şu an API crm.gabbahome.eu,
+ * görseller img.gabbahome.eu. Bu yüzden ikisi ayrı okunur; burada tanımlı
+ * olmayan alandan gelen görsel `next/image` tarafından reddedilir ve sayfa
+ * 500 verir. Yeni bir görsel alanı eklenirse CATALOG_IMAGE_HOSTS'a yazılmalı.
+ */
+const katalogHostlari = [
+  ...(process.env.CATALOG_IMAGE_HOSTS ?? "")
+    .split(",")
+    .map((h) => h.trim())
+    .filter(Boolean),
+  ...(process.env.CATALOG_API_URL
+    ? [new URL(process.env.CATALOG_API_URL).hostname]
+    : []),
+].filter((h, i, hepsi) => hepsi.indexOf(h) === i);
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -19,9 +32,10 @@ const nextConfig: NextConfig = {
 
   images: {
     // dış sunucudaki ürün görsellerine izin
-    remotePatterns: katalogHost
-      ? [{ protocol: "https", hostname: katalogHost }]
-      : [],
+    remotePatterns: katalogHostlari.map((hostname) => ({
+      protocol: "https" as const,
+      hostname,
+    })),
     // mobil ağırlıklı trafik — küçük boyutlar önce
     deviceSizes: [360, 414, 640, 828, 1080, 1440, 1920],
     formats: ["image/avif", "image/webp"],

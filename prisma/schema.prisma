@@ -68,6 +68,7 @@ model Collection {
   updatedAt    DateTime                @updatedAt
   translations CollectionTranslation[]
   products     Product[]
+  media        Media[]
 
   @@map("collections")
 }
@@ -134,8 +135,10 @@ model Product {
   /// yerel — senkron EZMEZ
   isFeatured Boolean @default(false)
   sortOrder  Int     @default(0)
-
-  isActive  Boolean  @default(true)
+  /// SİTEDE yayında mı — bizim kararımız, senkron dokunmaz
+  isActive   Boolean @default(false)
+  /// KAYNAKTA satışta mı — senkron günceller. Site ikisini de arar
+  sourceActive Boolean @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -283,7 +286,12 @@ model ProductFabric {
 /// KAT-04 · Medya. Görseller dış sunucuda barındırılabilir.
 model Media {
   id         String   @id @default(cuid())
-  productId  String
+  /// ürün görseli (dekupe) — koleksiyon görsellerinde boş
+  productId  String?
+  /// koleksiyon ortam fotoğrafı — ürün görsellerinde boş
+  collectionId String?
+  /// kaynaktaki kimlik; yoksa adresten türetilir
+  externalId String?  @unique
   url        String
   alt        String?
   type       String   @default("image") // image | video
@@ -296,9 +304,11 @@ model Media {
   sortOrder  Int      @default(0)
   createdAt  DateTime @default(now())
 
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product    Product?    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  collection Collection? @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 
   @@index([productId])
+  @@index([collectionId])
   @@map("media")
 }
 

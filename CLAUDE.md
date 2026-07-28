@@ -99,6 +99,38 @@ gerçekten aç ve bak.**
 - `luna-armchair`, `terra-dresser`, `galante-bed`, `hero/lifestyle-1..3` — 620×372 düşük
   çözünürlük, tam ekran kullanma, sadece küçük kartlarda
 
+## Yerel geliştirme ile canlı ayrımı
+
+**Yereldeki hiçbir işlem canlıyı etkilemez.** İki ayrı veritabanı var:
+
+| | adres | ne |
+|---|---|---|
+| yerel | `127.0.0.1:5434/gabba` | Homebrew PostgreSQL 16, üretimden alınmış kopya |
+| üretim | VPS `localhost:5432/gabba` | canlı mağaza |
+
+- `.env.local` → **yerel** veritabanına bakar. `npm run dev` bunu kullanır.
+- `.env.uretim` → üretim bağlantısı. Git'e girmez, yalnızca bilerek yüklenir.
+- Üretime erişim SSH tüneli ister: `ssh -f -N -L 5433:localhost:5432 gabba`.
+  Tünel kapalıyken üretime ulaşmak mümkün değil — normal durum budur, açık bırakma.
+
+```bash
+npm run senkron                      # kuru çalıştırma
+npm run senkron -- --yaz             # YEREL kopyaya yazar
+npm run senkron -- --yaz --uretim    # CANLI mağazaya yazar (tünel gerekir)
+```
+
+Senkron her çalıştırmada hedef veritabanını ekrana basar. `--uretim` verilmezse
+yerele yazar; unutmak canlıyı bozmaz.
+
+Yerel kopyayı tazelemek için üretimden yeni yedek alıp yükle — kopya zamanla
+canlıdan uzaklaşır, bu beklenen bir durumdur.
+
+> ⚠️ Portlar çakışmasın: **5432** makinede zaten kurulu olan PostgreSQL 18
+> (`/Library/PostgreSQL/18`, CRM tarafı), **5433** SSH tüneli, **5434** bu proje.
+
+**Gerçek yayın kararları canlı panelden verilir** (`185.22.184.99/admin`).
+Yerel panel yalnızca deneme içindir.
+
 ## Yayın akışı
 
 **Karar (28 Tem 2026): site kendi VPS'imizde çalışacak.** Natro'dan VPS alınıyor;

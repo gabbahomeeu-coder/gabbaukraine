@@ -128,3 +128,62 @@ export async function stokDuzelt(
 
   return { ok: true, mesaj: `Stok ${mevcutAdet} → ${yeniAdet} olarak düzeltildi.` };
 }
+
+/**
+ * KAT-01 · Satır içi yayın anahtarı
+ *
+ * Listeden tek tıkla aç/kapa. Ürün sayfasına girmeye gerek yok.
+ * `sourceActive` (kaynağın satış durumu) ayrı bir bilgidir, buradan
+ * değişmez — bu yalnızca BİZİM yayın kararımız.
+ */
+export async function yayinDegistir(
+  slug: string,
+  yayinda: boolean
+): Promise<KayitSonucu> {
+  const mevcut = await db.product.findUnique({
+    where: { slug },
+    include: {
+      translations: { where: { locale: "uk" } },
+      collection: true,
+      _count: { select: { media: true } },
+    },
+  });
+  if (!mevcut) return { ok: false, hata: "Ürün bulunamadı." };
+
+  if (yayinda && mevcut._count.media === 0) {
+    return {
+      ok: false,
+      hata: "Bu ürünün hiç görseli yok — yayına açılırsa kartı boş çıkar.",
+    };
+  }
+
+  if (mevcut.isActive === yayinda) {
+    return { ok: true, mesaj: yayinda ? "Zaten yayında." : "Zaten kapalı." };
+  }
+
+  await db.$transaction(async (tx) => {
+    await tx.product.update({ where: { slug }, data: { isActive: yayinda } });
+    await tx.auditLog.create({
+      data: {
+        action: yayinda ? "urun.yayinla" : "urun.kapat",
+        entity: "Product",
+        entityId: mevcut.id,
+        before: { isActive: mevcut.isActive },
+        after: { isActive: yayinda },
+      },
+    });
+  });
+
+  revalidatePath("/");
+  revalidatePath("/collections");
+  revalidatePath(`/products/${slug}`);
+  if (mevcut.collection) revalidatePath(`/collections/${mevcut.collection.slug}`);
+  revalidatePath("/admin/urunler");
+  revalidatePath("/admin/vitrin");
+
+  const ad = mevcut.translations[0]?.name ?? "Ürün";
+  return {
+    ok: true,
+    mesaj: yayinda ? `${ad} yayına alındı.` : `${ad} yayından kaldırıldı.`,
+  };
+}

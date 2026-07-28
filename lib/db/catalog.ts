@@ -215,3 +215,142 @@ export async function urunKumaslari(
     inStock: f.isActive,
   }));
 }
+
+/* ── panel okuma ───────────────────────────────────────────────
+   Panel yayın durumuna BAKMADAN okur: kapalı ürünü göremezsen
+   açamazsın. Site tarafı (`tumUrunler`) yalnızca yayındakileri
+   döndürmeye devam eder — bu ayrım kasıtlı.
+   ───────────────────────────────────────────────────────────── */
+
+export type PanelUrunSatiri = {
+  id: string;
+  slug: string;
+  ad: string;
+  koleksiyon: string;
+  koleksiyonSlug: string;
+  kategori: string;
+  fiyat: number;
+  stok: number;
+  gorsel: string | null;
+  gorselSayisi: number;
+  yayinda: boolean;
+  vitrinde: boolean;
+  /** kaynakta satışa kapatılmış — CRM'den gelen bilgi */
+  kaynakKapali: boolean;
+};
+
+export type PanelDurum = "hepsi" | "yayinda" | "kapali" | "gorselsiz";
+
+export type PanelUrunSonucu = {
+  satirlar: PanelUrunSatiri[];
+  /** süzgeçten geçen kayıt sayısı */
+  bulunan: number;
+  toplam: number;
+  yayindaSayisi: number;
+  gorselsizSayisi: number;
+  sayfa: number;
+  sayfaSayisi: number;
+};
+
+export const PANEL_SAYFA_BOYUTU = 50;
+
+export async function panelUrunleri(
+  {
+    arama = "",
+    durum = "hepsi",
+    koleksiyon: koleksiyonSlug = "",
+    sayfa = 1,
+  }: {
+    arama?: string;
+    durum?: PanelDurum;
+    koleksiyon?: string;
+    sayfa?: number;
+  } = {},
+  locale = UK
+): Promise<PanelUrunSonucu> {
+  const q = arama.trim();
+
+  const nerede: Record<string, unknown> = {};
+  if (durum === "yayinda") nerede.isActive = true;
+  if (durum === "kapali") nerede.isActive = false;
+  if (durum === "gorselsiz") nerede.media = { none: {} };
+  if (koleksiyonSlug) nerede.collection = { slug: koleksiyonSlug };
+  if (q) {
+    nerede.OR = [
+      { translations: { some: { locale, name: { contains: q, mode: "insensitive" } } } },
+      { slug: { contains: q, mode: "insensitive" } },
+      {
+        collection: {
+          translations: { some: { locale, name: { contains: q, mode: "insensitive" } } },
+        },
+      },
+    ];
+  }
+
+  const [bulunan, toplam, yayindaSayisi, gorselsizSayisi] = await Promise.all([
+    db.product.count({ where: nerede }),
+    db.product.count(),
+    db.product.count({ where: { isActive: true } }),
+    db.product.count({ where: { media: { none: {} } } }),
+  ]);
+
+  const sayfaSayisi = Math.max(1, Math.ceil(bulunan / PANEL_SAYFA_BOYUTU));
+  const gecerliSayfa = Math.min(Math.max(1, sayfa), sayfaSayisi);
+
+  const kayitlar = await db.product.findMany({
+    where: nerede,
+    include: {
+      translations: { where: { locale } },
+      collection: { include: { translations: { where: { locale } } } },
+      category: { include: { translations: { where: { locale } } } },
+      media: { orderBy: { sortOrder: "asc" }, take: 1 },
+      _count: { select: { media: true } },
+    },
+    // yayındakiler önce: açtığın ürünü listenin başında görürsün
+    orderBy: [{ isActive: "desc" }, { sortOrder: "asc" }, { slug: "asc" }],
+    skip: (gecerliSayfa - 1) * PANEL_SAYFA_BOYUTU,
+    take: PANEL_SAYFA_BOYUTU,
+  });
+
+  const stok = await stokHaritasi(kayitlar.map((p) => p.id));
+
+  return {
+    bulunan,
+    toplam,
+    yayindaSayisi,
+    gorselsizSayisi,
+    sayfa: gecerliSayfa,
+    sayfaSayisi,
+    satirlar: kayitlar.map((p) => ({
+      id: p.id,
+      slug: p.slug,
+      ad: p.translations[0]?.name ?? p.slug,
+      koleksiyon: p.collection?.translations[0]?.name ?? "",
+      koleksiyonSlug: p.collection?.slug ?? "",
+      kategori: p.category?.translations[0]?.name ?? "",
+      fiyat: sayi(p.basePrice),
+      stok: stok.urun.get(p.id) ?? 0,
+      gorsel: p.media[0]?.url ?? null,
+      gorselSayisi: p._count.media,
+      yayinda: p.isActive,
+      vitrinde: p.isFeatured,
+      kaynakKapali: !p.sourceActive,
+    })),
+  };
+}
+
+/** Süzgeç listesi için koleksiyonlar — yayın durumundan bağımsız */
+export async function panelKoleksiyonlari(locale = UK) {
+  const kayitlar = await db.collection.findMany({
+    include: {
+      translations: { where: { locale } },
+      _count: { select: { products: true } },
+    },
+    orderBy: { sortOrder: "asc" },
+  });
+  return kayitlar.map((c) => ({
+    slug: c.slug,
+    ad: c.translations[0]?.name ?? c.slug,
+    urunSayisi: c._count.products,
+  }));
+}

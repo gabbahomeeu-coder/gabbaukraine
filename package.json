@@ -14,7 +14,8 @@
     "db:studio": "prisma studio",
     "db:seed": "node --experimental-strip-types --no-warnings prisma/seed.ts",
     "yayinla": "bash scripts/yayinla.sh",
-    "db:yedek": "ssh gabba 'gabba-backup' && scp gabba:/var/backups/gabba/$(ssh gabba 'ls -t /var/backups/gabba | head -1') ./yedekler/"
+    "db:yedek": "ssh gabba 'gabba-backup' && scp gabba:/var/backups/gabba/$(ssh gabba 'ls -t /var/backups/gabba | head -1') ./yedekler/",
+    "senkron": "node --experimental-strip-types --no-warnings scripts/senkron.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

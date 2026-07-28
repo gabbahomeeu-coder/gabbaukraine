@@ -17,6 +17,19 @@ node scripts/kilavuz.mjs ekle KAT-02 --tip duzeltme --baslik "..." --once "..." 
 
 <!-- KAYITLAR -->
 
+### Ekleme — Koleksiyon yayın anahtarı
+
+**28.07.2026 · 20:25** · Onur + Claude
+
+**Önce:** Senkron 57 koleksiyonu yayına kapalı açıyordu ama panelde açma yolu yoktu. Ürünleri yayına alsan bile /collections/<slug> 404 veriyordu.
+
+**Sonra:** Koleksiyon listesine ürünlerdekiyle aynı yayın anahtarı eklendi. Kapağı olmayan koleksiyon yayına alınamıyor. Satırda 'yayındaki ürün / toplam ürün' ve kapağı eksik olanlar için uyarı rozeti var.
+
+**Neden:** Koleksiyon sayfası ürünlerden bağımsız bir yayın kararı; ikisi ayrı ayrı açılmalı.
+
+---
+
+
 ### Düzeltme — Ürünü olmayan koleksiyon kartlarındaki saydamlık kaldırıldı
 
 **28.07.2026 · 13:44** · Onur + Claude

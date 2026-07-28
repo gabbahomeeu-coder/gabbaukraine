@@ -46,6 +46,10 @@ out/
 .env
 .env.local
 .env.*.local
+# üretim veritabanı bağlantısı — DEPO HERKESE AÇIK, asla girmemeli
+.env.uretim
+.env.*
+!.env.example
 
 # Local settings — Claude Code ayarları ve skill'leri yerelde kalır
 .claude/
@@ -56,3 +60,6 @@ next-env.d.ts
 # Prisma üretilen istemci
 lib/generated/
 yedekler/
+
+# TypeScript derleme önbelleği — çıktı dosyası, izlenmemeli
+tsconfig.tsbuildinfo

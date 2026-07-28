@@ -27,6 +27,71 @@ Ayrıntı için ilgili alt modülün kılavuzuna bakın.
 
 <!-- KAYITLAR -->
 
+### Ekleme — Koleksiyon yayın anahtarı
+
+**28.07.2026 · 20:25** · Onur + Claude · `KAT-02`
+
+**Önce:** Senkron 57 koleksiyonu yayına kapalı açıyordu ama panelde açma yolu yoktu. Ürünleri yayına alsan bile /collections/<slug> 404 veriyordu.
+
+**Sonra:** Koleksiyon listesine ürünlerdekiyle aynı yayın anahtarı eklendi. Kapağı olmayan koleksiyon yayına alınamıyor. Satırda 'yayındaki ürün / toplam ürün' ve kapağı eksik olanlar için uyarı rozeti var.
+
+**Neden:** Koleksiyon sayfası ürünlerden bağımsız bir yayın kararı; ikisi ayrı ayrı açılmalı.
+
+---
+
+
+### Değişiklik — Panel yayına kapalı ürünleri göremiyordu
+
+**28.07.2026 · 20:25** · Onur + Claude · `KAT-01`
+
+**Önce:** Ürün listesi 'tumUrunler()' okuyordu, o da 'where: isActive true' ile süzüyor. 948 ürün yayına kapalı gelince panel bomboş görünüyordu; açılacak ürün listede olmadığı için hiçbiri açılamıyordu. Ayrıca liste 12 ürüne göre yazılmıştı: arama, süzgeç ve sayfalama yoktu.
+
+**Sonra:** 'panelUrunleri()' eklendi: yayın durumuna bakmadan okur, sayfa başı 50 kayıt döndürür, ürün/koleksiyon/adres araması ve durum süzgeci (hepsi, yayında, kapalı, görselsiz) alır. Satırda tek tıkla aç/kapa düğmesi var. Site tarafındaki 'tumUrunler()' değişmedi, hâlâ yalnızca yayındakileri döndürüyor.
+
+**Neden:** Panelin ve sitenin okuma kuralları AYNI olamaz: site yayındakini gösterir, panel hepsini yönetir. Tek fonksiyonu paylaşmak bu kilidi doğurdu.
+
+---
+
+
+### Değişiklik — Kategori tahmini tamamlandı, eksik kategori otomatik açılıyor
+
+**28.07.2026 · 20:11** · Onur + Claude · `KAT-05`
+
+**Önce:** Kural listesi 948 üründen 46'sını sınıflandıramıyordu: Стелаж, Вітраж, Дресуар, Камін, Колона, ТВ блок, Узголівʼя, Спальний комплект. Ayrıca 'accessory' kategorisi veritabanında yoktu, 98 aksesuar kategorisiz kalıyordu.
+
+**Sonra:** Eksik kalıplar eklendi; yatak kuralı masa kuralından öne alındı, çünkü 'спальний комплект' içinde 'стіл' geçebiliyor. Senkron eksik kategoriyi Ukraynaca adıyla kendi açıyor, var olanın adına ve sırasına dokunmuyor. 948 ürünün tamamı kategoriye oturdu.
+
+**Neden:** CRM kategori alanı göndermiyor, kategori ürün adından çıkarılıyor. Kategorisiz ürün ana sayfadaki kategori kartlarında hiç görünmez.
+
+---
+
+
+### Düzeltme — Boş örnek koleksiyonlar gerçek koleksiyonların adresini tutuyordu
+
+**28.07.2026 · 20:11** · Onur + Claude · `KAT-05`
+
+**Önce:** Örnek ürünler silindiğinde koleksiyonları kalmıştı. CRM'den gelen LUNA, MOKA, MONTANA, LEORA aynı slug'ı bulduğu için '-2' ekiyle kaydedildi: /collections/luna-2.
+
+**Sonra:** Ürünsüz ve görselsiz 5 örnek koleksiyon silindi, '-2' ekleri kaldırıldı. Adresler /collections/luna biçiminde.
+
+**Neden:** Ürün silmek koleksiyonu silmiyor. Adres SEO'nun parçası; sonradan değiştirmek bağlantı kırar, ilk yüklemede düzeltilmeli.
+
+---
+
+
+### Düzeltme — Yeni ürünlerin stoğu yazılmıyordu
+
+**28.07.2026 · 20:11** · Onur + Claude · `KAT-05`
+
+**Önce:** Stok bloğu 'if (!kuru && mevcut)' koşuluyla çalışıyordu. 'mevcut' yalnızca daha önce kaydedilmiş ürünlerde dolu olduğu için ilk yüklemede 948 ürünün hiçbirine stok hareketi açılmadı; hepsi sitede stoksuz görünecekti.
+
+**Sonra:** Ürün kimliği create ve update dallarının ikisinden de 'urunId' değişkenine alınıyor, stok bloğu 'if (!kuru && urunId)' ile çalışıyor. Yeni üründe mevcut stok 0 sayılıp fark kadar giriş açılıyor. Gerçek çalıştırmada 422 ürüne stok hareketi yazıldı.
+
+**Neden:** Hata yalnızca ilk yüklemede ortaya çıkıyordu; sonraki çalıştırmalarda ürünler mevcut sayıldığı için stok yazılıyordu. Kuru çalıştırma stok yazmadığı için raporda da görünmedi.
+
+---
+
+
 ### Düzeltme — Ürünü olmayan koleksiyon kartlarındaki saydamlık kaldırıldı
 
 **28.07.2026 · 13:44** · Onur + Claude · `KAT-02`

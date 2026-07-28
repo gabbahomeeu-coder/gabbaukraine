@@ -24,6 +24,19 @@ Ayrıntı için ilgili alt modülün kılavuzuna bakın.
 
 <!-- KAYITLAR -->
 
+### Düzeltme — Görsel alanı tanımlı olmadığı için sayfalar 500 veriyordu
+
+**28.07.2026 · 20:25** · Onur + Claude · `API-01`
+
+**Önce:** next.config.ts izinli görsel alanını CATALOG_API_URL'den türetiyordu (crm.gabbahome.eu). Görseller img.gabbahome.eu'da barınıyor; next/image bu adresi reddedip sayfayı 500'e düşürüyordu. Ürünü olan her sayfa çöküyordu.
+
+**Sonra:** CATALOG_IMAGE_HOSTS ortam değişkeni eklendi, virgülle birden çok alan yazılabiliyor; API alanı da listeye ekleniyor. .env.local'e img.gabbahome.eu yazıldı — SUNUCUDA DA TANIMLANMALI.
+
+**Neden:** Görsel alanı ile API alanı aynı olmak zorunda değil. Bağımlılık örtük kaldığı için hata ancak ilk gerçek görsel geldiğinde ortaya çıktı.
+
+---
+
+
 ### Düzeltme — Dinleyicisi olmayan olaylar tespit edildi ve bağlandı
 
 **28.07.2026 · 12:04** · Onur + Claude · `API-06`
