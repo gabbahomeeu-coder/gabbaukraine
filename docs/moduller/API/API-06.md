@@ -17,6 +17,19 @@ node scripts/kilavuz.mjs ekle API-06 --tip duzeltme --baslik "..." --once "..." 
 
 <!-- KAYITLAR -->
 
+### Ekleme — Bekçiye ölçü kontrolü eklendi
+
+**29.07.2026 · 01:55** · Onur + Claude
+
+**Önce:** Bekçi fiyat, stok, para birimi ve koleksiyon kontrolü yapıyordu; ölçü alanı yeni olduğu için denetlenmiyordu.
+
+**Sonra:** Ölçüler 1–2000 cm aralığında olmalı. Dışına çıkan ürün reddedilir ve karantinaya yazılır. raw metninden ayrıştırmada ilk sayı aralık dışıysa (birim karışmış olabilir) metnin tamamı güvenilmez sayılıp hiçbir değer alınmaz.
+
+**Neden:** Ölçü sayfada müşteriye gösteriliyor ve 'odama sığar mı' hesabına giriyor. Yanlış ölçü, eksik ölçüden daha zararlı.
+
+---
+
+
 ### Düzeltme — Dinleyicisi olmayan olaylar tespit edildi ve bağlandı
 
 **28.07.2026 · 12:04** · Onur + Claude

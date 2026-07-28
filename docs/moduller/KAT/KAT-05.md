@@ -17,6 +17,19 @@ node scripts/kilavuz.mjs ekle KAT-05 --tip duzeltme --baslik "..." --once "..." 
 
 <!-- KAYITLAR -->
 
+### Ekleme — Ürün ölçüleri senkrona alındı
+
+**29.07.2026 · 01:55** · Onur + Claude
+
+**Önce:** CRM ürün ölçüsü göndermiyordu; 948 ürünün widthCm/depthCm/heightCm alanları boştu ve sitede hiçbir üründe ölçü gösterilemiyordu. Ölçü bilgisi yalnızca ürün adının içinde geçiyordu (Стіл 220см).
+
+**Sonra:** CRM dimensions alanını ekledi: raw metni her zaman, sayısal üçlü net ölçüsü olanlarda. Senkron ikisini de okuyor. 922/948 ürün ölçü aldı, 833'ünde üç ölçü tam. Sayısal alan boş gelen 91 üründe raw metninden ayrıştırma yapılıyor. products tablosuna dimensionsRaw kolonu eklendi.
+
+**Neden:** Ölçü mobilya alışverişinde fiyattan sonra en çok sorulan bilgi. raw metni sayısal alanların taşıyamadığı bilgiyi içeriyor (ikinci parça, oturma yüksekliği), atılmaması gerekiyordu.
+
+---
+
+
 ### Değişiklik — Kategori tahmini tamamlandı, eksik kategori otomatik açılıyor
 
 **28.07.2026 · 20:11** · Onur + Claude

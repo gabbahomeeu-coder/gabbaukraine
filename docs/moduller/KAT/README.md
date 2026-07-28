@@ -27,6 +27,19 @@ Ayrıntı için ilgili alt modülün kılavuzuna bakın.
 
 <!-- KAYITLAR -->
 
+### Ekleme — Ürün ölçüleri senkrona alındı
+
+**29.07.2026 · 01:55** · Onur + Claude · `KAT-05`
+
+**Önce:** CRM ürün ölçüsü göndermiyordu; 948 ürünün widthCm/depthCm/heightCm alanları boştu ve sitede hiçbir üründe ölçü gösterilemiyordu. Ölçü bilgisi yalnızca ürün adının içinde geçiyordu (Стіл 220см).
+
+**Sonra:** CRM dimensions alanını ekledi: raw metni her zaman, sayısal üçlü net ölçüsü olanlarda. Senkron ikisini de okuyor. 922/948 ürün ölçü aldı, 833'ünde üç ölçü tam. Sayısal alan boş gelen 91 üründe raw metninden ayrıştırma yapılıyor. products tablosuna dimensionsRaw kolonu eklendi.
+
+**Neden:** Ölçü mobilya alışverişinde fiyattan sonra en çok sorulan bilgi. raw metni sayısal alanların taşıyamadığı bilgiyi içeriyor (ikinci parça, oturma yüksekliği), atılmaması gerekiyordu.
+
+---
+
+
 ### Düzeltme — Dekupe ürün fotoğrafları kartlarda kırpılıyordu
 
 **28.07.2026 · 23:44** · Onur + Claude · `KAT-01`

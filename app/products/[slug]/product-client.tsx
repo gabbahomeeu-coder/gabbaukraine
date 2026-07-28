@@ -278,19 +278,22 @@ export default function ProductClient({
 
             {olcuAcik && (
               <div className={styles.olcuBody}>
+                {/* Kaynakta her ölçü olmayabiliyor — bar taburesinde yükseklik,
+                    yatakta derinlik eksik gelebilir. Boş kutu göstermek yerine
+                    o ölçüyü hiç yazmıyoruz. */}
                 <div className={styles.dims}>
-                  <div>
-                    <span className={styles.dimN}>{olculer.widthCm}</span>
-                    <span className={styles.dimL}>ширина, см</span>
-                  </div>
-                  <div>
-                    <span className={styles.dimN}>{olculer.depthCm}</span>
-                    <span className={styles.dimL}>глибина, см</span>
-                  </div>
-                  <div>
-                    <span className={styles.dimN}>{olculer.heightCm}</span>
-                    <span className={styles.dimL}>висота, см</span>
-                  </div>
+                  {([
+                    ["widthCm", "ширина, см"],
+                    ["depthCm", "глибина, см"],
+                    ["heightCm", "висота, см"],
+                  ] as const).map(([alan, etiket]) =>
+                    olculer[alan] ? (
+                      <div key={alan}>
+                        <span className={styles.dimN}>{olculer[alan]}</span>
+                        <span className={styles.dimL}>{etiket}</span>
+                      </div>
+                    ) : null
+                  )}
                 </div>
                 <p className={styles.olcuHint}>
                   Порада: залиште щонайменше <b>60 см</b> для проходу перед меблями.

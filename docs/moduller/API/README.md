@@ -24,6 +24,19 @@ Ayrıntı için ilgili alt modülün kılavuzuna bakın.
 
 <!-- KAYITLAR -->
 
+### Ekleme — Bekçiye ölçü kontrolü eklendi
+
+**29.07.2026 · 01:55** · Onur + Claude · `API-06`
+
+**Önce:** Bekçi fiyat, stok, para birimi ve koleksiyon kontrolü yapıyordu; ölçü alanı yeni olduğu için denetlenmiyordu.
+
+**Sonra:** Ölçüler 1–2000 cm aralığında olmalı. Dışına çıkan ürün reddedilir ve karantinaya yazılır. raw metninden ayrıştırmada ilk sayı aralık dışıysa (birim karışmış olabilir) metnin tamamı güvenilmez sayılıp hiçbir değer alınmaz.
+
+**Neden:** Ölçü sayfada müşteriye gösteriliyor ve 'odama sığar mı' hesabına giriyor. Yanlış ölçü, eksik ölçüden daha zararlı.
+
+---
+
+
 ### Düzeltme — Görsel alanı tanımlı olmadığı için sayfalar 500 veriyordu
 
 **28.07.2026 · 20:25** · Onur + Claude · `API-01`

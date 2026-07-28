@@ -129,6 +129,10 @@ model Product {
   widthCm   Decimal? @db.Decimal(8, 1)
   depthCm   Decimal? @db.Decimal(8, 1)
   heightCm  Decimal? @db.Decimal(8, 1)
+  /// Kaynaktaki ölçü metni olduğu gibi. Sayısal alanların taşıyamadığı
+  /// bilgiyi içerir: ikinci parça ("220/49/98 & 102/6/102"), oturma
+  /// yüksekliği ("58/60/85 в.пос.45"). Müşteriye ham gösterilmez.
+  dimensionsRaw String?
   /// tedarikçi maliyeti — RPR-06 kârlılık raporu için
   costPrice Decimal? @db.Decimal(12, 2)
 
