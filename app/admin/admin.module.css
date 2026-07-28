@@ -1341,3 +1341,45 @@
   text-overflow: ellipsis;
 }
 .ekleMeta { padding: 0 10px; font-size: 11.5px; color: var(--subtle); }
+
+/* ── koleksiyon görsel havuzu: yön süzgeci ── */
+.yonSuzgec {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.yonAktif,
+.yonPasif {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 13px;
+  font: inherit;
+  font-size: 12.5px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.yonAktif {
+  background: var(--dark);
+  border: 1px solid var(--dark);
+  color: #fff;
+}
+.yonPasif {
+  background: var(--pcard);
+  border: 1px solid var(--pline);
+  color: var(--muted);
+}
+.yonPasif:hover { border-color: var(--gold); color: var(--gold); }
+.yonAdet {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.65;
+}
+.havuzBos {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 22px 0;
+}

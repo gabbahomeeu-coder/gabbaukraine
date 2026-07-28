@@ -17,6 +17,19 @@ node scripts/kilavuz.mjs ekle KAT-02 --tip duzeltme --baslik "..." --once "..." 
 
 <!-- KAYITLAR -->
 
+### Düzeltme — Kapak seçme sayfası katalog fotoğraflarını hiç okumuyordu
+
+**28.07.2026 · 23:15** · Onur + Claude
+
+**Önce:** Sayfa görsel havuzunu yalnızca YAYINDAKİ ürünlerin görsellerinden topluyordu. Senkronun koleksiyona bağladığı 1706 stüdyo fotoğrafını (media.collectionId) hiç sorgulamıyordu. Tüm ürünler yayına kapalı olduğu için havuz bomboş geliyordu; kapak seçilemeyince koleksiyon da yayına alınamıyordu — kilitli bir döngü.
+
+**Sonra:** Havuz üç kaynaktan besleniyor: koleksiyonun stüdyo fotoğrafları, içindeki ürünlerin dekupeleri, seçili kapaklar. Ürünler yayın durumundan bağımsız okunuyor. Yatay/dikey süzgeci eklendi, başlıkta sayılar görünüyor. LUNA örneği: 71 görsel, 48 yatay, 23 dikey.
+
+**Neden:** Sayfa senkron yazılmadan önce hazırlanmıştı; o zaman koleksiyona bağlı görsel diye bir şey yoktu. Yeni veri yolu açılınca eski okuma kodu güncellenmemiş.
+
+---
+
+
 ### Ekleme — Koleksiyon yayın anahtarı
 
 **28.07.2026 · 20:25** · Onur + Claude

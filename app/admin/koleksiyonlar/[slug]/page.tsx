@@ -17,8 +17,11 @@ export default async function KoleksiyonDuzenle({
     where: { slug },
     include: {
       translations: { where: { locale: "uk" } },
+      // koleksiyonun kendi stüdyo fotoğrafları — kapak asıl buradan seçilir
+      media: { orderBy: { sortOrder: "asc" } },
       products: {
-        where: { isActive: true },
+        // yayın durumundan BAĞIMSIZ: kapağı seçmeden koleksiyonu yayına
+        // alamıyorsun, ürünleri de açmadan kapak seçemezsen kilitlenirsin
         include: {
           translations: { where: { locale: "uk" } },
           media: { orderBy: { sortOrder: "asc" } },
@@ -28,15 +31,22 @@ export default async function KoleksiyonDuzenle({
   });
   if (!koleksiyon) notFound();
 
-  /* Görsel havuzu: koleksiyonun kendi kapakları + içindeki ürünlerin
-     tüm görselleri. Aynı adres birden çok üründe geçebildiği için
-     tekilleştiriliyor. */
+  /* Görsel havuzu üç kaynaktan gelir:
+       1. koleksiyonun stüdyo fotoğrafları (CRM "studio" bölümü)
+       2. içindeki ürünlerin dekupe görselleri
+       3. hâlihazırda seçilmiş kapaklar
+     Aynı adres birden çok yerde geçebildiği için tekilleştiriliyor. */
   const havuz = new Map<string, Gorsel>();
 
-  for (const url of [koleksiyon.image, koleksiyon.mobileImage]) {
-    if (url && !havuz.has(url)) {
-      havuz.set(url, { url, kind: "catalog", width: null, height: null, kaynak: "koleksiyon" });
-    }
+  for (const m of koleksiyon.media) {
+    if (havuz.has(m.url)) continue;
+    havuz.set(m.url, {
+      url: m.url,
+      kind: m.kind,
+      width: m.width,
+      height: m.height,
+      kaynak: "katalog",
+    });
   }
 
   for (const urun of koleksiyon.products) {
@@ -53,11 +63,21 @@ export default async function KoleksiyonDuzenle({
     }
   }
 
-  /* Ortam fotoğrafları önce: kapak için uygun olanlar üstte dursun */
+  for (const url of [koleksiyon.image, koleksiyon.mobileImage]) {
+    if (url && !havuz.has(url)) {
+      havuz.set(url, { url, kind: "catalog", width: null, height: null, kaynak: "seçili kapak" });
+    }
+  }
+
+  /* Katalog fotoğrafları önce, dekupeler sonra — kapak için uygun
+     olanlar listenin başında dursun. */
   const gorseller = [...havuz.values()].sort((a, b) => {
     const p = (g: Gorsel) => (g.kind === "catalog" ? 0 : g.kind === "cutout" ? 2 : 1);
     return p(a) - p(b);
   });
+
+  const yatay = gorseller.filter((g) => g.width && g.height && g.width > g.height).length;
+  const dikey = gorseller.filter((g) => g.width && g.height && g.height > g.width).length;
 
   const son = await db.auditLog.findMany({
     where: { entity: "Collection", entityId: koleksiyon.id },
@@ -78,15 +98,17 @@ export default async function KoleksiyonDuzenle({
             {koleksiyon.translations[0]?.name ?? koleksiyon.slug}
           </h1>
           <p className={styles.pageLede}>
-            {koleksiyon.products.length} ürün · {gorseller.length} görsel seçeneği
+            {koleksiyon.products.length} ürün · {gorseller.length} görsel ·{" "}
+            {yatay} yatay, {dikey} dikey
           </p>
         </div>
       </header>
 
       <div className={styles.notice}>
-        Havuzdaki görseller bu koleksiyondaki ürünlerden toplanıyor. Katalog
-        sunucusu bağlandığında dikey ortam fotoğrafları da buraya düşecek —
-        telefon kapağı için onları seçebileceksin.
+        Görseller katalog sunucusundaki stüdyo çekimlerinden geliyor. Geniş
+        ekran kapağı için <strong>yatay</strong>, telefon kapağı için{" "}
+        <strong>dikey</strong> bir fotoğraf seç — telefon kapağı seçilmezse
+        geniş ekran kapağı kullanılır. Seçimin katalog senkronunda korunur.
       </div>
 
       <GorselSecici

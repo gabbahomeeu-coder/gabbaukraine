@@ -28,6 +28,7 @@ export default function GorselSecici({
   const [bekliyor, basla] = useTransition();
   const [durum, setDurum] = useState<{ ok: boolean; mesaj: string } | null>(null);
   const [secili, setSecili] = useState<string | null>(null);
+  const [filtre, setFiltre] = useState<"hepsi" | "yatay" | "dikey">("hepsi");
 
   function sec(url: string, hedef: "genis" | "mobil") {
     setSecili(url);
@@ -47,6 +48,9 @@ export default function GorselSecici({
 
   const yon = (g: Gorsel) =>
     g.width && g.height ? (g.height > g.width ? "dikey" : "yatay") : "—";
+
+  const suzulmus =
+    filtre === "hepsi" ? gorseller : gorseller.filter((g) => yon(g) === filtre);
 
   return (
     <>
@@ -100,9 +104,39 @@ export default function GorselSecici({
         </p>
       )}
 
+      {/* yön süzgeci */}
+      <div className={styles.yonSuzgec}>
+        {(["hepsi", "yatay", "dikey"] as const).map((f) => {
+          const adet =
+            f === "hepsi"
+              ? gorseller.length
+              : gorseller.filter((g) => yon(g) === f).length;
+          return (
+            <button
+              key={f}
+              type="button"
+              onClick={() => setFiltre(f)}
+              className={filtre === f ? styles.yonAktif : styles.yonPasif}
+              aria-pressed={filtre === f}
+            >
+              {f === "hepsi" ? "Hepsi" : f === "yatay" ? "Yatay · geniş ekran" : "Dikey · telefon"}
+              <span className={styles.yonAdet}>{adet}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {suzulmus.length === 0 && (
+        <p className={styles.havuzBos}>
+          {gorseller.length === 0
+            ? "Bu koleksiyonun katalog sunucusunda hiç fotoğrafı yok."
+            : `Bu koleksiyonda ${filtre} fotoğraf yok.`}
+        </p>
+      )}
+
       {/* havuz */}
       <div className={styles.havuz}>
-        {gorseller.map((g) => {
+        {suzulmus.map((g) => {
           const genisSecili = g.url === kapak;
           const mobilSecili = g.url === mobilKapak;
           const isleniyor = bekliyor && secili === g.url;
