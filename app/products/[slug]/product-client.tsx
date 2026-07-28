@@ -52,7 +52,10 @@ export default function ProductClient({
   const teslimGun = (product.leadTimeDays ?? 21) + (fabric?.extraLeadDays ?? 0);
 
   const olculer = variant ?? product;
-  const olcuVar = Boolean(olculer.widthCm);
+  /* Kaynaktaki ölçü metni — CRM ne yazdıysa o. Aksesuarlarda sayısal alan
+     gelmiyor, ölçü yalnızca bu metinde oluyor ("10 × 27 см", "150 мл"). */
+  const olcuMetni = product.dimensionsRaw;
+  const olcuVar = Boolean(olculer.widthCm || olcuMetni);
 
   /* kumaşları grupla */
   const grupluKumaslar = useMemo(() => {
@@ -295,11 +298,20 @@ export default function ProductClient({
                     ) : null
                   )}
                 </div>
-                <p className={styles.olcuHint}>
-                  Порада: залиште щонайменше <b>60 см</b> для проходу перед меблями.
-                  Для цієї моделі знадобиться кімната шириною від{" "}
-                  <b>{Math.round((olculer.widthCm ?? 0) + 120)} см</b>.
-                </p>
+                {olcuMetni && (
+                  <p className={styles.olcuRaw}>
+                    <span className={styles.olcuRawL}>Розміри</span>
+                    <span className={styles.olcuRawV}>{olcuMetni}</span>
+                  </p>
+                )}
+                {/* genişliği bilinmeyen üründe oda hesabı yapılamaz */}
+                {olculer.widthCm ? (
+                  <p className={styles.olcuHint}>
+                    Порада: залиште щонайменше <b>60 см</b> для проходу перед меблями.
+                    Для цієї моделі знадобиться кімната шириною від{" "}
+                    <b>{Math.round(olculer.widthCm + 120)} см</b>.
+                  </p>
+                ) : null}
                 <p className={styles.olcuHint}>
                   Перевірте також ширину дверей та ліфта — при доставці це найчастіша
                   проблема. Наші майстри розберуть та зберуть меблі за потреби.

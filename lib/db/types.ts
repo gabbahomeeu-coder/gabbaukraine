@@ -37,6 +37,8 @@ export type UrunDTO = {
   widthCm?: number;
   depthCm?: number;
   heightCm?: number;
+  /** kaynaktaki ölçü metni, olduğu gibi — yorumlanmaz */
+  dimensionsRaw?: string;
   leadTimeDays: number;
   variants: VaryantDTO[];
   fabricCodes: string[];

@@ -124,47 +124,14 @@ function olcuGecerli(v: unknown): v is number {
 }
 
 /**
- * `raw` metninden ölçü üçlüsü çıkarır — sayısal alanlar boş olduğunda yedek.
+ * Kaynaktaki ölçüyü OLDUĞU GİBİ aktarır.
  *
- * Kaynakta virgüllü ondalık ve bilinmeyen için tire kullanılıyor:
- *   "58/60/---"        → 58 × 60 × bilinmiyor
- *   "59/53,5/---"      → 59 × 53.5 × bilinmiyor
- *   "198/215 узг. ..." → 198 × 215 × bilinmiyor  (ilk üçlü okunur, gerisi bırakılır)
- */
-export function rawOlcuCoz(raw?: string | null): {
-  widthCm?: number;
-  depthCm?: number;
-  heightCm?: number;
-} {
-  if (!raw) return {};
-  /* Metnin BAŞINDAKİ ölçü öbeği — sonrasındaki açıklamalar karışmasın.
-     Virgül hem ayırıcı hem ondalık işareti olabiliyor ("53,5" ile
-     "208/165, пано"): yalnızca iki rakam ARASINDA değilse ayırıcı sayılır. */
-  const parca = raw
-    .trim()
-    .split(/[&;]|(?<!\d),|,(?!\d)|узг\.?|в\.пос\.?|пано/i)[0];
-  const sayilar = parca.split("/").map((x) => {
-    const t = x.trim().replace(",", ".");
-    if (!t || /^-+$/.test(t)) return null;
-    const n = Number.parseFloat(t);
-    return Number.isFinite(n) ? n : null;
-  });
-  const [w, d, h] = sayilar;
-  /* İlk sayı okunup da aralık dışıysa metin güvenilmez demektir
-     (birim karışmış olabilir) — kalanları da alma. */
-  if (w != null && !olcuGecerli(w)) return {};
-
-  const cikti: { widthCm?: number; depthCm?: number; heightCm?: number } = {};
-  if (olcuGecerli(w)) cikti.widthCm = w;
-  if (olcuGecerli(d)) cikti.depthCm = d;
-  if (olcuGecerli(h)) cikti.heightCm = h;
-  return cikti;
-}
-
-/**
- * Kaynak ölçüsünü doğrudan veritabanı alanlarına çevirir.
- * Önce sayısal alanlar; hiçbiri yoksa `raw` metninden çıkarılır.
- * Değer bulunamayan alan `null` yazılır — eski değer asılı kalmasın.
+ * Sayısal alanlar yalnızca CRM gönderdiyse dolar; metinden çıkarım
+ * YAPILMAZ. Daha önce `raw` metninden ölçü türetiliyordu ve bu 92
+ * aksesuarda uydurma değer üretti: "150 мл" (difüzör hacmi) genişlik
+ * 150 cm, "115 см" (yapay ağaç boyu) genişlik 115 cm olarak yazıldı.
+ * Ölçünün hangi eksene ait olduğu metinden bilinemez — tahmin etmek
+ * yanlış veri demek. Ne geliyorsa o yazılır, gerisi `raw` içinde durur.
  */
 export function olculeriCoz(o?: KaynakOlcu | null): {
   widthCm: number | null;
@@ -172,25 +139,11 @@ export function olculeriCoz(o?: KaynakOlcu | null): {
   heightCm: number | null;
   dimensionsRaw: string | null;
 } {
-  const bos = { widthCm: null, depthCm: null, heightCm: null, dimensionsRaw: null };
-  if (!o) return bos;
-
-  const net = {
+  if (!o) return { widthCm: null, depthCm: null, heightCm: null, dimensionsRaw: null };
+  return {
     widthCm: olcuGecerli(o.widthCm) ? o.widthCm : null,
     depthCm: olcuGecerli(o.depthCm) ? o.depthCm : null,
     heightCm: olcuGecerli(o.heightCm) ? o.heightCm : null,
-  };
-
-  // sayısal alan hiç gelmemişse metinden okumayı dene
-  const kaynak =
-    net.widthCm == null && net.depthCm == null && net.heightCm == null
-      ? rawOlcuCoz(o.raw)
-      : net;
-
-  return {
-    widthCm: kaynak.widthCm ?? null,
-    depthCm: kaynak.depthCm ?? null,
-    heightCm: kaynak.heightCm ?? null,
     dimensionsRaw: o.raw?.trim() || null,
   };
 }

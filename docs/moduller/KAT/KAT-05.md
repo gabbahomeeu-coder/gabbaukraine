@@ -17,6 +17,19 @@ node scripts/kilavuz.mjs ekle KAT-05 --tip duzeltme --baslik "..." --once "..." 
 
 <!-- KAYITLAR -->
 
+### Düzeltme — Ölçü metninden çıkarım yapılıyordu, 92 aksesuarda uydurma değer üretti
+
+**29.07.2026 · 02:09** · Onur + Claude
+
+**Önce:** Sayısal ölçü gelmeyen üründe raw metninden ayrıştırma yapılıyordu. CRM aksesuarlarda bilerek sayısal ölçü göndermiyor, çünkü aksesuar ölçüleri düzenli değil: 98 aksesuarın 79'u 'x' ile yazılmış (10 x 27 см), 10'u tek sayı (115 см), 3'ü hacim (150 мл). Ayrıştırıcı bunları genişlik sanıp yazdı — difüzörün 150 mililitresi genişlik 150 cm, yapay ağacın 115 cm boyu genişlik oldu. 92 üründe yanlış veri.
+
+**Sonra:** Metinden çıkarım tamamen kaldırıldı. Sayısal alanlar yalnızca CRM gönderdiyse dolar (831 ürün), ham metin dimensionsRaw'da olduğu gibi durur (922 ürün) ve ürün sayfasında aynen gösterilir. Yeniden senkronda 92 uydurma değer temizlendi.
+
+**Neden:** Ölçünün hangi eksene ait olduğu metinden bilinemez. '10 x 27' şamdanda çap ve yükseklik; genişlik-derinlik diye yazmak yanlış. Kaynakta ne yazıyorsa o gösterilir, yorum yapılmaz.
+
+---
+
+
 ### Ekleme — Ürün ölçüleri senkrona alındı
 
 **29.07.2026 · 01:55** · Onur + Claude

@@ -509,3 +509,25 @@
     max-width: 440px;
   }
 }
+
+/* kaynaktaki ölçü metni — olduğu gibi gösterilir */
+.olcuRaw {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 0 11px;
+  border-top: 1px solid var(--line);
+  margin-top: 4px;
+}
+.olcuRawL {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--subtle);
+  flex: 0 0 auto;
+}
+.olcuRawV {
+  font-size: 14.5px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}

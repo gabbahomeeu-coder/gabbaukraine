@@ -113,6 +113,7 @@ function bicimle(
     widthCm: sayiOpt(p.widthCm),
     depthCm: sayiOpt(p.depthCm),
     heightCm: sayiOpt(p.heightCm),
+    dimensionsRaw: p.dimensionsRaw ?? undefined,
     leadTimeDays: p.supplier?.leadTimeDays ?? 21,
     variants,
     fabricCodes: p.fabrics.map((f) => f.fabric.code),
