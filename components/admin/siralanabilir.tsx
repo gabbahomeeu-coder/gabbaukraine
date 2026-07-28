@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, useTransition } from "react";
+import { useEffect, useId, useState, useTransition } from "react";
 import {
   DndContext,
   closestCenter,
@@ -50,6 +50,17 @@ export default function Siralanabilir({
 }) {
   const [liste, setListe] = useState(ogeler);
   const [bekliyor, basla] = useTransition();
+
+  /* Dışarıdan gelen liste değişince (ör. vitrine ürün eklenince) içerideki
+     sıra da güncellensin. Yalnızca öğeler farklıysa: sürükleme sonrası
+     gereksiz yeniden çizim olmasın. */
+  useEffect(() => {
+    const gelen = ogeler.map((o) => o.id).join("|");
+    const mevcut = liste.map((o) => o.id).join("|");
+    if (gelen !== mevcut) setListe(ogeler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ogeler]);
+
   const [durum, setDurum] = useState<{ ok: boolean; mesaj: string } | null>(null);
   const dndId = useId();
 
