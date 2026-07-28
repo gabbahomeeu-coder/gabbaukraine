@@ -17,6 +17,19 @@ node scripts/kilavuz.mjs ekle MOD-01 --tip duzeltme --baslik "..." --once "..." 
 
 <!-- KAYITLAR -->
 
+### Ekleme — Panel iskeleti ve canlı sistem haritası kuruldu
+
+**28.07.2026 · 12:04** · Onur + Claude
+
+**Önce:** Yönetim arayüzü yoktu. Modül yapısı sadece dokümanda duruyordu, sistemde karşılığı yoktu.
+
+**Sonra:** /admin altında panel açıldı. Ana ekran canlı sistem haritası: 15 modül, alt modüller, olay omurgası ve son değişiklikler. Her modülün kendi sayfası var; alt modülleri, yaydığı/dinlediği olayları ve kılavuz kayıtlarını gösteriyor. Geçici olarak kullanıcı adı/şifre ile korunuyor.
+
+**Neden:** Modül haritasının panelin ana sayfası olması istenmişti. Ayrıca kılavuz kayıtlarının panelde görünmesi arşivi kullanılabilir kılıyor.
+
+---
+
+
 ### Değişiklik — Site Vercel'den kendi VPS'imize taşınacak
 
 **28.07.2026 · 09:43** · Onur + Claude

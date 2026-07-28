@@ -16,3 +16,16 @@ node scripts/kilavuz.mjs ekle API-06 --tip duzeltme --baslik "..." --once "..." 
 ```
 
 <!-- KAYITLAR -->
+
+### Düzeltme — Dinleyicisi olmayan olaylar tespit edildi ve bağlandı
+
+**28.07.2026 · 12:04** · Onur + Claude
+
+**Önce:** Dokümanda tarif edilen bazı tepkiler kayıt defterine işlenmemişti. stok.tukendi, katalog.senkron.uyari ve olay.karantinaya.alindi olaylarını hiçbir modül dinlemiyordu — yani senkron bozulsa veya bekçi bir veriyi reddetse kimse haberdar olmayacaktı.
+
+**Sonra:** Sekiz olay ilgili modüllere bağlandı. Arıza bildirimleri Telegram yönetici bildirimine, modül aç/kapat denetim kaydına, segment değişikliği reklam hedef kitlesine gidiyor. Dinleyicisiz tek olay musteri.olusturuldu kaldı; onun tepkisi henüz gerekmiyor.
+
+**Neden:** Panel haritasında 'henüz dinleyen yok' uyarısı görülünce fark edildi. Sessiz kalan arıza, günlerce fark edilmeyen arızadır.
+
+---
+

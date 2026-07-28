@@ -97,6 +97,8 @@ const API: ModuleDef = {
       code: "API-01",
       name: "Dış kapı",
       responsibility: "Mobil, bayi ve pazaryeri için dışarıya açılan uçlar.",
+      // dışarıya bağlı sistemlere stok ve fiyat değişikliği bildirilir
+      listens: ["stok.tukendi", "urun.guncellendi"],
     },
     {
       code: "API-02",
@@ -144,6 +146,7 @@ const YON: ModuleDef = {
       code: "YON-03",
       name: "Denetim kaydı",
       responsibility: "Her yönetici işlemini öncesi/sonrasıyla kaydeder.",
+      listens: ["modul.acildi", "modul.kapatildi"],
     },
     { code: "YON-04", name: "Sistem ayarları", responsibility: "Site geneli ayarlar." },
   ],
@@ -346,6 +349,7 @@ const KMP: ModuleDef = {
       name: "Günlük indirim",
       responsibility: "Her gün belirli ürünlere internet satışına özel indirim.",
       emits: ["kampanya.dondu"],
+      listens: ["stok.tukendi"], // tükenen ürün kampanya havuzundan çıkar
     },
     { code: "KMP-02", name: "Kupon", responsibility: "İndirim kodları ve kullanım takibi." },
     {
@@ -365,8 +369,19 @@ const REK: ModuleDef = {
   summary: "Google Ads kampanyaları, bütçe ve reklam geri dönüşü.",
   subModules: [
     { code: "REK-01", name: "Google Ads bağlantısı", responsibility: "Reklam hesabına bağlantı." },
-    { code: "REK-02", name: "Kampanya & bütçe", responsibility: "Kampanya durumu ve harcama." },
-    { code: "REK-03", name: "Hedef kitle", responsibility: "Yeniden hedefleme listeleri." },
+    {
+      code: "REK-02",
+      name: "Kampanya & bütçe",
+      responsibility: "Kampanya durumu ve harcama.",
+      // tükenen ürüne reklam bütçesi harcanmasın
+      listens: ["stok.tukendi"],
+    },
+    {
+      code: "REK-03",
+      name: "Hedef kitle",
+      responsibility: "Yeniden hedefleme listeleri.",
+      listens: ["segment.degisti"],
+    },
     {
       code: "REK-04",
       name: "Geri dönüş",
@@ -451,14 +466,25 @@ const TLG: ModuleDef = {
     {
       code: "TLG-02",
       name: "Yönetici bildirimi",
-      responsibility: "Sipariş, talep ve kurala uyan ziyaretler yöneticiye düşer.",
-      listens: ["siparis.olusturuldu", "talep.olusturuldu", "ziyaretci.geldi", "modul.saglik.dustu"],
+      responsibility:
+        "Sipariş, talep ve kurala uyan ziyaretler yöneticiye düşer. Sistem arızaları da buradan bildirilir.",
+      listens: [
+        "siparis.olusturuldu",
+        "talep.olusturuldu",
+        "randevu.olusturuldu",
+        "ziyaretci.geldi",
+        "stok.azaldi",
+        // arıza bildirimleri — sessiz kalırsa sorun günlerce fark edilmez
+        "modul.saglik.dustu",
+        "katalog.senkron.uyari",
+        "olay.karantinaya.alindi",
+      ],
     },
     {
       code: "TLG-03",
       name: "Müşteri bildirimi",
       responsibility: "Sipariş durumu ve kargo bilgisi müşteriye.",
-      listens: ["siparis.durum.degisti"],
+      listens: ["siparis.durum.degisti", "kargo.durum.degisti"],
     },
     {
       code: "TLG-04",
@@ -508,8 +534,8 @@ const ICR: ModuleDef = {
     {
       code: "ICR-04",
       name: "Yayın kuyruğu",
-      responsibility: "Zamanlanmış yayın ve sosyal paylaşım.",
-      listens: ["kampanya.dondu", "icerik.yayinlandi"],
+      responsibility: "Zamanlanmış yayın, sosyal paylaşım ve site haritası tazeleme.",
+      listens: ["kampanya.dondu", "icerik.yayinlandi", "urun.guncellendi"],
     },
   ],
 };
