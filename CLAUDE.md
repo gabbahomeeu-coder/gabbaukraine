@@ -101,15 +101,31 @@ gerçekten aç ve bak.**
 
 ## Yayın akışı
 
+**Karar (28 Tem 2026): site kendi VPS'imizde çalışacak.** Natro'dan VPS alınıyor;
+Vercel'den taşınılacak. Site ve PostgreSQL aynı sunucuda.
+
 ```
-MacBook → GitHub (gabbahomeeu-coder/gabbaukraine, public) → Vercel (gabbaukraine)
+MacBook → GitHub (gabbahomeeu-coder/gabbaukraine, public) → VPS (Ubuntu)
 ```
 
-- Feature branch → **preview** deployment (Vercel giriş koruması var)
-- `main` → **production** → https://gabbaukraine.vercel.app
-- ⚠️ `www.gabbaukraine.com` hâlâ **Shopify'a** bağlı. Vercel'e bağlı değil.
-  Koddaki `https://www.gabbaukraine.com` adresleri (metadata, sitemap, JSON-LD)
-  geçiş anında doğrulanmalı.
+- `next.config.ts` → `output: "standalone"` (VPS'e taşınabilir çıktı)
+- Sunucuda: Caddy (SSL) + Node + PostgreSQL + systemd
+- Önünde Cloudflare (CDN, önbellek, DDoS koruması) olmalı — tek sunucuyu
+  reklam trafiğindeki ani yükten korur
+- ⚠️ `www.gabbaukraine.com` hâlâ **Shopify'a** bağlı. Geçişte DNS Cloudflare'e,
+  oradan VPS'e yönlendirilecek. Koddaki adresler (metadata, sitemap, JSON-LD)
+  o an doğrulanmalı.
+
+## Muhasebe sistemi bağlantısı
+
+Ürün, fiyat, stok ve tedarikçi verisi müşterinin **kendi sunucusundaki özel
+muhasebe yazılımından** gelir. Bağlantı **çift yönlüdür**:
+
+- `GET /api/catalog` → katalog çekilir (biz okuruz)
+- `POST /api/orders` → sipariş gönderilir (muhasebe kaydeder, stok düşer)
+
+Muhasebe veritabanına **asla doğrudan bağlanılmaz**. Şartname:
+https://claude.ai/code/artifact/82c943c6-40f9-40fe-b734-bdb7611d0718
 
 ## Git kuralları
 
