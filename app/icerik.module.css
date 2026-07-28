@@ -331,13 +331,19 @@ details[open] > .faqQ::after {
     max-width: 1400px;
     margin: 0 auto 36px;
   }
+  /* Gövde metni sayfanın ortasına değil, başlıkla AYNI sol kenara
+     hizalanır; okunabilirlik sınırı içerideki öğelere verilir. */
   .body,
   .faq {
+    max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
     padding-left: var(--pad);
     padding-right: var(--pad);
-    max-width: calc(68ch + var(--pad) * 2);
+  }
+  .body > *,
+  .faq > * {
+    max-width: 68ch;
   }
   .stats,
   .cards,
