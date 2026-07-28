@@ -296,7 +296,7 @@ export default function HomeClient({
                 <div className={styles.dealMedia}>
                   <span className={styles.dealBadge}>−{d.discount}%</span>
                   <Image
-                    src={`/images/products/${d.img}.jpg`}
+                    src={d.image}
                     alt={d.name}
                     fill
                     sizes="(min-width: 900px) 30vw, 76vw"

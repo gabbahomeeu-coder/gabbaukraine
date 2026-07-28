@@ -1,80 +1,98 @@
+import "server-only";
+import { db } from "@/lib/db/client";
+
 /**
- * Günlük kampanya sistemi
+ * KMP · Günlük kampanya
  *
- * Her gün 70.000 ₴ altındaki ürünlerden rastgele 3 tanesi seçilir
- * ve sadece internet satışı üzerinden %20 indirim uygulanır.
+ * Her gün, yayındaki ve stokta olan ürünlerden 70.000 ₴ altındaki üçüne
+ * yalnızca internet satışında %20 indirim uygulanır.
  *
- * Seed: tarih bazlı — aynı gün aynı ürünler seçilir (tutarlılık)
- * CRM bağlanınca: gerçek ürün verileri buradan çekilecek
+ * Seçim TARİH TOHUMLUDUR: aynı gün içinde kim ne zaman girerse girsin
+ * aynı üç ürünü görür. Müşteri sabah gördüğü indirimi akşam bulamazsa
+ * güven kaybolur.
+ *
+ * Uygun ürün yoksa boş liste döner ve bölüm ana sayfada hiç görünmez —
+ * kırık ya da boş bir kampanya alanı bırakmaktansa yok saymak doğru.
  */
 
+const UST_SINIR = 70_000;
+const INDIRIM = 20;
+const ADET = 3;
+
 export type DailyDeal = {
-  img: string;
+  slug: string;
   name: string;
   collection: string;
+  /** tam görsel adresi — dış katalog sunucusundan gelir */
+  image: string;
   originalPrice: number;
   discountedPrice: number;
   discount: number;
-  slug: string;
 };
 
-// Şimdilik statik ürün havuzu — CRM bağlanınca değişecek
-const allProducts = [
-  { img: "genova-chair", name: "Стілець Genova", collection: "Montana", price: 18143, slug: "genova-chair" },
-  { img: "luna-armchair", name: "Крісло Luna", collection: "Luna", price: 43444, slug: "luna-armchair" },
-  { img: "montana-armchair", name: "Крісло Montana Lux", collection: "Montana", price: 44977, slug: "montana-armchair" },
-  { img: "milano-armchair", name: "Крісло Milano", collection: "Milano", price: 50791, slug: "milano-armchair" },
-  { img: "madrid-table", name: "Стіл Madrid", collection: "Madrid", price: 69318, slug: "madrid-table" },
-];
-
-// Tarih bazlı seed ile tutarlı rastgele seçim
-function seededRandom(seed: number): () => number {
-  let s = seed;
+/* Tarih tohumlu üreteç: aynı gün aynı sonuç */
+function tohumluRastgele(tohum: number): () => number {
+  let s = tohum % 2147483647;
+  if (s <= 0) s += 2147483646;
   return () => {
     s = (s * 16807) % 2147483647;
     return (s - 1) / 2147483646;
   };
 }
 
-function getDateSeed(date: Date): number {
-  const y = date.getFullYear();
-  const m = date.getMonth();
-  const d = date.getDate();
-  return y * 10000 + m * 100 + d;
+function tarihTohumu(t: Date): number {
+  return t.getFullYear() * 10000 + (t.getMonth() + 1) * 100 + t.getDate();
 }
 
-export function getDailyDeals(date: Date = new Date()): DailyDeal[] {
-  // 70.000 ₴ altındaki ürünler
-  const eligible = allProducts.filter((p) => p.price < 70000);
+export async function getDailyDeals(tarih: Date = new Date()): Promise<DailyDeal[]> {
+  const adaylar = await db.product.findMany({
+    where: {
+      isActive: true,
+      basePrice: { lt: UST_SINIR, gt: 0 },
+      // görselsiz ürün kampanyada kart olarak duramaz
+      media: { some: {} },
+    },
+    include: {
+      translations: { where: { locale: "uk" } },
+      collection: { include: { translations: { where: { locale: "uk" } } } },
+      media: { orderBy: { sortOrder: "asc" }, take: 1 },
+    },
+    orderBy: { slug: "asc" }, // sıra sabit olmalı, yoksa tohum işe yaramaz
+  });
 
-  if (eligible.length <= 3) {
-    return eligible.map((p) => ({
-      img: p.img,
-      name: p.name,
-      collection: p.collection,
-      originalPrice: p.price,
-      discountedPrice: Math.round(p.price * 0.8),
-      discount: 20,
-      slug: p.slug,
-    }));
+  if (adaylar.length === 0) return [];
+
+  /* Stok hareketlerinden gerçek adet — stokta olmayan ürün kampanyaya
+     giremez, "indirim var ama yok" durumu oluşmasın. */
+  const hareketler = await db.stockMove.groupBy({
+    by: ["productId"],
+    where: { productId: { in: adaylar.map((p) => p.id) } },
+    _sum: { delta: true },
+  });
+  const stok = new Map(hareketler.map((h) => [h.productId, h._sum.delta ?? 0]));
+
+  const uygun = adaylar.filter((p) => (stok.get(p.id) ?? 0) > 0);
+  if (uygun.length === 0) return [];
+
+  /* Tohumlu karıştırma — Fisher-Yates, sort() ile karıştırmak
+     tarayıcıdan tarayıcıya farklı sonuç verebiliyor. */
+  const rand = tohumluRastgele(tarihTohumu(tarih));
+  const sirali = [...uygun];
+  for (let i = sirali.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [sirali[i], sirali[j]] = [sirali[j], sirali[i]];
   }
 
-  // Tarih bazlı seed ile 3 ürün seç
-  const rand = seededRandom(getDateSeed(date));
-  const shuffled = [...eligible].sort(() => rand() - 0.5);
-  const selected = shuffled.slice(0, 3);
-
-  return selected.map((p) => ({
-    img: p.img,
-    name: p.name,
-    collection: p.collection,
-    originalPrice: p.price,
-    discountedPrice: Math.round(p.price * 0.8),
-    discount: 20,
-    slug: p.slug,
-  }));
-}
-
-export function formatPrice(price: number): string {
-  return price.toLocaleString("uk-UA").replace(/ /g, " ") + " ₴";
+  return sirali.slice(0, ADET).map((p) => {
+    const fiyat = Number(p.basePrice);
+    return {
+      slug: p.slug,
+      name: p.translations[0]?.name ?? p.slug,
+      collection: p.collection?.translations[0]?.name ?? "",
+      image: p.media[0]!.url,
+      originalPrice: fiyat,
+      discountedPrice: Math.round((fiyat * (100 - INDIRIM)) / 100),
+      discount: INDIRIM,
+    };
+  });
 }
