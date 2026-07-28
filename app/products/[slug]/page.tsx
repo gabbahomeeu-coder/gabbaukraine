@@ -2,21 +2,22 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { formatPrice } from "@/lib/catalog";
 import {
-  getProduct,
-  getProducts,
-  getProductsByCollection,
-  formatPrice,
-} from "@/lib/catalog";
-import { getFabricsForProduct, fabricGroups } from "@/lib/fabrics";
+  urun as urunGetir,
+  tumUrunler,
+  koleksiyonUrunleri,
+  urunKumaslari,
+} from "@/lib/db/catalog";
 import { ProductJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import ProductClient from "./product-client";
 import related from "./related.module.css";
 
 const SITE = "https://www.gabbaukraine.com";
 
-export function generateStaticParams() {
-  return getProducts().map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  const hepsi = await tumUrunler();
+  return hepsi.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -25,10 +26,10 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await urunGetir(slug);
   if (!product) return {};
 
-  const enDusukFiyat = product.variants?.length
+  const enDusukFiyat = product.variants.length
     ? Math.min(...product.variants.map((v) => v.price))
     : product.price;
 
@@ -51,23 +52,23 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await urunGetir(slug);
   if (!product) notFound();
 
-  const fabrics = getFabricsForProduct(product.slug);
-  const gruplar = fabricGroups.filter((g) =>
-    fabrics.some((f) => f.groupCode === g.code)
-  );
+  const fabrics = await urunKumaslari(product.slug);
+  const gruplar = [...new Map(
+    fabrics.map((f) => [f.groupCode, { code: f.groupCode, name: f.groupName }])
+  ).values()];
 
-  const digerleri = getProductsByCollection(product.collectionSlug)
+  const digerleri = (await koleksiyonUrunleri(product.collectionSlug))
     .filter((p) => p.slug !== product.slug)
     .slice(0, 4);
 
-  const enDusukFiyat = product.variants?.length
+  const enDusukFiyat = product.variants.length
     ? Math.min(...product.variants.map((v) => v.price))
     : product.price;
 
-  const stokVar = product.variants?.length
+  const stokVar = product.variants.length
     ? product.variants.some((v) => v.stock > 0)
     : product.inStock;
 

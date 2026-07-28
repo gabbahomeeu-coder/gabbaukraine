@@ -24,6 +24,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link href="/admin" className={styles.navHome}>
             Sistem haritası
           </Link>
+          <Link href="/admin/urunler" className={styles.navHome}>
+            Ürünler
+          </Link>
 
           <p className={styles.navGroup}>Platform</p>
           {platform.map((m) => (

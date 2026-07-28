@@ -4,9 +4,9 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, Check, Ruler, Truck, Shield, Hammer } from "lucide-react";
-import type { Product } from "@/lib/catalog";
+import type { UrunDTO, KumasDTO, KumasGrubuDTO } from "@/lib/db/types";
 import { formatPrice } from "@/lib/catalog";
-import type { Fabric, FabricGroup } from "@/lib/fabrics";
+
 import { WA_LINK, PHONE } from "@/lib/site";
 import { WhatsAppIcon } from "@/components/icons";
 import styles from "./product.module.css";
@@ -29,9 +29,9 @@ export default function ProductClient({
   fabrics,
   groups,
 }: {
-  product: Product;
-  fabrics: Fabric[];
-  groups: FabricGroup[];
+  product: UrunDTO;
+  fabrics: KumasDTO[];
+  groups: KumasGrubuDTO[];
 }) {
   const variants = product.variants ?? [];
   const [variantId, setVariantId] = useState(

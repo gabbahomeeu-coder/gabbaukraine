@@ -14,7 +14,7 @@ import {
   Star,
 } from "lucide-react";
 import styles from "./page.module.css";
-import type { Product, Collection } from "@/lib/catalog";
+import type { UrunDTO, KoleksiyonDTO } from "@/lib/db/types";
 import { formatPrice } from "@/lib/catalog";
 import type { DailyDeal } from "@/lib/daily-deals";
 import { WhatsAppIcon } from "@/components/icons";
@@ -142,8 +142,8 @@ export default function HomeClient({
   collections,
 }: {
   deals: DailyDeal[];
-  products: Product[];
-  collections: Collection[];
+  products: UrunDTO[];
+  collections: KoleksiyonDTO[];
 }) {
   const [scrolled, setScrolled] = useState(false);
 

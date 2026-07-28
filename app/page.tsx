@@ -1,5 +1,5 @@
 import { getDailyDeals } from "@/lib/daily-deals";
-import { getProducts, getCollections } from "@/lib/catalog";
+import { tumUrunler, tumKoleksiyonlar } from "@/lib/db/catalog";
 import {
   OrganizationJsonLd,
   WebSiteJsonLd,
@@ -12,10 +12,10 @@ import HomeClient from "./home-client";
 // Günlük kampanya her saat başı tazelenir — gün değişince yeni 3 ürün gelir
 export const revalidate = 3600;
 
-export default function HomePage() {
+export default async function HomePage() {
   const deals = getDailyDeals();
-  const products = getProducts();
-  const collections = getCollections();
+  const products = await tumUrunler();
+  const collections = await tumKoleksiyonlar();
 
   return (
     <>

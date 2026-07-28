@@ -27,6 +27,19 @@ Ayrıntı için ilgili alt modülün kılavuzuna bakın.
 
 <!-- KAYITLAR -->
 
+### Değişiklik — Site artık veritabanından okuyor
+
+**28.07.2026 · 12:59** · Onur + Claude · `KAT-01`
+
+**Önce:** Ürün ve koleksiyon verisi lib/catalog.ts dosyasından okunuyordu. Veritabanı kurulmuş ve doldurulmuştu ama site onu kullanmıyordu — veri iki yerde birden duruyordu.
+
+**Sonra:** lib/db/catalog.ts okuma katmanı yazıldı. Ana sayfa, ürün ve koleksiyon sayfaları veritabanından besleniyor. lib/catalog.ts yalnızca ilk tohumlama için duruyor. Stok, StockMove hareketlerinin toplamı olarak hesaplanıyor.
+
+**Neden:** İki veri kaynağı er geç çelişir. Panelden yapılan değişikliğin siteye yansıması ancak tek kaynakla mümkün.
+
+---
+
+
 ### Ekleme — Ürün sayfasında ölçü ve kumaş seçimi devreye girdi
 
 **28.07.2026 · 12:19** · Onur + Claude · `KAT-08`
