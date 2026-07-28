@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
-import Link from "next/link";
+import { SiteHeader, SiteFooter, SiteBar } from "@/components/site-chrome";
+import { WhatsAppIcon } from "@/components/icons";
+import { WA_LINK } from "@/lib/site";
+import styles from "../icerik.module.css";
+
+const SITE = "https://www.gabbaukraine.com";
 
 export const metadata: Metadata = {
-  title: "Блог GABBA — Поради з дизайну інтер'єру та меблів",
+  title: "Блог про меблі та інтер'єр | GABBA",
   description:
-    "Корисні статті про дизайн інтер'єру, тренди меблів, поради з вибору та догляду за преміальними меблями від GABBA.",
+    "Поради щодо вибору меблів, догляду за ними та тренди інтер'єру. Досвід дизайнерів GABBA.",
+  alternates: { canonical: `${SITE}/blog` },
   openGraph: {
-    title: "Блог GABBA — Дизайн інтер'єру",
-    description: "Статті, поради та тренди від команди GABBA.",
-    url: "https://www.gabbaukraine.com/blog",
+    title: "Блог GABBA",
+    description: "Поради, тренди та історії про меблі й інтер'єр.",
+    url: `${SITE}/blog`,
   },
 };
 
@@ -56,81 +62,69 @@ const posts = [
   },
 ];
 
-export default function BlogPage() {
+const tarih = (d: string) =>
+  new Date(d).toLocaleDateString("uk-UA", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+export default function BlogSayfasi() {
   return (
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: "Головна", url: "https://www.gabbaukraine.com" },
-          { name: "Блог", url: "https://www.gabbaukraine.com/blog" },
+          { name: "Головна", url: SITE },
+          { name: "Блог", url: `${SITE}/blog` },
         ]}
       />
 
-      <main style={{ paddingTop: 72, paddingBottom: 100 }}>
-        <section style={{ padding: "40px 16px", maxWidth: 600, margin: "0 auto" }}>
-          <p style={{ fontSize: 10, letterSpacing: 3, textTransform: "uppercase", color: "var(--gold)", marginBottom: 10 }}>
-            Блог
-          </p>
-          <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(26px, 7vw, 36px)", fontWeight: 500, lineHeight: 1.2, marginBottom: 8 }}>
-            Поради та натхнення
-          </h1>
-          <p style={{ fontSize: 14, color: "var(--muted)", lineHeight: 1.6, fontWeight: 300, marginBottom: 32 }}>
-            Статті про дизайн інтер'єру, тренди та догляд за меблями.
-          </p>
+      <SiteHeader />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {posts.map((post) => (
-              <article
-                key={post.slug}
-                style={{
-                  background: "var(--card)",
-                  borderRadius: 14,
-                  padding: 20,
-                  boxShadow: "0 1px 10px rgba(0,0,0,0.04)",
-                }}
-              >
-                <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
-                  <span
-                    style={{
-                      fontSize: 9,
-                      textTransform: "uppercase",
-                      letterSpacing: 1,
-                      color: "var(--gold)",
-                      background: "var(--gold-light)",
-                      padding: "3px 8px",
-                      borderRadius: 20,
-                      fontWeight: 500,
-                    }}
-                  >
-                    {post.category}
-                  </span>
-                  <span style={{ fontSize: 11, color: "var(--subtle)", fontWeight: 300 }}>
-                    {new Date(post.date).toLocaleDateString("uk-UA", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </span>
-                </div>
-                <h2
-                  style={{
-                    fontFamily: "var(--font-serif)",
-                    fontSize: 16,
-                    fontWeight: 500,
-                    lineHeight: 1.3,
-                    marginBottom: 8,
-                  }}
-                >
-                  {post.title}
-                </h2>
-                <p style={{ fontSize: 13, color: "var(--muted)", lineHeight: 1.6, fontWeight: 300 }}>
-                  {post.excerpt}
-                </p>
-              </article>
-            ))}
-          </div>
+      <div className={styles.page}>
+        <header className={styles.head}>
+          <p className={styles.eyebrow}>Блог</p>
+          <h1 className={styles.title}>Про меблі, простір і смак</h1>
+          <p className={styles.lede}>
+            Поради щодо вибору та догляду, тренди інтер&apos;єру й історії наших
+            колекцій — з досвіду дизайнерів GABBA.
+          </p>
+        </header>
+
+        <div className={styles.posts}>
+          {posts.map((p) => (
+            <article key={p.slug} className={styles.post}>
+              <p className={styles.postCat}>{p.category}</p>
+              <h2 className={styles.postTitle}>{p.title}</h2>
+              <p className={styles.postText}>{p.excerpt}</p>
+              <div className={styles.postMeta}>
+                <time dateTime={p.date}>{tarih(p.date)}</time>
+                <span className={styles.postSoon}>Скоро</span>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <section className={styles.cta}>
+          <h2 className={styles.ctaTitle}>Не знаєте, з чого почати?</h2>
+          <p className={styles.ctaText}>
+            Напишіть нам — дизайнер підкаже, які меблі підійдуть саме вашому
+            простору.
+          </p>
+          <a
+            href={WA_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.ctaBtn}
+          >
+            <WhatsAppIcon size={18} />
+            Написати в WhatsApp
+          </a>
         </section>
-      </main>
+      </div>
+
+      <SiteFooter />
+      <SiteBar />
     </>
   );
 }

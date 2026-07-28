@@ -1,0 +1,168 @@
+/* ══════════════════════════════════════════════════════════════
+   Site başlığı ve alt bilgisi — iç sayfalarda ortak
+   Ana sayfanın başlığı ayrıdır (hero üstünde saydam başlar).
+   ══════════════════════════════════════════════════════════════ */
+
+.header {
+  --line: rgba(32, 26, 18, 0.1);
+  --pad: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px var(--pad);
+  padding-top: calc(12px + env(safe-area-inset-top, 0px));
+  background: rgba(250, 246, 241, 0.94);
+  backdrop-filter: saturate(140%) blur(12px);
+  -webkit-backdrop-filter: saturate(140%) blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.logo img {
+  height: 24px;
+  width: auto;
+}
+.nav {
+  display: none;
+  gap: 22px;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+.nav a:hover {
+  color: var(--dark);
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  color: var(--dark);
+}
+.icon:hover {
+  color: var(--gold);
+}
+
+/* ── alt bilgi ── */
+.footer {
+  --line: rgba(32, 26, 18, 0.1);
+  --pad: 20px;
+  border-top: 1px solid var(--line);
+  padding: 34px var(--pad) 34px;
+  text-align: center;
+}
+.footerLogo {
+  height: 22px;
+  width: auto;
+  margin: 0 auto 18px;
+  opacity: 0.85;
+}
+.footerNav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 20px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.footerNav a:hover {
+  color: var(--dark);
+}
+.footerContact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 18px;
+  margin-bottom: 14px;
+  font-size: 13px;
+}
+.footerPhone {
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--dark);
+}
+.footerIg {
+  font-size: 12.5px;
+  color: var(--gold);
+}
+.footerCopy {
+  font-size: 11px;
+  color: var(--subtle);
+  letter-spacing: 0.02em;
+  margin-top: 12px;
+}
+
+/* ── mobil sabit bar ── */
+.bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  display: flex;
+  gap: 8px;
+  padding: 9px 12px;
+  padding-bottom: calc(9px + env(safe-area-inset-bottom, 0px));
+  background: rgba(28, 23, 16, 0.94);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border-top: 1px solid rgba(243, 236, 226, 0.1);
+}
+.barPrimary {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  border-radius: 2px;
+  background: var(--gold);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+.barSecondary {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  min-height: 46px;
+  border-radius: 2px;
+  border: 1px solid rgba(243, 236, 226, 0.24);
+  color: #f3ece2;
+}
+
+@media (min-width: 700px) {
+  .header,
+  .footer {
+    --pad: 40px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .header,
+  .footer {
+    --pad: 64px;
+  }
+  .header {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  .nav {
+    display: flex;
+  }
+  .bar {
+    display: none;
+  }
+  .footer {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+}

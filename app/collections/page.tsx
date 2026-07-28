@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { tumKoleksiyonlar } from "@/lib/db/catalog";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { SiteHeader, SiteFooter, SiteBar } from "@/components/site-chrome";
 import styles from "./collections.module.css";
 
 const SITE = "https://www.gabbaukraine.com";
@@ -32,6 +33,8 @@ export default async function KoleksiyonlarSayfasi() {
           { name: "Колекції", url: `${SITE}/collections` },
         ]}
       />
+
+      <SiteHeader />
 
       <div className={styles.page}>
         <header className={styles.head}>
@@ -101,6 +104,9 @@ export default async function KoleksiyonlarSayfasi() {
           })}
         </div>
       </div>
+
+      <SiteFooter />
+      <SiteBar />
     </>
   );
 }

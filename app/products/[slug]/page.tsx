@@ -10,6 +10,7 @@ import {
   urunKumaslari,
 } from "@/lib/db/catalog";
 import { ProductJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import ProductClient from "./product-client";
 import related from "./related.module.css";
 
@@ -95,6 +96,8 @@ export default async function ProductPage({
         ]}
       />
 
+      <SiteHeader />
+
       <ProductClient product={product} fabrics={fabrics} groups={gruplar} />
 
       {/* ilgili ürün yoksa sabit alt bar içeriği örtmesin */}
@@ -132,6 +135,8 @@ export default async function ProductPage({
           </div>
         </section>
       )}
+
+      <SiteFooter />
     </>
   );
 }

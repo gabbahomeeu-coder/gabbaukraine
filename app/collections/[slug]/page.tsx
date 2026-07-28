@@ -9,6 +9,7 @@ import {
   koleksiyonUrunleri,
 } from "@/lib/db/catalog";
 import { BreadcrumbJsonLd } from "@/components/json-ld";
+import { SiteHeader, SiteFooter, SiteBar } from "@/components/site-chrome";
 import styles from "../collections.module.css";
 
 const SITE = "https://www.gabbaukraine.com";
@@ -60,6 +61,8 @@ export default async function KoleksiyonSayfasi({
           { name: k.name, url: `${SITE}/collections/${k.slug}` },
         ]}
       />
+
+      <SiteHeader />
 
       <div className={styles.page}>
         <header className={styles.detailHead}>
@@ -136,6 +139,9 @@ export default async function KoleksiyonSayfasi({
           </div>
         )}
       </div>
+
+      <SiteFooter />
+      <SiteBar />
     </>
   );
 }

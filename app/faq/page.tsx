@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
+import { SiteHeader, SiteFooter, SiteBar } from "@/components/site-chrome";
+import { WhatsAppIcon } from "@/components/icons";
+import { WA_LINK } from "@/lib/site";
+import styles from "../icerik.module.css";
+
+const SITE = "https://www.gabbaukraine.com";
 
 export const metadata: Metadata = {
-  title: "FAQ — Часті запитання про меблі GABBA",
+  title: "Часті запитання | GABBA",
   description:
-    "Відповіді на найпопулярніші запитання про дизайнерські меблі GABBA: доставка, гарантія, оплата, матеріали, терміни виготовлення.",
+    "Доставка, гарантія, оплата, матеріали та терміни виготовлення — відповіді на найпоширеніші запитання про меблі GABBA.",
+  alternates: { canonical: `${SITE}/faq` },
   openGraph: {
-    title: "FAQ — Часті запитання | GABBA",
+    title: "Часті запитання | GABBA",
     description: "Все, що потрібно знати перед покупкою меблів GABBA.",
-    url: "https://www.gabbaukraine.com/faq",
+    url: `${SITE}/faq`,
   },
 };
 
@@ -65,98 +72,57 @@ const faqItems = [
   },
 ];
 
-export default function FAQPage() {
+export default function FaqSayfasi() {
   return (
     <>
       <FAQJsonLd questions={faqItems} />
       <BreadcrumbJsonLd
         items={[
-          { name: "Головна", url: "https://www.gabbaukraine.com" },
-          { name: "FAQ", url: "https://www.gabbaukraine.com/faq" },
+          { name: "Головна", url: SITE },
+          { name: "Питання", url: `${SITE}/faq` },
         ]}
       />
 
-      <main style={{ paddingTop: 72, paddingBottom: 100 }}>
-        <section style={{ padding: "40px 16px", maxWidth: 600, margin: "0 auto" }}>
-          <p style={{ fontSize: 10, letterSpacing: 3, textTransform: "uppercase", color: "var(--gold)", marginBottom: 10 }}>
-            FAQ
-          </p>
-          <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(26px, 7vw, 36px)", fontWeight: 500, lineHeight: 1.2, marginBottom: 8 }}>
-            Часті запитання
-          </h1>
-          <p style={{ fontSize: 14, color: "var(--muted)", lineHeight: 1.6, fontWeight: 300, marginBottom: 32 }}>
-            Відповіді на найпопулярніші запитання наших клієнтів.
-          </p>
+      <SiteHeader />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            {faqItems.map((item, i) => (
-              <details
-                key={i}
-                style={{
-                  borderBottom: "1px solid rgba(0,0,0,0.06)",
-                  padding: "16px 0",
-                }}
-              >
-                <summary
-                  style={{
-                    fontWeight: 500,
-                    fontSize: 14,
-                    cursor: "pointer",
-                    lineHeight: 1.5,
-                    listStyle: "none",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    minHeight: 44,
-                  }}
-                >
-                  {item.question}
-                  <span style={{ color: "var(--gold)", fontSize: 18, flexShrink: 0, marginLeft: 12 }}>+</span>
-                </summary>
-                <p
-                  style={{
-                    fontSize: 13,
-                    color: "var(--muted)",
-                    lineHeight: 1.7,
-                    fontWeight: 300,
-                    paddingTop: 8,
-                  }}
-                >
-                  {item.answer}
-                </p>
-              </details>
-            ))}
-          </div>
+      <div className={styles.page}>
+        <header className={styles.head}>
+          <p className={styles.eyebrow}>Питання та відповіді</p>
+          <h1 className={styles.title}>Що варто знати перед покупкою</h1>
+          <p className={styles.lede}>
+            Найчастіші запитання про доставку, гарантію, матеріали та терміни.
+            Не знайшли відповідь — напишіть нам, відповімо особисто.
+          </p>
+        </header>
 
-          <div style={{ marginTop: 40, padding: 24, background: "var(--warm-bg)", borderRadius: 16, textAlign: "center" }}>
-            <p style={{ fontFamily: "var(--font-serif)", fontSize: 18, fontWeight: 500, marginBottom: 8 }}>
-              Не знайшли відповідь?
-            </p>
-            <p style={{ fontSize: 13, color: "var(--muted)", fontWeight: 300, marginBottom: 16 }}>
-              Зв'яжіться з нами — допоможемо з будь-яким питанням.
-            </p>
-            <a
-              href="https://wa.me/380990042222"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "12px 28px",
-                background: "#25D366",
-                color: "#fff",
-                borderRadius: 50,
-                fontSize: 13,
-                fontWeight: 500,
-                minHeight: 44,
-              }}
-            >
-              Написати в WhatsApp
-            </a>
-          </div>
+        <div className={styles.faq}>
+          {faqItems.map((f) => (
+            <details key={f.question} className={styles.faqItem}>
+              <summary className={styles.faqQ}>{f.question}</summary>
+              <p className={styles.faqA}>{f.answer}</p>
+            </details>
+          ))}
+        </div>
+
+        <section className={styles.cta}>
+          <h2 className={styles.ctaTitle}>Залишилося питання?</h2>
+          <p className={styles.ctaText}>
+            Напишіть нам у WhatsApp — відповідаємо щодня з 09:00 до 21:00.
+          </p>
+          <a
+            href={WA_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.ctaBtn}
+          >
+            <WhatsAppIcon size={18} />
+            Написати в WhatsApp
+          </a>
         </section>
-      </main>
+      </div>
+
+      <SiteFooter />
+      <SiteBar />
     </>
   );
 }
