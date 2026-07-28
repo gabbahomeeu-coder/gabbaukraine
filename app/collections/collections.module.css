@@ -1,108 +1,321 @@
-.main {
-  padding-top: 72px;
-  padding-bottom: 100px;
+/* ══════════════════════════════════════════════════════════════
+   Koleksiyonlar — mobil öncelikli, masaüstünde ızgara
+   Onaylanan tasarım dili: krem zemin, koyu metin, altın vurgu.
+   ══════════════════════════════════════════════════════════════ */
+
+.page {
+  --line: rgba(32, 26, 18, 0.1);
+  --pad: 20px;
+  padding-bottom: calc(var(--bar-h) + 20px);
 }
 
-.header {
-  padding: 40px 16px 0;
+/* ── başlık ── */
+.head {
+  padding: 30px var(--pad) 22px;
 }
-
 .eyebrow {
-  font-size: 10px;
-  letter-spacing: 3px;
+  font-size: 10.5px;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--gold);
   margin-bottom: 10px;
-  font-weight: 500;
 }
-
 .title {
-  font-family: var(--font-serif);
-  font-size: clamp(26px, 7vw, 36px);
-  font-weight: 500;
-  line-height: 1.2;
-  margin-bottom: 8px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(27px, 7.5vw, 40px);
+  line-height: 1.14;
+  letter-spacing: -0.015em;
+  color: var(--dark);
+  margin-bottom: 10px;
+  text-wrap: balance;
 }
-
-.subtitle {
-  font-size: 14px;
+.lede {
+  font-size: 14.5px;
+  line-height: 1.62;
   color: var(--muted);
-  line-height: 1.6;
-  font-weight: 300;
-  margin-bottom: 24px;
+  max-width: 52ch;
 }
 
+/* ── ızgara ── */
 .grid {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 0 16px;
+  display: grid;
+  gap: 14px;
+  padding: 0 var(--pad);
 }
 
 .card {
-  display: block;
+  display: flex;
+  flex-direction: column;
   background: var(--card);
-  border-radius: 16px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
   overflow: hidden;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
-  text-decoration: none;
-  color: inherit;
-  transition: transform 0.2s ease;
 }
-
-.card:active {
-  transform: scale(0.98);
-}
-
-.cardImageWrap {
+.cardMedia {
   position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--warm-bg);
   overflow: hidden;
 }
-
-.cardImage {
-  width: 100%;
-  aspect-ratio: 16/9;
+.cardImg {
   object-fit: cover;
-  display: block;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card:hover .cardImg,
+.card:active .cardImg {
+  transform: scale(1.04);
+}
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 16px 17px 18px;
+  flex: 1;
+}
+.brand {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.name {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 1.2;
+  color: var(--dark);
+}
+.desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 12px;
+}
+.count {
+  font-size: 12px;
+  color: var(--subtle);
+}
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dark);
 }
 
-.cardOverlay {
+/* yakında gelecek koleksiyon */
+.soon {
+  opacity: 0.74;
+}
+.soonTag {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+
+/* ── koleksiyon detayı ── */
+.detailHead {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: var(--warm-bg);
+  overflow: hidden;
+}
+.detailImg {
+  object-fit: cover;
+}
+.detailScrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.15));
+  background: linear-gradient(
+    180deg,
+    rgba(24, 19, 13, 0.28) 0%,
+    rgba(24, 19, 13, 0.06) 38%,
+    rgba(24, 19, 13, 0.8) 100%
+  );
 }
-
-.cardBody {
-  padding: 16px;
+.detailText {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 var(--pad) 22px;
+  color: #fff;
 }
-
-.cardBrand {
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--gold);
-  font-weight: 500;
-  margin-bottom: 4px;
-  display: block;
+.detailTitle {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(28px, 8vw, 44px);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin-bottom: 8px;
 }
-
-.cardName {
-  font-family: var(--font-serif);
-  font-size: 22px;
-  font-weight: 500;
-  margin-bottom: 6px;
-}
-
-.cardDesc {
-  font-size: 13px;
-  color: var(--muted);
+.detailDesc {
+  font-size: 14px;
   line-height: 1.6;
-  font-weight: 300;
-  margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 46ch;
+}
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 16px var(--pad) 0;
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.crumbs span {
+  color: var(--subtle);
 }
 
-.cardLink {
-  font-size: 12px;
-  color: var(--gold);
-  font-weight: 500;
+.sectionHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 30px var(--pad) 16px;
+}
+.sectionTitle {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(21px, 6vw, 28px);
+  color: var(--dark);
+}
+.sectionCount {
+  font-size: 12.5px;
+  color: var(--subtle);
+}
+
+/* ── ürün ızgarası ── */
+.products {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 var(--pad);
+}
+.product {
+  display: flex;
+  flex-direction: column;
+}
+.productMedia {
+  position: relative;
+  aspect-ratio: 5 / 3;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.productImg {
+  object-fit: cover;
+  transform: scale(1.1);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.product:hover .productImg,
+.product:active .productImg {
+  transform: scale(1.16);
+}
+.productInfo {
+  padding: 10px 2px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.productName {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.3;
+  color: var(--dark);
+}
+.productPrice {
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--dark);
+}
+.productStock {
+  font-size: 10.5px;
+  color: #5c7a52;
+}
+
+.empty {
+  padding: 26px var(--pad) 40px;
+  color: var(--muted);
+  font-size: 14px;
+  max-width: 52ch;
+}
+
+/* ══════════════ TABLET ══════════════ */
+@media (min-width: 700px) {
+  .page {
+    --pad: 40px;
+  }
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  .products {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+}
+
+/* ══════════════ MASAÜSTÜ ══════════════ */
+@media (min-width: 1000px) {
+  .page {
+    --pad: 64px;
+    padding-bottom: 80px;
+  }
+  .head {
+    padding-top: 52px;
+    padding-bottom: 28px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .cardMedia {
+    aspect-ratio: 5 / 4;
+  }
+
+  .detailHead {
+    aspect-ratio: 21 / 8;
+  }
+  .detailText {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+  }
+  .crumbs,
+  .sectionHead,
+  .products {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .products {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+  }
 }
