@@ -143,7 +143,15 @@ export default function GorselSecici({
 
           return (
             <figure key={g.url} className={styles.havuzItem}>
-              <div className={styles.havuzMedia}>
+              <div
+                className={styles.havuzMedia}
+                /* kutu oranı fotoğrafın kendi oranı — kırpma olmasın */
+                style={
+                  g.width && g.height
+                    ? ({ "--oran": `${g.width} / ${g.height}` } as React.CSSProperties)
+                    : undefined
+                }
+              >
                 <Image src={g.url} alt="" fill sizes="220px" className={styles.havuzImg} />
                 {(genisSecili || mobilSecili) && (
                   <span className={styles.havuzRozet}>

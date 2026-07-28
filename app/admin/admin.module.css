@@ -1164,23 +1164,28 @@
 }
 
 /* havuz */
+/* Sütun düzeni: yatay ve dikey kutular yan yana gelince ızgara boşluk
+   bırakıyordu. Sütunlarda her kutu kendi boyunu alır, boşluk kalmaz. */
 .havuz {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 14px;
+  columns: 190px 5;
+  column-gap: 14px;
 }
 .havuzItem {
   background: var(--pcard);
   border: 1px solid var(--pline);
   border-radius: 3px;
   overflow: hidden;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
+  display: block;
+  width: 100%;
+  margin: 0 0 14px;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
 }
+/* Kutu oranı fotoğrafın kendi oranı — dikey olan dikey, yatay olan yatay
+   görünür, hiçbiri kırpılmaz. Ölçüsü bilinmeyen için 4/3 yedeği. */
 .havuzMedia {
   position: relative;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: var(--oran, 4 / 3);
   background: var(--warm-bg);
 }
 .havuzImg { object-fit: cover; }

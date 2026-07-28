@@ -27,6 +27,19 @@ Ayrıntı için ilgili alt modülün kılavuzuna bakın.
 
 <!-- KAYITLAR -->
 
+### Değişiklik — Kapak havuzunda kutular fotoğrafın oranını alıyor
+
+**28.07.2026 · 23:21** · Onur + Claude · `KAT-02`
+
+**Önce:** Tüm kutular sabit 4/3 oranındaydı ve görsel 'cover' ile yerleştiriliyordu. Dikey fotoğrafların üstü ve altı kırpılıyor, kapak seçerken fotoğrafın tamamı görülemiyordu.
+
+**Sonra:** Her kutu kendi fotoğrafının en-boy oranını alıyor (--oran değişkeni, media.width/height'tan). Izgara yerine sütun düzeni kullanılıyor; farklı boydaki kutular yan yana gelince boşluk kalmıyor. Ölçüsü bilinmeyen görsel için 4/3 yedeği duruyor.
+
+**Neden:** Kapak seçimi görsel bir karar; kırpılmış önizleme yanlış seçime yol açar. Özellikle telefon kapağı için dikey fotoğrafın tamamının görünmesi şart.
+
+---
+
+
 ### Düzeltme — Kapak seçme sayfası katalog fotoğraflarını hiç okumuyordu
 
 **28.07.2026 · 23:15** · Onur + Claude · `KAT-02`
