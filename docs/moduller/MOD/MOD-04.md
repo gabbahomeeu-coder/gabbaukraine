@@ -17,6 +17,19 @@ node scripts/kilavuz.mjs ekle MOD-04 --tip duzeltme --baslik "..." --once "..." 
 
 <!-- KAYITLAR -->
 
+### Düzeltme — Panelden yapılan değişiklikler siteye yansımıyordu
+
+**28.07.2026 · 18:52** · Onur + Claude
+
+**Önce:** Panelde fiyat, vitrin veya kapak değiştirildiğinde kaydediliyordu ama site eski hâlinde kalıyordu. Sayfa yeniden üretilmek istendiğinde yazacak yer bulamıyordu: sunucudaki .next/standalone/.next/cache dizini hiç oluşturulmamıştı.
+
+**Sonra:** Yayınlama betiği artık bu dizini oluşturup derleme önbelleğini kopyalıyor. Doğrulandı: panelden fiyat değişikliği kaydedildiği anda site güncellendi.
+
+**Neden:** Next.js standalone çıktısı ISR önbelleğini kendiliğinden taşımıyor. Bu eksik, panelin tamamını işlevsiz bırakıyordu — kullanıcı 'güncellemeler siteye yansımıyor' diyerek fark etti.
+
+---
+
+
 ### Ekleme — Sunucu kuruldu, site canlıya alındı
 
 **28.07.2026 · 12:43** · Onur + Claude
