@@ -201,6 +201,24 @@ async function katalog() {
       });
     }
 
+    // Tek ölçülü ürünler: varyantı yok, stok doğrudan ürüne yazılır.
+    // Bu olmadan stok toplamı 0 çıkıyor ve ürün "ön sipariş" görünüyordu.
+    if (!p.variants?.length) {
+      const hareketVar = await db.stockMove.findFirst({
+        where: { productId: urun.id, variantId: null },
+      });
+      if (!hareketVar && p.inStock) {
+        await db.stockMove.create({
+          data: {
+            productId: urun.id,
+            delta: 5,
+            reason: "SENKRON",
+            note: "başlangıç stoğu (tek ölçülü ürün)",
+          },
+        });
+      }
+    }
+
     // ölçü varyantları
     for (const [j, v] of (p.variants ?? []).entries()) {
       const varyant = await db.variant.upsert({
