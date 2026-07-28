@@ -86,7 +86,7 @@ export default async function KoleksiyonlarSayfasi() {
             );
 
             return bos ? (
-              <div key={k.slug} className={`${styles.card} ${styles.soon}`}>
+              <div key={k.slug} className={styles.card}>
                 {icerik}
               </div>
             ) : (
