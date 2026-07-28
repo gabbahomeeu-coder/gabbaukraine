@@ -19,14 +19,16 @@
 /* ── GÖRSEL ── */
 .media {
   position: relative;
-  aspect-ratio: 5 / 3;
+  aspect-ratio: 4 / 3;
   background: var(--card);
   border-bottom: 1px solid var(--line);
-  /* görsel scale ile büyütülüyor — kabı taşmasın */
+  /* Dekupeler beyaz zeminde ~6:5 oranında geliyor. 5/3 kutuda `cover`
+     kullanılınca mobilyanın üçte biri kırpılıyordu; `contain` ile tamamı
+     görünür, artan boşluk kartın beyaz zeminiyle kaynaşır. */
   overflow: hidden;
 }
 .mediaImg {
-  object-fit: cover;
+  object-fit: contain;
   transform: scale(1.06);
 }
 

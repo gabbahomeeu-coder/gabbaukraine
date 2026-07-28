@@ -27,6 +27,19 @@ Ayrıntı için ilgili alt modülün kılavuzuna bakın.
 
 <!-- KAYITLAR -->
 
+### Düzeltme — Dekupe ürün fotoğrafları kartlarda kırpılıyordu
+
+**28.07.2026 · 23:44** · Onur + Claude · `KAT-01`
+
+**Önce:** Ürün kartları 5/3 kutuda 'object-fit: cover' ve ayrıca scale(1.1) kullanıyordu. Bu kural eski örnek fotoğraflara göre yazılmıştı (5:3 çekim). CRM'den gelen 933 dekupenin oranı ise ~6:5 (781x656); cover ile mobilyanın yaklaşık üçte biri kırpılıyor, koleksiyon sayfasında ürünler yarım görünüyordu.
+
+**Sonra:** Ürün kartlarında kutu 5/4, yerleşim 'contain'. Fotoğrafın tamamı görünüyor, artan boşluk kartın beyaz zeminiyle kaynaşıyor. Büyük scale kaldırıldı, dokunma geri bildirimi 1.03'e indi. Ürün sayfası galerisi 4/3 + contain. Koleksiyon kapakları ve kategori kartları stüdyo çekimi olduğu için cover kalmaya devam ediyor.
+
+**Neden:** Kırpma kuralı görsel malzemeye bağlıdır; malzeme değişince kural da değişmeli. CLAUDE.md'deki '5:3 + cover' maddesi de güncellendi, yoksa sonraki sayfalarda aynı hata tekrarlanır.
+
+---
+
+
 ### Değişiklik — Kapak havuzu türe göre üç bölüme ayrıldı
 
 **28.07.2026 · 23:38** · Onur + Claude · `KAT-02`

@@ -83,7 +83,9 @@ takip eder; yeni yön arayışına girilmez.
 - **Mobil öncelikli yaz.** Temel CSS telefon içindir; `@media (min-width: 700px)` ve
   `(min-width: 1000px)` ile büyüt. Asla tersini yapma.
 - Yatay listeler mobilde snap-scroll "rail", masaüstünde grid'e döner
-- Ürün fotoğrafları **5:3** oranında çekilmiş → kartlarda `aspect-ratio: 5/3` + `cover`
+- Ürün fotoğrafları CRM'den **dekupe** gelir: beyaz zemin, ~6:5 oran (781×656).
+  Kartlarda `aspect-ratio: 5/4` + **`contain`** — `cover` mobilyayı kırpar.
+  Koleksiyon kapakları stüdyo çekimi olduğu için onlarda `cover` doğru
 - Köşe yarıçapı 2–3px (keskin, editoryal), buton min yükseklik 52px
 - Sabit alt bar mobilde her sayfada durur → içerik `padding-bottom: var(--bar-h)`
 - Animasyon minimum: sadece yumuşak fade-up. Efekt değil görsel kalite önceliklidir.

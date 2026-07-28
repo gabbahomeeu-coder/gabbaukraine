@@ -460,19 +460,21 @@
 }
 .prodMedia {
   position: relative;
-  aspect-ratio: 5 / 3;
+  /* Dekupeler beyaz zeminde ~6:5 oranında geliyor. 5/3 kutuda `cover`
+     kullanılınca mobilyanın üçte biri kırpılıyordu; `contain` ile tamamı
+     görünür, artan boşluk kartın beyaz zeminiyle kaynaşır. */
+  aspect-ratio: 5 / 4;
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 3px;
   overflow: hidden;
 }
 .prodImg {
-  object-fit: cover;
-  transform: scale(1.1);
+  object-fit: contain;
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .prodCard:active .prodImg {
-  transform: scale(1.16);
+  transform: scale(1.03);
 }
 .prodInfo {
   padding: 12px 2px 0;
