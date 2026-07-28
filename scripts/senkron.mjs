@@ -41,12 +41,16 @@ const hedef = (() => {
   return `${u.hostname}:${u.port || 5432}/${u.pathname.slice(1)}`;
 })();
 
-if (uretim && yaz) {
+/* Sunucuda .env.local zaten üretim veritabanını gösteriyor; orada --uretim
+   bayrağı gerekmez. Etiketin "yerel kopya" demesi yanıltıcı olurdu. */
+const uretimeYaziliyor = uretim || process.env.NODE_ENV === "production";
+
+if (uretimeYaziliyor && yaz) {
   console.log("╔══════════════════════════════════════════════════════╗");
   console.log("║  ÜRETİM VERİTABANINA YAZILIYOR — CANLI MAĞAZA        ║");
   console.log("╚══════════════════════════════════════════════════════╝");
 }
-console.log(`hedef veritabanı: ${hedef}  ${uretim ? "(ÜRETİM)" : "(yerel kopya)"}\n`);
+console.log(`hedef veritabanı: ${hedef}  ${uretimeYaziliyor ? "(ÜRETİM)" : "(yerel kopya)"}\n`);
 
 const { katalogSenkronu } = await import("../lib/sync/katalog.ts");
 
