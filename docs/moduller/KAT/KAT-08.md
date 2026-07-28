@@ -17,6 +17,19 @@ node scripts/kilavuz.mjs ekle KAT-08 --tip duzeltme --baslik "..." --once "..." 
 
 <!-- KAYITLAR -->
 
+### Ekleme — Ürün sayfasında ölçü ve kumaş seçimi devreye girdi
+
+**28.07.2026 · 12:19** · Onur + Claude
+
+**Önce:** Ürün sayfası tek fiyat gösteriyordu. Müşteri ölçü veya kumaş seçemiyor, fiyatın neye göre değiştiğini göremiyordu.
+
+**Sonra:** Ölçü kartları (her biri kendi fiyatı ve stok durumuyla) ve gruplu kumaş seçici eklendi. Fiyat seçimle birlikte anlık güncelleniyor: taban fiyat + kumaş farkı. Seçilen ölçü ve kumaş WhatsApp siparişine ve alt bara yansıyor.
+
+**Neden:** Konfigüre edilebilen üründe müşteri satın alma sürecine dahil oluyor; premium mobilyada dönüşümü belirgin artıran unsur.
+
+---
+
+
 ### Ekleme — Ölçü ve kumaş iki ayrı boyut olarak kuruldu
 
 **27.07.2026 · 23:52** · Onur + Claude

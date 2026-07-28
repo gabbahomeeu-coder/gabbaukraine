@@ -3,6 +3,22 @@
  * CRM hazır olunca bu dosya API çağrılarına dönüşecek
  */
 
+/**
+ * KAT-08 · Ölçü varyantı.
+ * Dış sunucu ürünü tek kayıt olarak verir; farklı ölçüler bu dizide gelir.
+ * Her ölçünün KENDİ fiyatı ve KENDİ stoğu vardır — kumaştan bağımsızdır.
+ * Tek ölçülü üründe dizi boş kalır, ürünün kendi fiyatı kullanılır.
+ */
+export type Variant = {
+  id: string;
+  label: string; // "240 см"
+  price: number;
+  stock: number;
+  widthCm?: number;
+  depthCm?: number;
+  heightCm?: number;
+};
+
 export type Product = {
   slug: string;
   name: string;        // Ukraynaca (web)
@@ -17,6 +33,14 @@ export type Product = {
   inStock: boolean;
   description: string;
   materials: string;
+  /** ölçü seçenekleri — boşsa ürünün tek ölçüsü var */
+  variants?: Variant[];
+  /** tek ölçülü ürünlerde ölçü bilgisi (cm) */
+  widthCm?: number;
+  depthCm?: number;
+  heightCm?: number;
+  /** stoktan teslim süresi (gün) */
+  leadTimeDays?: number;
 };
 
 export type Collection = {
@@ -86,6 +110,12 @@ export const products: Product[] = [
     inStock: true,
     description: "Розкішний диван з колекції Madrid. Класичні лінії, преміальна оббивка та бездоганний комфорт для вашої вітальні.",
     materials: "Каркас: масив бука. Оббивка: преміальна тканина. Наповнювач: високоеластичний ППУ + пружинний блок.",
+    leadTimeDays: 21,
+    variants: [
+      { id: "madrid-sofa-240", label: "240 см", price: 101582, stock: 3, widthCm: 240, depthCm: 98, heightCm: 82 },
+      { id: "madrid-sofa-280", label: "280 см", price: 118900, stock: 1, widthCm: 280, depthCm: 98, heightCm: 82 },
+      { id: "madrid-sofa-corner", label: "Кутовий", price: 147400, stock: 2, widthCm: 310, depthCm: 210, heightCm: 82 },
+    ],
   },
   {
     slug: "milano-armchair",
@@ -101,6 +131,10 @@ export const products: Product[] = [
     inStock: true,
     description: "Елегантне крісло Milano — ідеальний акцент для вітальні або кабінету. Ергономічна форма та преміальні матеріали.",
     materials: "Каркас: масив бука. Оббивка: італійська шкіра / тканина. Ніжки: матовий метал.",
+    widthCm: 96,
+    depthCm: 92,
+    heightCm: 78,
+    leadTimeDays: 14,
   },
   {
     slug: "milano-sofa",
@@ -116,6 +150,11 @@ export const products: Product[] = [
     inStock: true,
     description: "Флагманський диван Milano. Просторий, комфортний, з бездоганною увагою до кожної деталі.",
     materials: "Каркас: масив бука. Оббивка: преміальна тканина. Наповнювач: високоеластичний ППУ + пружинний блок.",
+    leadTimeDays: 21,
+    variants: [
+      { id: "milano-sofa-220", label: "220 см", price: 115597, stock: 2, widthCm: 220, depthCm: 95, heightCm: 80 },
+      { id: "milano-sofa-260", label: "260 см", price: 132400, stock: 0, widthCm: 260, depthCm: 95, heightCm: 80 },
+    ],
   },
   {
     slug: "montana-armchair",
@@ -131,6 +170,10 @@ export const products: Product[] = [
     inStock: true,
     description: "Крісло Montana Lux — натуральне дерево та сучасний дизайн. Ідеальне поєднання комфорту та стилю.",
     materials: "Каркас: натуральний дуб. Оббивка: преміальна тканина. Сидіння: анатомічна подушка.",
+    widthCm: 88,
+    depthCm: 86,
+    heightCm: 74,
+    leadTimeDays: 14,
   },
   {
     slug: "genova-chair",
@@ -146,6 +189,10 @@ export const products: Product[] = [
     inStock: true,
     description: "Стілець Genova — мінімалістичний дизайн з натурального дерева. Легкий, міцний та стильний.",
     materials: "Каркас: масив бука. Сидіння: м'яка подушка з тканинною оббивкою.",
+    widthCm: 48,
+    depthCm: 55,
+    heightCm: 88,
+    leadTimeDays: 10,
   },
   {
     slug: "lyon-tv-unit",
@@ -161,6 +208,10 @@ export const products: Product[] = [
     inStock: true,
     description: "TV юніт Lyon — елегантне рішення для зберігання та організації медіа-зони. Кремові тони та чисті лінії.",
     materials: "Корпус: МДФ з шпоном дуба. Фурнітура: преміальна, з м'яким закриванням.",
+    widthCm: 200,
+    depthCm: 42,
+    heightCm: 48,
+    leadTimeDays: 21,
   },
   {
     slug: "madrid-console",
@@ -176,6 +227,10 @@ export const products: Product[] = [
     inStock: true,
     description: "Консоль Madrid — функціональний та естетичний предмет для передпокою або вітальні. Класична елегантність.",
     materials: "Корпус: МДФ з шпоном. Стільниця: натуральний камінь / МДФ. Фурнітура: преміальна.",
+    widthCm: 140,
+    depthCm: 40,
+    heightCm: 82,
+    leadTimeDays: 21,
   },
   {
     slug: "madrid-table",
@@ -191,6 +246,10 @@ export const products: Product[] = [
     inStock: true,
     description: "Обідній стіл Madrid — центральний елемент вашої їдальні. Розкішний дизайн та надійна конструкція.",
     materials: "Стільниця: керамограніт / МДФ з шпоном. Каркас: метал з порошковим покриттям.",
+    widthCm: 200,
+    depthCm: 100,
+    heightCm: 76,
+    leadTimeDays: 21,
   },
   {
     slug: "galante-bed",
@@ -206,6 +265,10 @@ export const products: Product[] = [
     inStock: true,
     description: "Ліжко Galante — преміальне ліжко з м'яким узголів'ям. Розкіш та комфорт для вашої спальні.",
     materials: "Каркас: масив бука. Узголів'я: м'яке, з преміальною тканиною. Основа: ортопедичні ламелі.",
+    widthCm: 180,
+    depthCm: 215,
+    heightCm: 120,
+    leadTimeDays: 28,
   },
   {
     slug: "luna-armchair",
@@ -221,6 +284,10 @@ export const products: Product[] = [
     inStock: true,
     description: "Крісло Luna — м'які форми та ніжні тони. Створено для максимального комфорту та затишку.",
     materials: "Каркас: масив бука. Оббивка: велюр / тканина. Наповнювач: високоеластичний ППУ.",
+    widthCm: 92,
+    depthCm: 90,
+    heightCm: 76,
+    leadTimeDays: 14,
   },
   {
     slug: "terra-dresser",
@@ -236,6 +303,10 @@ export const products: Product[] = [
     inStock: true,
     description: "Комод Terra — натуральні текстури та функціональний дизайн. Ідеальне рішення для зберігання.",
     materials: "Корпус: МДФ з шпоном дуба. Фурнітура: преміальна, з м'яким закриванням. Ніжки: масив дуба.",
+    widthCm: 120,
+    depthCm: 45,
+    heightCm: 86,
+    leadTimeDays: 21,
   },
   {
     slug: "terra-table",
@@ -251,6 +322,10 @@ export const products: Product[] = [
     inStock: true,
     description: "Стіл Terra — масивний обідній стіл з натуральними текстурами. Центральний елемент вашої їдальні.",
     materials: "Стільниця: натуральний шпон дуба. Каркас: масив дуба / метал.",
+    widthCm: 220,
+    depthCm: 100,
+    heightCm: 76,
+    leadTimeDays: 21,
   },
 ];
 

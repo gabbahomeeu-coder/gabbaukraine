@@ -1,0 +1,130 @@
+/* İlgili ürünler — ana sayfadaki ray deseniyle aynı */
+
+/* ilgili ürün yokken sabit alt barın altında kalan boşluk */
+.barSpacer {
+  height: var(--bar-h);
+}
+@media (min-width: 1000px) {
+  .barSpacer {
+    height: 0;
+  }
+}
+
+.wrap {
+  --line: rgba(32, 26, 18, 0.1);
+  --pad: 20px;
+  padding: 40px 0 calc(var(--bar-h) + 24px);
+  border-top: 1px solid var(--line);
+  margin-top: 34px;
+}
+
+.head {
+  padding: 0 var(--pad) 16px;
+}
+.eyebrow {
+  font-size: 10.5px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(22px, 6vw, 28px);
+  line-height: 1.18;
+  color: var(--dark);
+}
+
+.rail {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--pad);
+  padding: 2px var(--pad) 6px;
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+.card {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  width: 62vw;
+  max-width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+.media {
+  position: relative;
+  aspect-ratio: 5 / 3;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.img {
+  object-fit: cover;
+  transform: scale(1.1);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card:hover .img,
+.card:active .img {
+  transform: scale(1.16);
+}
+.info {
+  padding: 11px 2px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.coll {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.name {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--dark);
+}
+.price {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--dark);
+}
+
+@media (min-width: 700px) {
+  .wrap {
+    --pad: 40px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .wrap {
+    --pad: 64px;
+    padding-bottom: 80px;
+  }
+  .head,
+  .rail {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .rail {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    overflow: visible;
+    padding-left: var(--pad);
+    padding-right: var(--pad);
+  }
+  .card {
+    width: auto;
+    max-width: none;
+  }
+}
