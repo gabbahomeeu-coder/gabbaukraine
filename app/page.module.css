@@ -987,3 +987,32 @@
     display: none;
   }
 }
+
+/* ── masaüstü menüsü ──
+   Hero üstünde saydam başlığın içinde beyaz, kaydırınca koyu.
+   Mobilde gizli: yer yok, gezinme alt bar ve içerikten yürüyor. */
+.headerNav {
+  display: none;
+  gap: 24px;
+  font-size: 13.5px;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 1px 8px rgba(24, 19, 13, 0.4);
+  transition: color 0.35s ease, text-shadow 0.35s ease;
+}
+.headerNav a:hover {
+  color: #fff;
+}
+.headerSolid .headerNav {
+  color: var(--muted);
+  text-shadow: none;
+}
+.headerSolid .headerNav a:hover {
+  color: var(--dark);
+}
+
+@media (min-width: 1000px) {
+  .headerNav {
+    display: flex;
+  }
+}

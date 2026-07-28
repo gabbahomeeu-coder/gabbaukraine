@@ -28,6 +28,14 @@ import {
   REVIEWS,
 } from "@/lib/site";
 
+const MENU = [
+  { href: "/collections", label: "Колекції" },
+  { href: "/blog", label: "Блог" },
+  { href: "/about", label: "Про нас" },
+  { href: "/faq", label: "Питання" },
+  { href: "/contact", label: "Контакти" },
+];
+
 /* ─────────────────────────────  yardımcılar  ───────────────────────────── */
 
 /** Meta Pixel / GA — dönüşüm sinyali (CRM entegrasyonuna hazır) */
@@ -170,6 +178,14 @@ export default function HomeClient({
             priority
           />
         </Link>
+        <nav className={styles.headerNav}>
+          {MENU.map((m) => (
+            <Link key={m.href} href={m.href}>
+              {m.label}
+            </Link>
+          ))}
+        </nav>
+
         <div className={styles.headerActions}>
           <a
             href={`tel:${PHONE}`}
