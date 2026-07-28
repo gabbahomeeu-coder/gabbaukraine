@@ -14,6 +14,29 @@ export type Gorsel = {
   kaynak: string;
 };
 
+type GrupAnahtari = "yatay" | "dikey" | "dekupe";
+
+/** Sıra kasıtlı: kapak için en uygun olan üstte durur. */
+const GRUPLAR: { anahtar: GrupAnahtari; baslik: string; aciklama: string }[] = [
+  {
+    anahtar: "yatay",
+    baslik: "Yatay stüdyo fotoğrafları",
+    aciklama: "Geniş ekran kapağı için — bilgisayardan bakan müşteri bunu görür.",
+  },
+  {
+    anahtar: "dikey",
+    baslik: "Dikey stüdyo fotoğrafları",
+    aciklama:
+      "Telefon kapağı için — trafiğin çoğu mobil olduğundan asıl önemli olan bu.",
+  },
+  {
+    anahtar: "dekupe",
+    baslik: "Ürün dekupeleri",
+    aciklama:
+      "Beyaz zeminde tek ürün. Kapak olarak kullanılabilir ama koleksiyon kartı vitrin gibi değil katalog gibi görünür.",
+  },
+];
+
 export default function GorselSecici({
   slug,
   gorseller,
@@ -28,7 +51,7 @@ export default function GorselSecici({
   const [bekliyor, basla] = useTransition();
   const [durum, setDurum] = useState<{ ok: boolean; mesaj: string } | null>(null);
   const [secili, setSecili] = useState<string | null>(null);
-  const [filtre, setFiltre] = useState<"hepsi" | "yatay" | "dikey">("hepsi");
+  const [filtre, setFiltre] = useState<"hepsi" | GrupAnahtari>("hepsi");
 
   function sec(url: string, hedef: "genis" | "mobil") {
     setSecili(url);
@@ -49,8 +72,18 @@ export default function GorselSecici({
   const yon = (g: Gorsel) =>
     g.width && g.height ? (g.height > g.width ? "dikey" : "yatay") : "—";
 
-  const suzulmus =
-    filtre === "hepsi" ? gorseller : gorseller.filter((g) => yon(g) === filtre);
+  /* Üç grup. Dekupe fotoğraflar beyaz zeminde tek ürün gösterir —
+     kapak için uygun değildir, o yüzden en sonda durur. */
+  const grup = (g: Gorsel): GrupAnahtari =>
+    g.kind === "cutout" ? "dekupe" : yon(g) === "dikey" ? "dikey" : "yatay";
+
+  const gruplu = GRUPLAR.map((tanim) => ({
+    ...tanim,
+    ogeler: gorseller.filter((g) => grup(g) === tanim.anahtar),
+  })).filter((x) => x.ogeler.length > 0);
+
+  const gosterilecek =
+    filtre === "hepsi" ? gruplu : gruplu.filter((x) => x.anahtar === filtre);
 
   return (
     <>
@@ -104,101 +137,116 @@ export default function GorselSecici({
         </p>
       )}
 
-      {/* yön süzgeci */}
+      {/* grup süzgeci */}
       <div className={styles.yonSuzgec}>
-        {(["hepsi", "yatay", "dikey"] as const).map((f) => {
-          const adet =
-            f === "hepsi"
-              ? gorseller.length
-              : gorseller.filter((g) => yon(g) === f).length;
-          return (
-            <button
-              key={f}
-              type="button"
-              onClick={() => setFiltre(f)}
-              className={filtre === f ? styles.yonAktif : styles.yonPasif}
-              aria-pressed={filtre === f}
-            >
-              {f === "hepsi" ? "Hepsi" : f === "yatay" ? "Yatay · geniş ekran" : "Dikey · telefon"}
-              <span className={styles.yonAdet}>{adet}</span>
-            </button>
-          );
-        })}
+        <button
+          type="button"
+          onClick={() => setFiltre("hepsi")}
+          className={filtre === "hepsi" ? styles.yonAktif : styles.yonPasif}
+          aria-pressed={filtre === "hepsi"}
+        >
+          Hepsi
+          <span className={styles.yonAdet}>{gorseller.length}</span>
+        </button>
+        {gruplu.map((x) => (
+          <button
+            key={x.anahtar}
+            type="button"
+            onClick={() => setFiltre(x.anahtar)}
+            className={filtre === x.anahtar ? styles.yonAktif : styles.yonPasif}
+            aria-pressed={filtre === x.anahtar}
+          >
+            {x.anahtar === "yatay"
+              ? "Yatay"
+              : x.anahtar === "dikey"
+                ? "Dikey"
+                : "Dekupe"}
+            <span className={styles.yonAdet}>{x.ogeler.length}</span>
+          </button>
+        ))}
       </div>
 
-      {suzulmus.length === 0 && (
+      {gosterilecek.length === 0 && (
         <p className={styles.havuzBos}>
-          {gorseller.length === 0
-            ? "Bu koleksiyonun katalog sunucusunda hiç fotoğrafı yok."
-            : `Bu koleksiyonda ${filtre} fotoğraf yok.`}
+          Bu koleksiyonun katalog sunucusunda hiç fotoğrafı yok.
         </p>
       )}
 
-      {/* havuz */}
-      <div className={styles.havuz}>
-        {suzulmus.map((g) => {
-          const genisSecili = g.url === kapak;
-          const mobilSecili = g.url === mobilKapak;
-          const isleniyor = bekliyor && secili === g.url;
+      {/* her tür kendi bölümünde */}
+      {gosterilecek.map((x) => (
+        <section key={x.anahtar} className={styles.havuzGrup}>
+          <div className={styles.havuzGrupBaslik}>
+            <h3>{x.baslik}</h3>
+            <span className={styles.havuzGrupAdet}>{x.ogeler.length}</span>
+          </div>
+          <p className={styles.havuzGrupNot}>{x.aciklama}</p>
 
-          return (
-            <figure key={g.url} className={styles.havuzItem}>
-              <div
-                className={styles.havuzMedia}
-                /* kutu oranı fotoğrafın kendi oranı — kırpma olmasın */
-                style={
-                  g.width && g.height
-                    ? ({ "--oran": `${g.width} / ${g.height}` } as React.CSSProperties)
-                    : undefined
-                }
-              >
-                <Image src={g.url} alt="" fill sizes="220px" className={styles.havuzImg} />
-                {(genisSecili || mobilSecili) && (
-                  <span className={styles.havuzRozet}>
-                    <Check size={12} strokeWidth={3} />
-                    {genisSecili && mobilSecili
-                      ? "kapak"
-                      : genisSecili
-                        ? "geniş"
-                        : "telefon"}
-                  </span>
-                )}
-              </div>
+          <div className={styles.havuz}>
+            {x.ogeler.map((g) => {
+              const genisSecili = g.url === kapak;
+              const mobilSecili = g.url === mobilKapak;
+              const isleniyor = bekliyor && secili === g.url;
 
-              <figcaption className={styles.havuzMeta}>
-                <span className={styles.havuzYon}>
-                  {yon(g)}
-                  {g.width && g.height ? ` · ${g.width}×${g.height}` : ""}
-                </span>
-                <span className={styles.havuzKaynak}>{g.kaynak}</span>
-              </figcaption>
+              return (
+                <figure key={g.url} className={styles.havuzItem}>
+                  <div
+                    className={styles.havuzMedia}
+                    /* kutu oranı fotoğrafın kendi oranı — kırpma olmasın */
+                    style={
+                      g.width && g.height
+                        ? ({ "--oran": `${g.width} / ${g.height}` } as React.CSSProperties)
+                        : undefined
+                    }
+                  >
+                    <Image src={g.url} alt="" fill sizes="220px" className={styles.havuzImg} />
+                    {(genisSecili || mobilSecili) && (
+                      <span className={styles.havuzRozet}>
+                        <Check size={12} strokeWidth={3} />
+                        {genisSecili && mobilSecili
+                          ? "kapak"
+                          : genisSecili
+                            ? "geniş"
+                            : "telefon"}
+                      </span>
+                    )}
+                  </div>
 
-              <div className={styles.havuzBtns}>
-                <button
-                  type="button"
-                  onClick={() => sec(g.url, "genis")}
-                  disabled={bekliyor || genisSecili}
-                  className={styles.havuzBtn}
-                  title="Geniş ekran kapağı yap"
-                >
-                  <Monitor size={13} strokeWidth={1.7} />
-                  {isleniyor ? "…" : "Geniş"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => sec(g.url, "mobil")}
-                  disabled={bekliyor || mobilSecili}
-                  className={styles.havuzBtn}
-                  title="Telefon kapağı yap"
-                >
-                  <Smartphone size={13} strokeWidth={1.7} />
-                  Telefon
-                </button>
-              </div>
-            </figure>
-          );
-        })}
-      </div>
+                  <figcaption className={styles.havuzMeta}>
+                    <span className={styles.havuzYon}>
+                      {yon(g)}
+                      {g.width && g.height ? ` · ${g.width}×${g.height}` : ""}
+                    </span>
+                    <span className={styles.havuzKaynak}>{g.kaynak}</span>
+                  </figcaption>
+
+                  <div className={styles.havuzBtns}>
+                    <button
+                      type="button"
+                      onClick={() => sec(g.url, "genis")}
+                      disabled={bekliyor || genisSecili}
+                      className={styles.havuzBtn}
+                      title="Geniş ekran kapağı yap"
+                    >
+                      <Monitor size={13} strokeWidth={1.7} />
+                      {isleniyor ? "…" : "Geniş"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => sec(g.url, "mobil")}
+                      disabled={bekliyor || mobilSecili}
+                      className={styles.havuzBtn}
+                      title="Telefon kapağı yap"
+                    >
+                      <Smartphone size={13} strokeWidth={1.7} />
+                      Telefon
+                    </button>
+                  </div>
+                </figure>
+              );
+            })}
+          </div>
+        </section>
+      ))}
     </>
   );
 }

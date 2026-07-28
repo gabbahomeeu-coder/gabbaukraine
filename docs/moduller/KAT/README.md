@@ -27,6 +27,19 @@ Ayrıntı için ilgili alt modülün kılavuzuna bakın.
 
 <!-- KAYITLAR -->
 
+### Değişiklik — Kapak havuzu türe göre üç bölüme ayrıldı
+
+**28.07.2026 · 23:38** · Onur + Claude · `KAT-02`
+
+**Önce:** Tüm görseller tek listede karışık duruyordu: yatay stüdyo çekimi, dikey stüdyo çekimi ve beyaz zeminli ürün dekupesi yan yana. Kapak ararken hangisinin ne işe yaradığını ayırmak gerekiyordu.
+
+**Sonra:** Üç ayrı bölüm: yatay stüdyo, dikey stüdyo, ürün dekupeleri. Her bölümde başlık, sayı ve ne işe yaradığını anlatan tek satır var. Süzgeç düğmeleri bölüme atlamak için duruyor. Sıra kasıtlı — dekupe kapak için en az uygun olan, en sonda.
+
+**Neden:** Geniş ekran kapağı yatay, telefon kapağı dikey ister. Karışık liste bu ayrımı gizliyordu; gruplama kararın kendisini görünür kılıyor.
+
+---
+
+
 ### Değişiklik — Kapak havuzunda kutular fotoğrafın oranını alıyor
 
 **28.07.2026 · 23:21** · Onur + Claude · `KAT-02`
