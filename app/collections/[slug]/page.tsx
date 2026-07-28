@@ -66,6 +66,17 @@ export default async function KoleksiyonSayfasi({
 
       <div className={styles.page}>
         <header className={styles.detailHead}>
+          {/* telefonda dikey kapak, geniş ekranda yatay kapak */}
+          {k.mobileImage && k.mobileImage !== k.image && (
+            <Image
+              src={k.mobileImage}
+              alt={k.name}
+              fill
+              priority
+              sizes="100vw"
+              className={`${styles.detailImg} ${styles.detailImgMobil}`}
+            />
+          )}
           {k.image && (
             <Image
               src={k.image}
@@ -73,7 +84,9 @@ export default async function KoleksiyonSayfasi({
               fill
               priority
               sizes="100vw"
-              className={styles.detailImg}
+              className={`${styles.detailImg} ${
+                k.mobileImage && k.mobileImage !== k.image ? styles.detailImgGenis : ""
+              }`}
             />
           )}
           <div className={styles.detailScrim} />

@@ -56,7 +56,10 @@ model Collection {
   externalId   String?                 @unique
   slug         String                  @unique
   brand        String                  @default("gabba") // gabba | monett | isil
+  /// kapak görseli — geniş ekran
   image        String?
+  /// kapak görseli — telefon (dikey). Boşsa `image` kullanılır
+  mobileImage  String?
   /// yerel — senkron ezmez
   sortOrder    Int                     @default(0)
   isFeatured   Boolean                 @default(false)
@@ -284,6 +287,11 @@ model Media {
   url        String
   alt        String?
   type       String   @default("image") // image | video
+  /// cutout (beyaz zemin) | catalog (ortam) | null (bilinmiyor)
+  kind       String?
+  /// piksel boyutları — yatay/dikey ayrımı buradan yapılıyor
+  width      Int?
+  height     Int?
   isExternal Boolean  @default(true)
   sortOrder  Int      @default(0)
   createdAt  DateTime @default(now())

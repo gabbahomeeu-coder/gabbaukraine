@@ -161,6 +161,8 @@ export async function tumKoleksiyonlar(locale = UK): Promise<KoleksiyonDTO[]> {
     description: c.translations[0]?.description ?? "",
     brand: c.brand,
     image: c.image ?? "",
+    /// telefon kapağı seçilmemişse geniş ekran kapağı kullanılır
+    mobileImage: c.mobileImage ?? c.image ?? "",
     productCount: c._count.products,
   }));
 }

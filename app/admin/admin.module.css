@@ -934,3 +934,140 @@
   }
   .rowCol, .rowTags { grid-column: span 3; flex-direction: row; gap: 8px; justify-content: flex-start; }
 }
+
+/* ══════════════ KOLEKSİYON KAPAK SEÇİMİ ══════════════ */
+
+.kapaklar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.kapakBox {
+  background: var(--pcard);
+  border: 1px solid var(--pline);
+  border-radius: 3px;
+  padding: 13px 15px 15px;
+}
+.kapakHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+.kapakHead svg { color: var(--gold); }
+.kapakClear {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--pline);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.kapakClear:hover { border-color: var(--pclay); color: var(--pclay); }
+.kapakMedia {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: var(--warm-bg);
+  border-radius: 2px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+.kapakMediaDikey { aspect-ratio: 3 / 4; max-width: 160px; }
+.kapakImg { object-fit: cover; }
+.kapakBos {
+  font-size: 11.5px;
+  color: var(--subtle);
+  text-align: center;
+  padding: 0 14px;
+  line-height: 1.5;
+}
+
+/* havuz */
+.havuz {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+}
+.havuzItem {
+  background: var(--pcard);
+  border: 1px solid var(--pline);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.havuzMedia {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--warm-bg);
+}
+.havuzImg { object-fit: cover; }
+.havuzRozet {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: var(--gold);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.havuzMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 9px 11px 0;
+}
+.havuzYon {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px;
+  color: var(--muted);
+}
+.havuzKaynak {
+  font-size: 11.5px;
+  color: var(--subtle);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.havuzBtns {
+  display: flex;
+  gap: 6px;
+  padding: 9px 11px 11px;
+  margin-top: auto;
+}
+.havuzBtn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 30px;
+  border: 1px solid var(--pline);
+  border-radius: 2px;
+  background: var(--ground);
+  color: var(--dark);
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.havuzBtn:hover:not(:disabled) {
+  border-color: var(--gold);
+  background: var(--gold-light);
+}
+.havuzBtn:disabled { opacity: 0.4; cursor: default; }

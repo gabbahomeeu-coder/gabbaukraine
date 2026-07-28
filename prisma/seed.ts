@@ -13,6 +13,8 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 import { config as loadEnv } from "dotenv";
+import sharp from "sharp";
+import { join } from "node:path";
 
 import { MODULES } from "../lib/modules/registry.ts";
 import { products, collections } from "../lib/catalog.ts";
@@ -24,6 +26,17 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const db = new PrismaClient({ adapter });
 
 const UK = "uk";
+
+/** Yerel görselin piksel boyutunu ölç — yatay/dikey ayrımı için */
+async function gorselBoyutu(url: string) {
+  if (!url.startsWith("/")) return {};
+  try {
+    const m = await sharp(join(process.cwd(), "public", url)).metadata();
+    return { width: m.width, height: m.height };
+  } catch {
+    return {};
+  }
+}
 
 async function diller() {
   const liste = [
@@ -191,14 +204,35 @@ async function katalog() {
       },
     });
 
-    // görsel
-    const mevcutMedya = await db.media.findFirst({
-      where: { productId: urun.id, url: p.image },
-    });
-    if (!mevcutMedya) {
-      await db.media.create({
-        data: { productId: urun.id, url: p.image, alt: p.name, isExternal: false },
+    // görseller: ürünün dekupe fotoğrafı + koleksiyonun ortam fotoğrafı
+    const gorseller = [
+      { url: p.image, kind: "cutout" },
+      ...(koleksiyon?.image ? [{ url: koleksiyon.image, kind: "catalog" }] : []),
+    ];
+
+    for (const [gi, g] of gorseller.entries()) {
+      const boyut = await gorselBoyutu(g.url);
+      const mevcut = await db.media.findFirst({
+        where: { productId: urun.id, url: g.url },
       });
+      if (mevcut) {
+        await db.media.update({
+          where: { id: mevcut.id },
+          data: { kind: g.kind, ...boyut },
+        });
+      } else {
+        await db.media.create({
+          data: {
+            productId: urun.id,
+            url: g.url,
+            alt: p.name,
+            kind: g.kind,
+            ...boyut,
+            isExternal: false,
+            sortOrder: gi,
+          },
+        });
+      }
     }
 
     // Tek ölçülü ürünler: varyantı yok, stok doğrudan ürüne yazılır.

@@ -320,3 +320,13 @@
     gap: 22px;
   }
 }
+
+/* Telefon/geniş ekran kapak ayrımı.
+   Telefon kapağı seçilmişse dar ekranda o, geniş ekranda diğeri görünür. */
+.detailImgMobil { display: block; }
+.detailImgGenis { display: none; }
+
+@media (min-width: 700px) {
+  .detailImgMobil { display: none; }
+  .detailImgGenis { display: block; }
+}

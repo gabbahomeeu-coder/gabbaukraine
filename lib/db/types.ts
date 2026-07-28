@@ -48,6 +48,8 @@ export type KoleksiyonDTO = {
   description: string;
   brand: string;
   image: string;
+  /** telefon kapağı; seçilmemişse `image` ile aynı */
+  mobileImage: string;
   productCount: number;
 };
 
