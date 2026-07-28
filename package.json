@@ -12,7 +12,9 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
-    "db:seed": "node --experimental-strip-types --no-warnings prisma/seed.ts"
+    "db:seed": "node --experimental-strip-types --no-warnings prisma/seed.ts",
+    "yayinla": "bash scripts/yayinla.sh",
+    "db:yedek": "ssh gabba 'gabba-backup' && scp gabba:/var/backups/gabba/$(ssh gabba 'ls -t /var/backups/gabba | head -1') ./yedekler/"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",
