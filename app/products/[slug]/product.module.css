@@ -360,7 +360,8 @@
 }
 .dims {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* iki ölçüsü olan üründe (bar taburesi) üçüncü sütun boş kalmasın */
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
@@ -512,22 +513,30 @@
 
 /* kaynaktaki ölçü metni — olduğu gibi gösterilir */
 .olcuRaw {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  padding: 9px 0 11px;
-  border-top: 1px solid var(--line);
-  margin-top: 4px;
-}
-.olcuRawL {
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--subtle);
-  flex: 0 0 auto;
+  margin-top: 8px;
 }
 .olcuRawV {
   font-size: 14.5px;
   color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── ÖLÇÜLER · fiyatın altında, açıkta ── */
+.olculer {
+  margin-top: 22px;
+}
+.olculerBaslik {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 9px;
+}
+/* Kaynaktaki yazım: kutulara sığmayan bilgiyi taşır — oturma yüksekliği,
+   ikinci parça, aksesuarlarda tek ifade ("10 × 27 см"). */
+.olcuRawV {
+  font-size: 14px;
+  color: var(--muted);
   font-variant-numeric: tabular-nums;
 }

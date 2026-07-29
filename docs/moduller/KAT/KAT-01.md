@@ -17,6 +17,19 @@ node scripts/kilavuz.mjs ekle KAT-01 --tip duzeltme --baslik "..." --once "..." 
 
 <!-- KAYITLAR -->
 
+### Değişiklik — Ölçüler akordeonun içinden çıkarıldı
+
+**29.07.2026 · 08:34** · Onur + Claude
+
+**Önce:** Ölçüler 'Чи поміститься у вашій кімнаті?' başlıklı kapalı bir akordeonun içindeydi. Başlık ölçü demediği için ölçü arayan kullanıcı o satıra bakıp geçiyordu; ölçüleri kendi ekleyen kişi bile sayfada bulamadı.
+
+**Sonra:** Ölçüler fiyatın ve taksit satırının hemen altında, tıklama gerektirmeden görünüyor. Akordeonda yalnızca ikincil tavsiye kaldı: geçiş payı, kapı ve asansör genişliği. Sayısal ölçüsü olmayan üründe (aksesuar) yalnızca kaynaktaki metin tek satır olarak çıkıyor. Ondalık ayracı Ukraynaca biçime alındı (77,5), kaynak metniyle aynı görünsün.
+
+**Neden:** Ölçü mobilya alışverişinde fiyattan sonra en çok sorulan bilgi. Tıklama ardına saklanan bilgi yok sayılır. Soru biçimli başlık ne barındırdığını da söylemiyordu.
+
+---
+
+
 ### Düzeltme — Dekupe ürün fotoğrafları kartlarda kırpılıyordu
 
 **28.07.2026 · 23:44** · Onur + Claude

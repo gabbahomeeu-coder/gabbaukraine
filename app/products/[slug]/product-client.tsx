@@ -55,7 +55,10 @@ export default function ProductClient({
   /* Kaynaktaki ölçü metni — CRM ne yazdıysa o. Aksesuarlarda sayısal alan
      gelmiyor, ölçü yalnızca bu metinde oluyor ("10 × 27 см", "150 мл"). */
   const olcuMetni = product.dimensionsRaw;
-  const olcuVar = Boolean(olculer.widthCm || olcuMetni);
+  const sayisalOlcuVar = Boolean(
+    olculer.widthCm || olculer.depthCm || olculer.heightCm
+  );
+  const olcuVar = sayisalOlcuVar || Boolean(olcuMetni);
 
   /* kumaşları grupla */
   const grupluKumaslar = useMemo(() => {
@@ -114,6 +117,44 @@ export default function ProductClient({
         <p className={styles.installment}>
           або <b>{formatPrice(Math.round(toplam / TAKSIT_AY))}</b> × {TAKSIT_AY} міс. без переплат
         </p>
+
+        {/* ── ÖLÇÜLER ──
+            Fiyattan sonra en çok sorulan bilgi; tıklama ardına saklanmaz.
+            Kaynakta her ölçü olmayabiliyor (bar taburesinde yükseklik,
+            aksesuarda hiçbiri) — olmayan kutu hiç yazılmaz. */}
+        {olcuVar && (
+          <section className={styles.olculer}>
+            <h2 className={styles.olculerBaslik}>Розміри</h2>
+
+            {sayisalOlcuVar && (
+              <div className={styles.dims}>
+                {([
+                  ["widthCm", "ширина, см"],
+                  ["depthCm", "глибина, см"],
+                  ["heightCm", "висота, см"],
+                ] as const).map(([alan, etiket]) =>
+                  olculer[alan] ? (
+                    <div key={alan}>
+                      {/* Ukraynaca ondalık ayracı virgül: 77,5 — kaynak
+                          metniyle aynı görünsün */}
+                      <span className={styles.dimN}>
+                        {olculer[alan]!.toLocaleString("uk-UA")}
+                      </span>
+                      <span className={styles.dimL}>{etiket}</span>
+                    </div>
+                  ) : null
+                )}
+              </div>
+            )}
+
+            {/* kaynaktaki yazım — kutulara sığmayan bilgiyi de taşır */}
+            {olcuMetni && (
+              <p className={styles.olcuRaw}>
+                <span className={styles.olcuRawV}>{olcuMetni}</span>
+              </p>
+            )}
+          </section>
+        )}
 
         {/* ── ÖLÇÜ SEÇİMİ ── */}
         {variants.length > 0 && (
@@ -262,8 +303,10 @@ export default function ProductClient({
           </a>
         </div>
 
-        {/* ── ÖLÇÜ ASİSTANI ── */}
-        {olcuVar && (
+        {/* ── ODAYA SIĞAR MI · yalnızca tavsiye ──
+            Ölçünün kendisi yukarıda açıkta duruyor; burada ikincil
+            bilgi var, kapalı başlaması sorun değil. */}
+        {olculer.widthCm ? (
           <section className={styles.block}>
             <button
               type="button"
@@ -281,37 +324,11 @@ export default function ProductClient({
 
             {olcuAcik && (
               <div className={styles.olcuBody}>
-                {/* Kaynakta her ölçü olmayabiliyor — bar taburesinde yükseklik,
-                    yatakta derinlik eksik gelebilir. Boş kutu göstermek yerine
-                    o ölçüyü hiç yazmıyoruz. */}
-                <div className={styles.dims}>
-                  {([
-                    ["widthCm", "ширина, см"],
-                    ["depthCm", "глибина, см"],
-                    ["heightCm", "висота, см"],
-                  ] as const).map(([alan, etiket]) =>
-                    olculer[alan] ? (
-                      <div key={alan}>
-                        <span className={styles.dimN}>{olculer[alan]}</span>
-                        <span className={styles.dimL}>{etiket}</span>
-                      </div>
-                    ) : null
-                  )}
-                </div>
-                {olcuMetni && (
-                  <p className={styles.olcuRaw}>
-                    <span className={styles.olcuRawL}>Розміри</span>
-                    <span className={styles.olcuRawV}>{olcuMetni}</span>
-                  </p>
-                )}
-                {/* genişliği bilinmeyen üründe oda hesabı yapılamaz */}
-                {olculer.widthCm ? (
-                  <p className={styles.olcuHint}>
-                    Порада: залиште щонайменше <b>60 см</b> для проходу перед меблями.
-                    Для цієї моделі знадобиться кімната шириною від{" "}
-                    <b>{Math.round(olculer.widthCm + 120)} см</b>.
-                  </p>
-                ) : null}
+                <p className={styles.olcuHint}>
+                  Порада: залиште щонайменше <b>60 см</b> для проходу перед меблями.
+                  Для цієї моделі знадобиться кімната шириною від{" "}
+                  <b>{Math.round(olculer.widthCm + 120)} см</b>.
+                </p>
                 <p className={styles.olcuHint}>
                   Перевірте також ширину дверей та ліфта — при доставці це найчастіша
                   проблема. Наші майстри розберуть та зберуть меблі за потреби.
@@ -319,7 +336,7 @@ export default function ProductClient({
               </div>
             )}
           </section>
-        )}
+        ) : null}
 
         {/* ── GÜVENCELER ── */}
         <ul className={styles.assure}>
