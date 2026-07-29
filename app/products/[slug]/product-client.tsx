@@ -55,10 +55,6 @@ export default function ProductClient({
   /* Kaynaktaki ölçü metni — CRM ne yazdıysa o. Aksesuarlarda sayısal alan
      gelmiyor, ölçü yalnızca bu metinde oluyor ("10 × 27 см", "150 мл"). */
   const olcuMetni = product.dimensionsRaw;
-  const sayisalOlcuVar = Boolean(
-    olculer.widthCm || olculer.depthCm || olculer.heightCm
-  );
-  const olcuVar = sayisalOlcuVar || Boolean(olcuMetni);
 
   /* kumaşları grupla */
   const grupluKumaslar = useMemo(() => {
@@ -119,40 +115,15 @@ export default function ProductClient({
         </p>
 
         {/* ── ÖLÇÜLER ──
-            Fiyattan sonra en çok sorulan bilgi; tıklama ardına saklanmaz.
-            Kaynakta her ölçü olmayabiliyor (bar taburesinde yükseklik,
-            aksesuarda hiçbiri) — olmayan kutu hiç yazılmaz. */}
-        {olcuVar && (
+            Kaynakta ne yazıyorsa o. Genişlik/derinlik/yükseklik diye
+            kutulara ayırmıyoruz: eksen bilgisi her üründe aynı anlama
+            gelmiyor ve bölmek yorum katmak demek. */}
+        {olcuMetni && (
           <section className={styles.olculer}>
             <h2 className={styles.olculerBaslik}>Розміри</h2>
-
-            {sayisalOlcuVar && (
-              <div className={styles.dims}>
-                {([
-                  ["widthCm", "ширина, см"],
-                  ["depthCm", "глибина, см"],
-                  ["heightCm", "висота, см"],
-                ] as const).map(([alan, etiket]) =>
-                  olculer[alan] ? (
-                    <div key={alan}>
-                      {/* Ukraynaca ondalık ayracı virgül: 77,5 — kaynak
-                          metniyle aynı görünsün */}
-                      <span className={styles.dimN}>
-                        {olculer[alan]!.toLocaleString("uk-UA")}
-                      </span>
-                      <span className={styles.dimL}>{etiket}</span>
-                    </div>
-                  ) : null
-                )}
-              </div>
-            )}
-
-            {/* kaynaktaki yazım — kutulara sığmayan bilgiyi de taşır */}
-            {olcuMetni && (
-              <p className={styles.olcuRaw}>
-                <span className={styles.olcuRawV}>{olcuMetni}</span>
-              </p>
-            )}
+            <p className={styles.olcuRaw}>
+              <span className={styles.olcuRawV}>{olcuMetni}</span>
+            </p>
           </section>
         )}
 

@@ -358,37 +358,6 @@
 .olcuBody {
   margin-top: 14px;
 }
-.dims {
-  display: grid;
-  /* iki ölçüsü olan üründe (bar taburesi) üçüncü sütun boş kalmasın */
-  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-bottom: 12px;
-}
-.dims > div {
-  background: var(--card);
-  padding: 11px 12px;
-  text-align: center;
-}
-.dimN {
-  display: block;
-  font-family: var(--serif);
-  font-size: 21px;
-  color: var(--dark);
-  line-height: 1.1;
-}
-.dimL {
-  display: block;
-  font-size: 10.5px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--subtle);
-  margin-top: 3px;
-}
 .olcuHint {
   font-size: 13px;
   line-height: 1.6;
