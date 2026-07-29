@@ -39,7 +39,10 @@ model Locale {
 model Supplier {
   id           String    @id @default(cuid())
   externalId   String?   @unique
+  /// resmi unvan — kaynaktan gelir, vitrinde gösterilmez
   name         String
+  /// müşteriye görünen kısa marka adı: Gabba, Monett, İsil, Mikasa Moor
+  brand        String?
   contact      String?
   leadTimeDays Int? // varsayılan tedarik süresi
   isActive     Boolean   @default(true)

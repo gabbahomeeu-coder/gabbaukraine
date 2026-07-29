@@ -509,3 +509,12 @@
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
+
+/* üretici marka — başlığın altında, ölçülü */
+.marka {
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 6px;
+}

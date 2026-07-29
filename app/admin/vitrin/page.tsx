@@ -73,7 +73,7 @@ export default async function VitrinSayfasi() {
         koleksiyonlar={koleksiyonlar.map((k) => ({
           id: k.id,
           ad: k.translations[0]?.name ?? k.slug,
-          alt: `${k._count.products} ürün · ${k.brand === "monett" ? "Monett" : "Gabba"}`,
+          alt: `${k._count.products} ürün · ${k.brand}`,
           gorsel: k.image,
         }))}
         kategoriler={kategoriler.map((k) => ({

@@ -101,6 +101,11 @@ export default function ProductClient({
 
         <h1 className={styles.title}>{product.name}</h1>
 
+        {/* Ürünü üreten marka. Koleksiyon karışık olabiliyor: MADRID
+            CREAM'in bazı parçalarını İsil yapıyor, aksesuarları Mikasa
+            Moor. Koleksiyonun markası değil, bu parçayı yapan yazılır. */}
+        {product.brand && <p className={styles.marka}>{product.brand}</p>}
+
         <div className={styles.priceRow}>
           <span className={styles.price}>{formatPrice(toplam)}</span>
           {kumasFarki > 0 && (

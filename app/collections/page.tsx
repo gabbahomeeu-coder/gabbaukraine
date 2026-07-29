@@ -23,7 +23,6 @@ export const metadata: Metadata = {
 
 export default async function KoleksiyonlarSayfasi() {
   const koleksiyonlar = await tumKoleksiyonlar();
-  const markaAdi = (b: string) => (b === "monett" ? "Monett" : "Gabba");
 
   return (
     <>
@@ -65,7 +64,7 @@ export default async function KoleksiyonlarSayfasi() {
                 </div>
 
                 <div className={styles.cardBody}>
-                  <p className={styles.brand}>{markaAdi(k.brand)}</p>
+                  <p className={styles.brand}>{k.brand}</p>
                   <h2 className={styles.name}>{k.name}</h2>
                   <p className={styles.desc}>{k.description}</p>
 

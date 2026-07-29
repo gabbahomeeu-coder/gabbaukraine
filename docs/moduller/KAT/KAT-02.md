@@ -17,6 +17,19 @@ node scripts/kilavuz.mjs ekle KAT-02 --tip duzeltme --baslik "..." --once "..." 
 
 <!-- KAYITLAR -->
 
+### Düzeltme — Bütün koleksiyonlarda tedarikçi Gabba görünüyordu
+
+**29.07.2026 · 13:19** · Onur + Claude
+
+**Önce:** Senkron koleksiyonun brand alanını hiç doldurmuyordu; 57 koleksiyonun tamamı şemadaki varsayılan 'gabba' değerinde kalmıştı. Ayrıca gösterim kodu marka adını iki seçenekle sabitlemişti (monett değilse Gabba) — alan doğru dolsa bile İsil ve Mikasa Moor yine Gabba görünürdü. Aynı sabit eşleme site koleksiyon listesi, ana sayfa ve panelde ayrı ayrı tekrarlanmıştı.
+
+**Sonra:** suppliers tablosuna brand kolonu eklendi: Gabba, Monett, İsil, Mikasa Moor. Resmi unvan (name) vitrinde gösterilmiyor. Koleksiyonun markası içindeki ürün sayısı en çok olan tedarikçiden geliyor. Dört yerdeki sabit eşleme kaldırıldı. Sonuç: 35 Gabba, 18 Monett, 3 İsil, 1 Mikasa Moor.
+
+**Neden:** Tedarikçi verisi zaten doğru geliyordu, hata yalnızca gösterimde ve boş bırakılan alandaydı. Marka eşlemesi kimliğe göre yapılıyor, unvan metni değişse bile bozulmasın.
+
+---
+
+
 ### Değişiklik — Kapak havuzu türe göre üç bölüme ayrıldı
 
 **28.07.2026 · 23:38** · Onur + Claude

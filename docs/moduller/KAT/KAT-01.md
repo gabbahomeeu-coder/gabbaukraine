@@ -17,6 +17,19 @@ node scripts/kilavuz.mjs ekle KAT-01 --tip duzeltme --baslik "..." --once "..." 
 
 <!-- KAYITLAR -->
 
+### Ekleme — Ürün sayfasında üretici marka gösteriliyor
+
+**29.07.2026 · 13:19** · Onur + Claude
+
+**Önce:** Ürün sayfasında marka hiç yazmıyordu. Ürün DTO'su markayı koleksiyondan alıyordu, oysa 8 koleksiyon karışık: LYON koleksiyonunun bazı parçalarını İsil, Accessories koleksiyonunu Mikasa Moor üretiyor.
+
+**Sonra:** Ürün kendi tedarikçisinin markasını taşıyor, koleksiyonunkini değil. Başlığın altında görünüyor. LYON'daki İsil dolabında 'İsil', aksesuarda 'Mikasa Moor' yazıyor. Product JSON-LD'de de sabit 'GABBA' yerine gerçek marka gidiyor.
+
+**Neden:** Koleksiyon kartı tek marka gösterebiliyor ve baskın olanı yazıyor; parçanın gerçek üreticisi ancak ürün sayfasında görünebilir.
+
+---
+
+
 ### Değişiklik — Ölçüler akordeonun içinden çıkarıldı
 
 **29.07.2026 · 08:34** · Onur + Claude

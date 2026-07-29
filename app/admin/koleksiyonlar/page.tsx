@@ -95,7 +95,7 @@ export default async function KoleksiyonlarSayfasi() {
                   {k.translations[0]?.name ?? k.slug}
                 </span>
                 <span className={styles.rowMeta}>
-                  {k.brand === "monett" ? "Monett" : "Gabba"} · {k.slug}
+                  {k.brand} · {k.slug}
                 </span>
               </Link>
 

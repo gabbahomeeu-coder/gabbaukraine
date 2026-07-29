@@ -434,7 +434,7 @@ export default function HomeClient({
             </div>
             <div className={styles.collInfo}>
               <p className={styles.cardCollection}>
-                {c.brand === "gabba" ? "Gabba" : "Monett"}
+                {c.brand}
               </p>
               <h3 className={styles.collName}>{c.name}</h3>
               <p className={styles.collDesc}>{c.description}</p>

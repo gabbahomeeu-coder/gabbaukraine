@@ -104,7 +104,10 @@ function bicimle(
     collection: kolCeviri?.name ?? "",
     collectionSlug: p.collection?.slug ?? "",
     category: p.category?.slug ?? "",
-    brand: p.collection?.brand ?? "gabba",
+    /* Ürünün kendi tedarikçisi — koleksiyon karışık olabiliyor.
+       MADRID CREAM'in bazı parçalarını İsil üretiyor; ürün sayfasında
+       koleksiyonun markası değil o parçayı yapan görünmeli. */
+    brand: p.supplier?.brand ?? p.collection?.brand ?? "Gabba",
     price: sayi(p.basePrice),
     image: gorseller[0] ?? "",
     images: gorseller,

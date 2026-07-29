@@ -82,6 +82,7 @@ export default async function ProductPage({
         price={enDusukFiyat}
         collection={product.collection}
         slug={product.slug}
+        brand={product.brand}
         inStock={stokVar}
       />
       <BreadcrumbJsonLd

@@ -107,6 +107,7 @@ export function ProductJsonLd({
   price,
   collection,
   slug,
+  brand,
   inStock = true,
 }: {
   name: string;
@@ -115,6 +116,8 @@ export function ProductJsonLd({
   price: number;
   collection: string;
   slug: string;
+  /** ürünü üreten marka — verilmezse GABBA */
+  brand?: string;
   inStock?: boolean;
 }) {
   const data = {
@@ -126,7 +129,8 @@ export function ProductJsonLd({
     url: `https://www.gabbaukraine.com/products/${slug}`,
     brand: {
       "@type": "Brand",
-      name: "GABBA",
+      // ürünü üreten marka — koleksiyon karışık olabildiği için sabit değil
+      name: brand ?? "GABBA",
     },
     category: `Дизайнерські меблі / ${collection}`,
     offers: {

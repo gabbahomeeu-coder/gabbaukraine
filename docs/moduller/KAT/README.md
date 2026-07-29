@@ -27,6 +27,32 @@ Ayrıntı için ilgili alt modülün kılavuzuna bakın.
 
 <!-- KAYITLAR -->
 
+### Ekleme — Ürün sayfasında üretici marka gösteriliyor
+
+**29.07.2026 · 13:19** · Onur + Claude · `KAT-01`
+
+**Önce:** Ürün sayfasında marka hiç yazmıyordu. Ürün DTO'su markayı koleksiyondan alıyordu, oysa 8 koleksiyon karışık: LYON koleksiyonunun bazı parçalarını İsil, Accessories koleksiyonunu Mikasa Moor üretiyor.
+
+**Sonra:** Ürün kendi tedarikçisinin markasını taşıyor, koleksiyonunkini değil. Başlığın altında görünüyor. LYON'daki İsil dolabında 'İsil', aksesuarda 'Mikasa Moor' yazıyor. Product JSON-LD'de de sabit 'GABBA' yerine gerçek marka gidiyor.
+
+**Neden:** Koleksiyon kartı tek marka gösterebiliyor ve baskın olanı yazıyor; parçanın gerçek üreticisi ancak ürün sayfasında görünebilir.
+
+---
+
+
+### Düzeltme — Bütün koleksiyonlarda tedarikçi Gabba görünüyordu
+
+**29.07.2026 · 13:19** · Onur + Claude · `KAT-02`
+
+**Önce:** Senkron koleksiyonun brand alanını hiç doldurmuyordu; 57 koleksiyonun tamamı şemadaki varsayılan 'gabba' değerinde kalmıştı. Ayrıca gösterim kodu marka adını iki seçenekle sabitlemişti (monett değilse Gabba) — alan doğru dolsa bile İsil ve Mikasa Moor yine Gabba görünürdü. Aynı sabit eşleme site koleksiyon listesi, ana sayfa ve panelde ayrı ayrı tekrarlanmıştı.
+
+**Sonra:** suppliers tablosuna brand kolonu eklendi: Gabba, Monett, İsil, Mikasa Moor. Resmi unvan (name) vitrinde gösterilmiyor. Koleksiyonun markası içindeki ürün sayısı en çok olan tedarikçiden geliyor. Dört yerdeki sabit eşleme kaldırıldı. Sonuç: 35 Gabba, 18 Monett, 3 İsil, 1 Mikasa Moor.
+
+**Neden:** Tedarikçi verisi zaten doğru geliyordu, hata yalnızca gösterimde ve boş bırakılan alandaydı. Marka eşlemesi kimliğe göre yapılıyor, unvan metni değişse bile bozulmasın.
+
+---
+
+
 ### Değişiklik — Ölçüler akordeonun içinden çıkarıldı
 
 **29.07.2026 · 08:34** · Onur + Claude · `KAT-01`

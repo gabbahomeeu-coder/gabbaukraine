@@ -113,6 +113,31 @@ export function kategoriTahmin(ad: string, koleksiyonAdi?: string): string | nul
   return null;
 }
 
+/* ── tedarikçi markası ── */
+
+/**
+ * Tedarikçinin müşteriye görünen kısa adı.
+ *
+ * Kaynak resmi unvanı gönderiyor ("GABBA KOLTUK TEKSTİL MOBİLYA SANAYİ
+ * VE TİCARET"); vitrinde bu duramaz. Eşleme kimliğe göre yapılır —
+ * unvan metni değişse bile marka adı sabit kalsın.
+ * Panelden değiştirilebilir; senkron yalnızca BOŞ olanı doldurur.
+ */
+const TEDARIKCI_MARKASI: Record<string, string> = {
+  "SUP-1": "Gabba",
+  "SUP-3": "Monett",
+  "SUP-4": "İsil",
+  "SUP-5": "Mikasa Moor",
+};
+
+/** Listede olmayan tedarikçi için unvanın ilk kelimesinden makul bir ad */
+export function markaTahmin(disId: string, unvan: string): string {
+  const bilinen = TEDARIKCI_MARKASI[disId];
+  if (bilinen) return bilinen;
+  const ilk = unvan.trim().split(/\s+/)[0] ?? unvan;
+  return ilk.charAt(0).toLocaleUpperCase("tr") + ilk.slice(1).toLocaleLowerCase("tr");
+}
+
 /* ── ölçüler ── */
 
 /** Makul mobilya aralığı. Dışına çıkan değer veri hatasıdır, içeri alınmaz. */
@@ -274,13 +299,22 @@ export async function katalogSenkronu({
     if (mevcut) {
       rapor.tedarikci.guncel++;
       tedarikciEsleme.set(disId, mevcut.id);
-      if (!kuru && mevcut.name !== ad) {
-        await db.supplier.update({ where: { id: mevcut.id }, data: { name: ad } });
+      if (!kuru) {
+        await db.supplier.update({
+          where: { id: mevcut.id },
+          data: {
+            name: ad,
+            // marka yerel karar; yalnızca hiç yazılmamışsa doldurulur
+            ...(mevcut.brand ? {} : { brand: markaTahmin(disId, ad) }),
+          },
+        });
       }
     } else {
       rapor.tedarikci.yeni++;
       if (!kuru) {
-        const yeni = await db.supplier.create({ data: { externalId: disId, name: ad } });
+        const yeni = await db.supplier.create({
+          data: { externalId: disId, name: ad, brand: markaTahmin(disId, ad) },
+        });
         tedarikciEsleme.set(disId, yeni.id);
       }
     }
@@ -506,6 +540,43 @@ export async function katalogSenkronu({
     rapor.uyarilar.push(
       `${kategorisiz} ürünün kategorisi addan çıkarılamadı — panelden elle atanmalı.`
     );
+  }
+
+  /* 7) koleksiyon markası — içindeki ÜRÜN SAYISI EN ÇOK olan tedarikçiden.
+     Bazı koleksiyonlar karışık: MADRID CREAM'in 13 ürünü Gabba'dan,
+     4'ü İsil'den geliyor. Kart tek marka gösterebildiği için baskın
+     olan yazılır; ürünün kendi tedarikçisi ürün sayfasında görünür. */
+  if (!kuru) {
+    const dagilim = await db.product.groupBy({
+      by: ["collectionId", "supplierId"],
+      where: { collectionId: { not: null }, supplierId: { not: null } },
+      _count: { _all: true },
+    });
+
+    const baskin = new Map<string, { supplierId: string; adet: number }>();
+    for (const d of dagilim) {
+      const k = d.collectionId!;
+      const mevcut = baskin.get(k);
+      if (!mevcut || d._count._all > mevcut.adet) {
+        baskin.set(k, { supplierId: d.supplierId!, adet: d._count._all });
+      }
+    }
+
+    const markalar = new Map(
+      (await db.supplier.findMany({ select: { id: true, brand: true } })).map((s) => [
+        s.id,
+        s.brand,
+      ])
+    );
+
+    for (const [koleksiyonId, { supplierId }] of baskin) {
+      const marka = markalar.get(supplierId);
+      if (!marka) continue;
+      await db.collection.updateMany({
+        where: { id: koleksiyonId, NOT: { brand: marka } },
+        data: { brand: marka },
+      });
+    }
   }
 
   rapor.sureSn = Math.round((Date.now() - basla) / 100) / 10;
