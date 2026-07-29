@@ -1,12 +1,19 @@
-# Katalog API — ürün ölçüleri
+# Katalog API — ölçüler ve oda bilgisi
 
 **Uç nokta:** `GET https://crm.gabbahome.eu/api/catalog`
 **Tarih:** 29 Temmuz 2026
 **Durum:** Faz 1 çalışıyor, 948 ürün canlı siteye aktarıldı.
+Ölçü alanları eklendi ve aktarıldı — 922/948 ürün ölçü aldı.
 
-Bu belgede tek bir konu var: **ürün ölçüleri.** İki ekleme gerekiyor —
-ölçü alanları ve aynı ürünün farklı ölçülerinin gruplanması. İkisi de
-**mevcut alanlara dokunmadan** yapılabilir.
+Bu belgede üç ekleme var. Hepsi **mevcut alanlara dokunmadan**
+yapılabilir; senkron tanımadığı alanı görmezden gelir, eksik alanı
+`null` sayar.
+
+| # | ne | durum |
+|---|---|---|
+| 1 | ölçü alanları | **tamam** — aktarıldı |
+| 2 | ölçü varyantları | bekliyor |
+| 3 | oda bilgisi | bekliyor |
 
 ---
 
@@ -46,16 +53,16 @@ birimi alanları temiz.
 `width`, `height` ve `type` alanları sayesinde panelde koleksiyon kapağı
 seçimi yatay/dikey ayrımıyla çalışıyor. Bu haliyle yeterli.
 
-Eksik olan tek şey ölçü.
+Eksik olanlar aşağıda.
 
 ---
 
-## 1 · Ölçü alanları
+## 1 · Ölçü alanları — TAMAM
 
-Mobilya alışverişinde ölçü, fiyattan sonra en çok sorulan bilgidir. Şu an
-sitede hiçbir üründe ölçü gösterilemiyor.
+Eklendi ve siteye aktarıldı. 948 ürünün 922'si ölçü aldı, 831'inde
+sayısal üçlü tam. Ürün sayfasında `raw` metni olduğu gibi gösteriliyor.
 
-Ürün kaydına eklenecek:
+Alan biçimi (kayıt için):
 
 ```json
 "dimensions": {
@@ -134,16 +141,64 @@ Site bunları tek sayfada iki seçenek olarak gösterir.
 
 ---
 
+## 3 · Oda bilgisi
+
+Site, koleksiyonları **oda**ya göre bölümlendirecek: Вітальня, Їдальня,
+Спальня. Bu ayrım CRM'in studio bölümünde zaten var ama API'ye çıkmıyor.
+
+Ürün kaydına eklenecek:
+
+```json
+"room": "living"
+```
+
+**Kabul edilen değerler:** `living` (вітальня) · `dining` (їдальня) ·
+`bedroom` (спальня)
+
+**Kurallar**
+
+- Bir ürün **tek** odaya girer; liste değil, tek değer.
+- Odaya ait olmayan üründe (aksesuar, dekoratif obje) `null`.
+
+Stüdyo fotoğraflarına da aynı alan:
+
+```json
+{
+  "url": "https://img.gabbahome.eu/studio/luna/landscape/....jpg",
+  "type": "catalog",
+  "orientation": "landscape",
+  "room": "bedroom"
+}
+```
+
+Böylece koleksiyon sayfasında her oda bölümünün başına o odanın gerçek
+çekimi konulabilir.
+
+**Neden API'den gelmeli**
+
+Oda bilgisi ürün adından çıkarılamıyor. Denendi: 948 ürünün **%38'i
+belirsiz** kaldı. `Стіл` yemek masası mı sehpa mı, `Шафа` yatak odası
+gardırobu mu antre dolabı mı — ad bunu söylemiyor. Yanlış odaya düşen
+bir ürün, eksik bilgiden daha kötü görünür.
+
+Bilgi CRM'de zaten mevcut olduğu için sitede ikinci kez tanımlanması
+doğru değil: iki yerde yaşayan veri zamanla ayrışır ve hangisinin doğru
+olduğu belirsizleşir.
+
+---
+
 ## Geriye dönük uyumluluk
 
-İki eklemenin de **mevcut alanlara etkisi yok.** Senkron:
+Üç eklemenin de **mevcut alanlara etkisi yok.** Senkron:
 
 - tanımadığı alanları görmezden gelir,
 - eksik alanları `null` sayar,
 - yeni alanlar geldiğinde ek bir sürüm gerektirmez.
 
-Bu yüzden ikisi aynı anda yapılmak zorunda değil. Önce ölçü alanları
-(1), sonra varyant grubu (2) gelebilir — arada site çalışmaya devam eder.
+Bu yüzden hepsi aynı anda yapılmak zorunda değil; sırayla gelebilir,
+arada site çalışmaya devam eder. Öncelik sırası: **oda bilgisi (3),
+sonra ölçü varyantları (2).** Oda bilgisi sitenin gezinme yapısını
+kuracağı için daha acil.
 
 ---
 
@@ -158,11 +213,13 @@ curl -H "Authorization: Bearer <anahtar>" \
 
 Kontrol listesi:
 
-- [ ] `dimensions` alanı var, birim cm
-- [ ] Bilinmeyen ölçüler `null` — sıfır ya da tahmini değer yok
+- [x] `dimensions` alanı var, birim cm — tamam
 - [ ] Aynı ürünün farklı ölçüleri aynı `variantGroup` değerini taşıyor
 - [ ] `variantLabel` Ukraynaca ve müşteriye gösterilebilir durumda
 - [ ] Tek ölçülü üründe `variantGroup` ve `variantLabel` `null`
+- [ ] Üründe `room` alanı var: `living` · `dining` · `bedroom` ya da `null`
+- [ ] Stüdyo fotoğraflarında da `room` alanı var
+- [ ] Hiçbir üründe birden fazla oda yok (alan tekil)
 
 Site tarafında senkron kuru çalıştırma ile denenir; veritabanına hiçbir
 şey yazmadan ne geleceğini raporlar.
