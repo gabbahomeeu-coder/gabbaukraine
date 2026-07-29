@@ -322,18 +322,15 @@
   display: flex;
   flex-direction: column;
 }
-/* ürün fotoğrafları 5:3 çekilmiş — aynı oranı kullanınca
-   ne kırpma ne de beyaz boşluk oluşuyor */
+/* Dekupeler beyaz zeminde ~6:5 oranında geliyor; ürün kartlarındaki
+   kuralın aynısı — `cover` mobilyayı kırpıyordu. */
 .dealMedia {
   position: relative;
-  aspect-ratio: 5 / 3;
+  aspect-ratio: 5 / 4;
   background: #fff;
 }
 .dealImg {
-  object-fit: cover;
-  /* katalog fotoğraflarında ürün kadrajın ortasında küçük kalıyor —
-     hafif yakınlaştırma ürünü kartta hak ettiği ağırlığa getiriyor */
-  transform: scale(1.1);
+  object-fit: contain;
 }
 .dealBadge {
   position: absolute;
